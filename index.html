@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Booking Wizard – Mounting Services</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { brand: "#2563EB" }
+        }
+      }
+    }
+  </script>
+</head>
+
+<body class="bg-white text-gray-900">
+  <!-- Header -->
+  <header class="sticky top-0 z-50 bg-white border-b">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="h-9 w-9 rounded-lg bg-brand/10 flex items-center justify-center font-black text-brand">M</div>
+        <div class="leading-tight">
+          <div class="font-bold">YourBrand</div>
+          <div class="text-xs text-gray-500">Interactive estimates + booking</div>
+        </div>
+      </div>
+      <nav class="hidden md:flex gap-8 text-sm font-medium">
+        <a href="#wizard" class="hover:text-brand">Wizard</a>
+        <a href="#faq" class="hover:text-brand">FAQ</a>
+      </nav>
+      <a href="#wizard" class="hidden md:inline-flex bg-brand text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700">Start</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="bg-gray-50">
+    <div class="max-w-7xl mx-auto px-6 py-14 md:py-18 grid md:grid-cols-2 gap-10 items-center">
+      <div>
+        <div class="inline-flex items-center gap-2 text-xs bg-white border rounded-full px-3 py-1 text-gray-600">
+          Multi-step wizard • Live pricing • Copy to booking
+        </div>
+        <h1 class="mt-4 text-4xl md:text-5xl font-extrabold leading-tight">
+          Let customers build their install in minutes
+        </h1>
+        <p class="mt-4 text-lg text-gray-600">
+          Click service → choose size/mount/add-ons → pick a time slot → add wall type & photos → review and submit.
+        </p>
+        <div class="mt-7 flex gap-3">
+          <a href="#wizard" class="bg-brand text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700">Start the wizard</a>
+          <a href="#faq" class="border px-6 py-3 rounded-md font-semibold hover:bg-gray-100">See FAQ</a>
+        </div>
+        <div class="mt-7 grid grid-cols-1 sm:grid-cols-3 gap-3 text-sm">
+          <div class="bg-white border rounded-lg p-3">
+            <div class="font-semibold">Interactive</div>
+            <div class="text-gray-600 mt-1">Size + type + add-ons</div>
+          </div>
+          <div class="bg-white border rounded-lg p-3">
+            <div class="font-semibold">Scheduling</div>
+            <div class="text-gray-600 mt-1">Real time slots</div>
+          </div>
+          <div class="bg-white border rounded-lg p-3">
+            <div class="font-semibold">Ready</div>
+            <div class="text-gray-600 mt-1">Booking summary compiled</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white border rounded-xl p-6 shadow-sm">
+        <div class="flex items-center justify-between">
+          <div class="text-sm font-semibold">Live estimate</div>
+          <span class="text-xs bg-blue-50 text-brand border border-blue-100 px-2 py-1 rounded-full">Updates instantly</span>
+        </div>
+        <div class="mt-4 border rounded-lg p-4 bg-gray-50">
+          <div class="flex items-start justify-between gap-4">
+            <div>
+              <div class="text-xs text-gray-500">Current selection</div>
+              <div id="miniService" class="font-semibold">None</div>
+              <div id="miniDetails" class="text-sm text-gray-600 mt-1">Start the wizard to configure options.</div>
+            </div>
+            <div class="text-right">
+              <div class="text-xs text-gray-500">Estimate</div>
+              <div id="miniTotal" class="text-2xl font-extrabold">$0</div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 text-xs text-gray-500">
+          Pricing is placeholder. Replace values in the <span class="font-mono">pricing</span> config below.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Wizard -->
+  <section id="wizard" class="py-14 md:py-18">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col lg:flex-row gap-8 items-start">
+        <!-- Left: Steps -->
+        <div class="lg:w-2/3">
+          <div class="flex items-center justify-between gap-4">
+            <h2 class="text-3xl font-extrabold">Booking Wizard</h2>
+            <button id="resetAll" class="border px-4 py-2 rounded-md font-semibold hover:bg-gray-100 text-sm">Reset</button>
+          </div>
+          <p class="mt-2 text-gray-600">Complete steps 1–5. Your quote updates in real time.</p>
+
+          <!-- Progress -->
+          <div class="mt-6 bg-gray-100 rounded-lg p-3">
+            <div class="flex items-center justify-between text-xs text-gray-600">
+              <span id="progressLabel">Step 1 of 5</span>
+              <span id="progressPct">0%</span>
+            </div>
+            <div class="mt-2 h-2 bg-white rounded-full overflow-hidden border">
+              <div id="progressBar" class="h-full bg-brand" style="width: 0%"></div>
+            </div>
+          </div>
+
+          <!-- Step Panels -->
+          <div class="mt-6 space-y-6">
+            <!-- Step 1 -->
+            <div class="step card border rounded-xl p-6" data-step="1">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <div class="text-xs font-semibold text-gray-500">STEP 1</div>
+                  <div class="text-xl font-bold">Choose a service</div>
+                  <div class="text-gray-600 mt-1">Click a card to continue.</div>
+                </div>
+                <span id="step1Status" class="text-xs bg-gray-100 border px-2 py-1 rounded-full text-gray-600">Required</span>
+              </div>
+
+              <div class="mt-5 grid md:grid-cols-3 gap-4">
+                <button class="service-card text-left border rounded-xl p-5 hover:shadow-md transition"
+                        data-service="TV Mounting" data-key="tv_mount">
+                  <div class="font-bold text-lg">TV Mounting</div>
+                  <div class="text-gray-600 mt-1 text-sm">Size, mount type, add-ons.</div>
+                  <div class="mt-3 text-sm font-semibold text-gray-800">From $129</div>
+                </button>
+
+                <button class="service-card text-left border rounded-xl p-5 hover:shadow-md transition"
+                        data-service="Soundbar Installation" data-key="soundbar">
+                  <div class="font-bold text-lg">Soundbar</div>
+                  <div class="text-gray-600 mt-1 text-sm">Standalone or with TV.</div>
+                  <div class="mt-3 text-sm font-semibold text-gray-800">From $79</div>
+                </button>
+
+                <button class="service-card text-left border rounded-xl p-5 hover:shadow-md transition"
+                        data-service="Cameras / Devices" data-key="cameras">
+                  <div class="font-bold text-lg">Cameras / Devices</div>
+                  <div class="text-gray-600 mt-1 text-sm">Count + complexity.</div>
+                  <div class="mt-3 text-sm font-semibold text-gray-800">From $99</div>
+                </button>
+              </div>
+
+              <div class="mt-5 flex gap-3">
+                <button class="next bg-brand text-white px-5 py-3 rounded-md font-semibold hover:bg-blue-700 disabled:opacity-60" disabled>
+                  Next: Options
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step border rounded-xl p-6" data-step="2">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <div class="text-xs font-semibold text-gray-500">STEP 2</div>
+                  <div class="text-xl font-bold">Configure options</div>
+                  <div class="text-gray-600 mt-1">Select size/type and add-ons.</div>
+                </div>
+                <span id="step2Status" class="text-xs bg-gray-100 border px-2 py-1 rounded-full text-gray-600">Required</span>
+              </div>
+
+              <!-- TV panel -->
+              <div id="panel-tv_mount" class="mt-5 hidden">
+                <div class="font-semibold">TV Mounting Options</div>
+                <div class="mt-4 grid sm:grid-cols-2 gap-4">
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">TV Size</div>
+                    <select id="tvSize" class="w-full border rounded-md p-3">
+                      <option value="small">Up to 43"</option>
+                      <option value="mid">44"–65"</option>
+                      <option value="large">66"–85"</option>
+                      <option value="xl">86"+</option>
+                    </select>
+                  </label>
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">Mount Type</div>
+                    <select id="mountType" class="w-full border rounded-md p-3">
+                      <option value="fixed">Fixed</option>
+                      <option value="tilt">Tilt</option>
+                      <option value="full">Full Motion</option>
+                      <option value="fireplace">Above Fireplace / Specialty</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="mt-4 grid sm:grid-cols-2 gap-3">
+                  <label class="flex items-center gap-3 border rounded-md p-3 cursor-pointer">
+                    <input id="addonConceal" type="checkbox" class="h-4 w-4" />
+                    <div>
+                      <div class="font-medium text-sm">Cable Concealment (surface)</div>
+                      <div class="text-xs text-gray-600">Raceway / conceal kit</div>
+                    </div>
+                  </label>
+
+                  <label class="flex items-center gap-3 border rounded-md p-3 cursor-pointer">
+                    <input id="addonSoundbar" type="checkbox" class="h-4 w-4" />
+                    <div>
+                      <div class="font-medium text-sm">Add Soundbar Install</div>
+                      <div class="text-xs text-gray-600">Mount + align soundbar</div>
+                    </div>
+                  </label>
+
+                  <label class="flex items-center gap-3 border rounded-md p-3 cursor-pointer">
+                    <input id="addonInWall" type="checkbox" class="h-4 w-4" />
+                    <div>
+                      <div class="font-medium text-sm">In-wall Wiring</div>
+                      <div class="text-xs text-gray-600">Quote only (assessment)</div>
+                    </div>
+                  </label>
+
+                  <label class="flex items-center gap-3 border rounded-md p-3 cursor-pointer">
+                    <input id="addonDismount" type="checkbox" class="h-4 w-4" />
+                    <div>
+                      <div class="font-medium text-sm">Dismount Old TV</div>
+                      <div class="text-xs text-gray-600">Remove existing mount</div>
+                    </div>
+                  </label>
+                </div>
+
+                <!-- Mount provided toggle + recommendations -->
+                <div class="mt-5 border rounded-lg p-4 bg-gray-50">
+                  <div class="flex items-start justify-between gap-4">
+                    <div>
+                      <div class="font-semibold">Mount hardware</div>
+                      <div class="text-sm text-gray-600 mt-1">Do you already have a compatible mount?</div>
+                    </div>
+                    <label class="inline-flex items-center gap-2 text-sm font-semibold">
+                      <input id="mountProvided" type="checkbox" class="h-4 w-4" checked />
+                      Customer has mount
+                    </label>
+                  </div>
+
+                  <div id="mountSupplyWrap" class="mt-4 hidden">
+                    <label class="flex items-center gap-3 border rounded-md p-3 cursor-pointer bg-white">
+                      <input id="addMountSupply" type="checkbox" class="h-4 w-4" />
+                      <div>
+                        <div class="font-medium text-sm">Add mount supply</div>
+                        <div class="text-xs text-gray-600">We bring a recommended mount (priced by size/type)</div>
+                      </div>
+                    </label>
+                  </div>
+
+                  <div class="mt-4">
+                    <div class="text-sm font-semibold">Recommended mounts (examples)</div>
+                    <ul id="mountRecs" class="mt-2 text-sm text-gray-700 list-disc pl-5 space-y-1"></ul>
+                    <div class="mt-2 text-xs text-gray-500">
+                      Replace examples with your preferred models (Amazon/BestBuy/etc.). Avoid using competitor branding.
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Soundbar panel -->
+              <div id="panel-soundbar" class="mt-5 hidden">
+                <div class="font-semibold">Soundbar Options</div>
+                <div class="mt-4 grid sm:grid-cols-2 gap-4">
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">Installation Type</div>
+                    <select id="soundbarType" class="w-full border rounded-md p-3">
+                      <option value="standalone">Standalone soundbar install</option>
+                      <option value="with_tv">Installed with TV mount</option>
+                    </select>
+                  </label>
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">Cable tidy</div>
+                    <select id="soundbarCables" class="w-full border rounded-md p-3">
+                      <option value="basic">Basic tidy</option>
+                      <option value="conceal">Conceal cables (surface)</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Cameras panel -->
+              <div id="panel-cameras" class="mt-5 hidden">
+                <div class="font-semibold">Cameras / Devices Options</div>
+                <div class="mt-4 grid sm:grid-cols-2 gap-4">
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">Number of devices</div>
+                    <select id="cameraCount" class="w-full border rounded-md p-3">
+                      <option value="1">1 device</option>
+                      <option value="2">2 devices</option>
+                      <option value="3">3 devices</option>
+                      <option value="4">4 devices</option>
+                    </select>
+                  </label>
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">Complexity</div>
+                    <select id="cameraComplexity" class="w-full border rounded-md p-3">
+                      <option value="basic">Basic mount</option>
+                      <option value="standard">Standard (routing / minor setup)</option>
+                      <option value="advanced">Advanced (long routing / tricky surfaces)</option>
+                    </select>
+                  </label>
+                </div>
+              </div>
+
+              <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                <button class="prev border px-5 py-3 rounded-md font-semibold hover:bg-gray-100">Back</button>
+                <button class="next bg-brand text-white px-5 py-3 rounded-md font-semibold hover:bg-blue-700 disabled:opacity-60" disabled>
+                  Next: Schedule
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step border rounded-xl p-6" data-step="3">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <div class="text-xs font-semibold text-gray-500">STEP 3</div>
+                  <div class="text-xl font-bold">Pick a time slot</div>
+                  <div class="text-gray-600 mt-1">Choose date + available slot.</div>
+                </div>
+                <span id="step3Status" class="text-xs bg-gray-100 border px-2 py-1 rounded-full text-gray-600">Required</span>
+              </div>
+
+              <div class="mt-5 grid md:grid-cols-2 gap-6">
+                <div>
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">Preferred date</div>
+                    <input id="datePick" type="date" class="w-full border rounded-md p-3" />
+                  </label>
+                  <div class="mt-3 text-xs text-gray-500">
+                    Slot availability is simulated locally. When you deploy, connect to your real calendar/booking system.
+                  </div>
+
+                  <div class="mt-4 border rounded-lg p-4 bg-gray-50">
+                    <div class="text-sm font-semibold">Business hours (template)</div>
+                    <div class="text-sm text-gray-700 mt-2">
+                      Mon–Fri: 10:00–19:00 • Sat–Sun: 11:00–18:00
+                    </div>
+                    <div class="text-xs text-gray-500 mt-2">
+                      Edit hours in <span class="font-mono">availabilityConfig</span> in the script.
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="text-sm font-semibold">Available slots</div>
+                  <div id="slotsWrap" class="mt-3 grid grid-cols-2 sm:grid-cols-3 gap-2"></div>
+                  <div id="slotHint" class="mt-3 text-xs text-gray-500">
+                    Choose a date to load slots.
+                  </div>
+                </div>
+              </div>
+
+              <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                <button class="prev border px-5 py-3 rounded-md font-semibold hover:bg-gray-100">Back</button>
+                <button class="next bg-brand text-white px-5 py-3 rounded-md font-semibold hover:bg-blue-700 disabled:opacity-60" disabled>
+                  Next: Details
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step border rounded-xl p-6" data-step="4">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <div class="text-xs font-semibold text-gray-500">STEP 4</div>
+                  <div class="text-xl font-bold">Add details</div>
+                  <div class="text-gray-600 mt-1">Wall type, address area, photos link, notes.</div>
+                </div>
+                <span id="step4Status" class="text-xs bg-gray-100 border px-2 py-1 rounded-full text-gray-600">Required</span>
+              </div>
+
+              <div class="mt-5 grid md:grid-cols-2 gap-6">
+                <div>
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">Wall type</div>
+                    <select id="wallType" class="w-full border rounded-md p-3">
+                      <option value="drywall_studs">Drywall (studs)</option>
+                      <option value="drywall_no_studs">Drywall (no studs / unsure)</option>
+                      <option value="concrete_brick">Concrete / Brick</option>
+                      <option value="metal_studs">Metal studs</option>
+                    </select>
+                  </label>
+
+                  <div class="mt-3 border rounded-lg p-4 bg-gray-50">
+                    <div class="text-sm font-semibold">Wall note</div>
+                    <div id="wallNote" class="text-sm text-gray-700 mt-1">
+                      Standard installs typically assume drywall with studs.
+                    </div>
+                    <div class="mt-2 text-xs text-gray-500">
+                      Wall type can affect anchors, tools, and time. Pricing impact is configured in <span class="font-mono">wallAdjust</span>.
+                    </div>
+                  </div>
+
+                  <label class="text-sm block mt-4">
+                    <div class="font-medium text-gray-700 mb-1">Area / city</div>
+                    <input id="city" class="w-full border rounded-md p-3" placeholder="Surrey / Vancouver / Langley" />
+                  </label>
+                </div>
+
+                <div>
+                  <label class="text-sm block">
+                    <div class="font-medium text-gray-700 mb-1">Photos link (recommended)</div>
+                    <input id="photoLink" class="w-full border rounded-md p-3" placeholder="Paste Google Drive / iCloud / Dropbox link" />
+                  </label>
+                  <div class="mt-2 text-xs text-gray-500">
+                    Helpful photos: the wall, studs/outlets, TV back (VESA), mount model, and distance to power.
+                  </div>
+
+                  <label class="text-sm block mt-4">
+                    <div class="font-medium text-gray-700 mb-1">Additional notes</div>
+                    <textarea id="notes" rows="6" class="w-full border rounded-md p-3"
+                              placeholder="Wall measurements, fireplace height, existing mount, parking/access, etc."></textarea>
+                  </label>
+                </div>
+              </div>
+
+              <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                <button class="prev border px-5 py-3 rounded-md font-semibold hover:bg-gray-100">Back</button>
+                <button class="next bg-brand text-white px-5 py-3 rounded-md font-semibold hover:bg-blue-700">
+                  Next: Review
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="step border rounded-xl p-6" data-step="5">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <div class="text-xs font-semibold text-gray-500">STEP 5</div>
+                  <div class="text-xl font-bold">Review & submit</div>
+                  <div class="text-gray-600 mt-1">Customer info + compiled summary.</div>
+                </div>
+                <span id="step5Status" class="text-xs bg-green-50 border border-green-200 px-2 py-1 rounded-full text-green-700">Ready</span>
+              </div>
+
+              <div class="mt-5 grid lg:grid-cols-2 gap-6">
+                <div class="border rounded-xl p-5 bg-gray-50">
+                  <div class="text-sm font-semibold">Booking summary</div>
+                  <pre id="reviewText" class="mt-3 text-xs bg-white border rounded-lg p-4 overflow-auto whitespace-pre-wrap"></pre>
+                  <div class="mt-3 flex gap-3">
+                    <button id="copySummary" class="border px-4 py-2 rounded-md font-semibold hover:bg-gray-100 text-sm">Copy summary</button>
+                    <button id="downloadTxt" class="border px-4 py-2 rounded-md font-semibold hover:bg-gray-100 text-sm">Download .txt</button>
+                  </div>
+                </div>
+
+                <div class="border rounded-xl p-5">
+                  <div class="text-sm font-semibold">Customer info (demo)</div>
+                  <form id="submitForm" class="mt-4 grid gap-3">
+                    <div class="grid sm:grid-cols-2 gap-3">
+                      <input id="custName" class="border rounded-md p-3" placeholder="Name" required />
+                      <input id="custPhone" class="border rounded-md p-3" placeholder="Phone" required />
+                    </div>
+                    <input id="custEmail" class="border rounded-md p-3" placeholder="Email (optional)" type="email" />
+
+                    <button class="bg-brand text-white py-3 rounded-md font-semibold hover:bg-blue-700" type="submit">
+                      Submit request (demo)
+                    </button>
+
+                    <div id="submitMsg" class="text-sm"></div>
+                    <div class="text-xs text-gray-500">
+                      This demo does not send messages. When you deploy, connect to email (Resend/SendGrid), Google Sheets, or a CRM.
+                    </div>
+                  </form>
+                </div>
+              </div>
+
+              <div class="mt-6 flex flex-col sm:flex-row gap-3">
+                <button class="prev border px-5 py-3 rounded-md font-semibold hover:bg-gray-100">Back</button>
+                <button id="restart" class="border px-5 py-3 rounded-md font-semibold hover:bg-gray-100">Start over</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right: Quote Summary -->
+        <div class="lg:w-1/3 lg:sticky lg:top-24">
+          <div class="border rounded-xl p-6 bg-white shadow-sm">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="text-xs text-gray-500">Estimate</div>
+                <div id="summaryTotal" class="text-3xl font-extrabold">$0</div>
+              </div>
+              <span id="serviceBadge" class="text-xs bg-gray-100 border px-2 py-1 rounded-full text-gray-600">No service</span>
+            </div>
+
+            <div class="mt-4 border rounded-lg p-4 bg-gray-50">
+              <div class="text-sm font-semibold" id="summaryService">No service selected</div>
+              <div id="summaryLines" class="mt-3 space-y-2 text-sm text-gray-800">
+                <div class="text-gray-500">Choose a service to see line items.</div>
+              </div>
+            </div>
+
+            <div class="mt-4 text-xs text-gray-500">
+              In-wall wiring is “Quote” by default. Adjust pricing rules as needed.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="bg-gray-50 py-14 md:py-18">
+    <div class="max-w-7xl mx-auto px-6">
+      <h2 class="text-3xl font-extrabold text-center">FAQ</h2>
+      <div class="max-w-3xl mx-auto mt-8 grid gap-3">
+        <details class="bg-white border rounded-xl p-5">
+          <summary class="font-semibold cursor-pointer">Is this a real booking system?</summary>
+          <div class="mt-2 text-gray-600 text-sm">
+            This template simulates pricing and availability locally. When you deploy, connect the wizard to a real booking flow (calendar + payment + confirmation).
+          </div>
+        </details>
+        <details class="bg-white border rounded-xl p-5">
+          <summary class="font-semibold cursor-pointer">Can I change the pricing model?</summary>
+          <div class="mt-2 text-gray-600 text-sm">
+            Yes. Update <span class="font-mono">pricing</span>, <span class="font-mono">wallAdjust</span>, and <span class="font-mono">mountSupplyPricing</span> in the script.
+          </div>
+        </details>
+        <details class="bg-white border rounded-xl p-5">
+          <summary class="font-semibold cursor-pointer">How do I preview online for free?</summary>
+          <div class="mt-2 text-gray-600 text-sm">
+            Paste the full code into CodePen (HTML panel) and use Full Page View, or upload the file to GitHub Pages / Cloudflare Pages.
+          </div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-gray-900 text-gray-300 py-10">
+    <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+      <div>© 2026 YourBrand</div>
+      <div class="flex gap-6 text-sm">
+        <a href="#wizard" class="hover:text-white">Wizard</a>
+        <a href="#faq" class="hover:text-white">FAQ</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /******************************************************************
+     * CONFIG — Replace these placeholder rules with your real pricing.
+     ******************************************************************/
+    const pricing = {
+      tv_mount: {
+        base: 129,
+        size: { small: 0, mid: 20, large: 50, xl: 90 },
+        mount: { fixed: 0, tilt: 20, full: 60, fireplace: 120 },
+        addons: { conceal: 35, soundbar: 79, dismount: 30 }
+        // in-wall handled as quote-only
+      },
+      soundbar: {
+        base: 79,
+        type: { standalone: 0, with_tv: -20 },
+        cables: { basic: 0, conceal: 25 }
+      },
+      cameras: {
+        base: 99,
+        count: { "1": 0, "2": 60, "3": 120, "4": 170 },
+        complexity: { basic: 0, standard: 40, advanced: 90 }
+      }
+    };
+
+    // Wall type adjustment: can add cost and add notes.
+    const wallAdjust = {
+      drywall_studs: { add: 0, note: "Standard install assumptions. Stud anchoring where applicable." },
+      drywall_no_studs: { add: 30, note: "May require toggle bolts/anchors and additional time to locate framing." },
+      concrete_brick: { add: 70, note: "Masonry drilling required. Additional time and hardware may apply." },
+      metal_studs: { add: 60, note: "Metal stud anchors or backing may be needed. Extra time typically required." }
+    };
+
+    // Mount supply pricing: only relevant when customer does NOT have a mount and chooses “Add mount supply”.
+    const mountSupplyPricing = {
+      small: 35,
+      mid: 55,
+      large: 75,
+      xl: 95
+    };
+
+    // Availability (simulated)
+    const availabilityConfig = {
+      // 0=Sun..6=Sat
+      hoursByDow: {
+        0: { start: "11:00", end: "18:00" },
+        6: { start: "11:00", end: "18:00" },
+        1: { start: "10:00", end: "19:00" },
+        2: { start: "10:00", end: "19:00" },
+        3: { start: "10:00", end: "19:00" },
+        4: { start: "10:00", end: "19:00" },
+        5: { start: "10:00", end: "19:00" }
+      },
+      slotMinutes: 60,
+      // Example blackout date(s): YYYY-MM-DD
+      blackouts: new Set([
+        // "2026-01-15"
+      ])
+    };
+
+    /******************************************************************
+     * STATE
+     ******************************************************************/
+    const state = {
+      step: 1,
+      serviceKey: null,
+      serviceName: null,
+      selections: {},
+      schedule: { date: null, slot: null },
+      details: { wallType: "drywall_studs", city: "", photoLink: "", notes: "" },
+      estimate: { total: 0, lines: [] }
+    };
+
+    /******************************************************************
+     * DOM helpers
+     ******************************************************************/
+    const $ = (id) => document.getElementById(id);
+    const $$ = (sel) => Array.from(document.querySelectorAll(sel));
+
+    function money(n){ return "$" + Number(n).toFixed(0); }
+
+    function setProgress(){
+      const pct = Math.round(((state.step - 1) / 4) * 100);
+      $("progressLabel").textContent = `Step ${state.step} of 5`;
+      $("progressPct").textContent = `${pct}%`;
+      $("progressBar").style.width = `${pct}%`;
+    }
+
+    function showStep(step){
+      state.step = step;
+      $$(".step").forEach(el => {
+        const s = Number(el.dataset.step);
+        el.style.display = (s === step) ? "block" : "none";
+      });
+      setProgress();
+      updateReview();
+    }
+
+    function setStatus(id, ok){
+      const el = $(id);
+      if (!el) return;
+      if (ok){
+        el.textContent = "Done";
+        el.className = "text-xs bg-green-50 border border-green-200 px-2 py-1 rounded-full text-green-700";
+      } else {
+        el.textContent = "Required";
+        el.className = "text-xs bg-gray-100 border px-2 py-1 rounded-full text-gray-600";
+      }
+    }
+
+    function hideAllPanels(){
+      ["tv_mount","soundbar","cameras"].forEach(k => $("panel-" + k).classList.add("hidden"));
+    }
+
+    function serviceLabel(){
+      return state.serviceName || "No service selected";
+    }
+
+    function updateWallNote(){
+      const w = state.details.wallType;
+      $("wallNote").textContent = wallAdjust[w].note;
+    }
+
+    /******************************************************************
+     * Labels
+     ******************************************************************/
+    function sizeLabel(v){
+      return ({ small:'Up to 43"', mid:'44"–65"', large:'66"–85"', xl:'86"+' })[v] || v;
+    }
+    function mountLabel(v){
+      return ({ fixed:"Fixed", tilt:"Tilt", full:"Full Motion", fireplace:"Above Fireplace / Specialty" })[v] || v;
+    }
+    function typeLabel(v){
+      return ({ standalone:"Standalone", with_tv:"With TV mount" })[v] || v;
+    }
+    function cableLabel(v){
+      return ({ basic:"Basic tidy", conceal:"Conceal (surface)" })[v] || v;
+    }
+    function complexityLabel(v){
+      return ({ basic:"Basic", standard:"Standard", advanced:"Advanced" })[v] || v;
+    }
+    function wallLabel(v){
+      return ({
+        drywall_studs: "Drywall (studs)",
+        drywall_no_studs: "Drywall (no studs/unsure)",
+        concrete_brick: "Concrete / Brick",
+        metal_studs: "Metal studs"
+      })[v] || v;
+    }
+
+    /******************************************************************
+     * Mount recommendations (examples)
+     ******************************************************************/
+    function getMountRecommendations(size, mountType){
+      // Generic recommendations (no brand names).
+      const vesaNote = "Confirm VESA pattern on TV back before purchase.";
+      const recs = [];
+
+      if (mountType === "fixed"){
+        recs.push("Fixed wall mount rated for your TV weight (low-profile).");
+      } else if (mountType === "tilt"){
+        recs.push("Tilting mount for glare reduction and higher installs.");
+      } else if (mountType === "full"){
+        recs.push("Full-motion articulating mount with adequate extension.");
+      } else if (mountType === "fireplace"){
+        recs.push("Specialty mount (often pull-down) for high fireplace placement.");
+      }
+
+      if (size === "small") recs.push("Ensure mount supports 23–55\" range and weight rating.");
+      if (size === "mid") recs.push("Ensure mount supports 37–70\" range and weight rating.");
+      if (size === "large") recs.push("Ensure mount supports 55–90\" range, heavy-duty arms if full-motion.");
+      if (size === "xl") recs.push("Heavy-duty mount required; full-motion may need reinforcement/backing.");
+
+      recs.push(vesaNote);
+      recs.push("If wall is masonry or metal studs, confirm mount includes suitable hardware (or add anchors).");
+      return recs;
+    }
+
+    function renderMountRecs(){
+      if (state.serviceKey !== "tv_mount") return;
+      const size = $("tvSize").value;
+      const mtype = $("mountType").value;
+      const recs = getMountRecommendations(size, mtype);
+      const ul = $("mountRecs");
+      ul.innerHTML = "";
+      recs.forEach(r => {
+        const li = document.createElement("li");
+        li.textContent = r;
+        ul.appendChild(li);
+      });
+    }
+
+    /******************************************************************
+     * Estimate calculation
+     ******************************************************************/
+    function calcEstimate(){
+      let total = 0;
+      let lines = [];
+
+      if (!state.serviceKey){
+        state.estimate = { total: 0, lines: [] };
+        renderSummary();
+        renderMini();
+        return;
+      }
+
+      // Service pricing
+      if (state.serviceKey === "tv_mount"){
+        const p = pricing.tv_mount;
+        const size = $("tvSize").value;
+        const mount = $("mountType").value;
+
+        const addons = {
+          conceal: $("addonConceal").checked,
+          soundbar: $("addonSoundbar").checked,
+          in_wall: $("addonInWall").checked,
+          dismount: $("addonDismount").checked
+        };
+
+        const mountProvided = $("mountProvided").checked;
+        const addMountSupply = !mountProvided && $("addMountSupply").checked;
+
+        total += p.base + p.size[size] + p.mount[mount];
+
+        lines.push({ label: "Base TV mount", value: money(p.base) });
+        lines.push({ label: `TV size: ${sizeLabel(size)}`, value: money(p.size[size]) });
+        lines.push({ label: `Mount type: ${mountLabel(mount)}`, value: money(p.mount[mount]) });
+
+        if (addons.conceal){ total += p.addons.conceal; lines.push({ label: "Cable conceal (surface)", value: money(p.addons.conceal) }); }
+        if (addons.soundbar){ total += p.addons.soundbar; lines.push({ label: "Soundbar add-on", value: money(p.addons.soundbar) }); }
+        if (addons.dismount){ total += p.addons.dismount; lines.push({ label: "Dismount old TV", value: money(p.addons.dismount) }); }
+        if (addons.in_wall){ lines.push({ label: "In-wall wiring", value: "Quote" }); }
+
+        // Mount supply
+        if (addMountSupply){
+          const supply = mountSupplyPricing[size] ?? 0;
+          total += supply;
+          lines.push({ label: "Mount supply (we provide)", value: money(supply) });
+        } else {
+          lines.push({ label: "Mount provided", value: mountProvided ? "Yes" : "No" });
+        }
+
+        state.selections = { size, mount, addons, mountProvided, addMountSupply };
+
+      } else if (state.serviceKey === "soundbar"){
+        const p = pricing.soundbar;
+        const type = $("soundbarType").value;
+        const cables = $("soundbarCables").value;
+
+        total += p.base + p.type[type] + p.cables[cables];
+
+        lines.push({ label: "Base soundbar install", value: money(p.base) });
+        lines.push({ label: `Type: ${typeLabel(type)}`, value: money(p.type[type]) });
+        lines.push({ label: `Cable tidy: ${cableLabel(cables)}`, value: money(p.cables[cables]) });
+
+        state.selections = { type, cables };
+
+      } else if (state.serviceKey === "cameras"){
+        const p = pricing.cameras;
+        const count = $("cameraCount").value;
+        const complexity = $("cameraComplexity").value;
+
+        total += p.base + p.count[count] + p.complexity[complexity];
+
+        lines.push({ label: "Base device install", value: money(p.base) });
+        lines.push({ label: `Devices: ${count}`, value: money(p.count[count]) });
+        lines.push({ label: `Complexity: ${complexityLabel(complexity)}`, value: money(p.complexity[complexity]) });
+
+        state.selections = { count, complexity };
+      }
+
+      // Wall adjustment applies to all services (you can scope it if you want)
+      const w = state.details.wallType;
+      const wallAdd = wallAdjust[w]?.add ?? 0;
+      if (wallAdd !== 0){
+        total += wallAdd;
+        lines.push({ label: `Wall type: ${wallLabel(w)}`, value: money(wallAdd) });
+      } else {
+        lines.push({ label: `Wall type: ${wallLabel(w)}`, value: money(0) });
+      }
+
+      state.estimate = { total, lines };
+      renderSummary();
+      renderMini();
+    }
+
+    function renderSummary(){
+      $("summaryTotal").textContent = money(state.estimate.total);
+      $("serviceBadge").textContent = state.serviceName ? state.serviceName : "No service";
+      $("summaryService").textContent = serviceLabel();
+
+      const box = $("summaryLines");
+      box.innerHTML = "";
+      if (!state.serviceKey){
+        box.innerHTML = `<div class="text-gray-500">Choose a service to see line items.</div>`;
+        return;
+      }
+      state.estimate.lines.forEach(l => {
+        const row = document.createElement("div");
+        row.className = "flex justify-between gap-4";
+        row.innerHTML = `<span class="text-gray-700">${escapeHtml(l.label)}</span><span class="font-semibold">${escapeHtml(l.value)}</span>`;
+        box.appendChild(row);
+      });
+    }
+
+    function renderMini(){
+      $("miniService").textContent = state.serviceName || "None";
+      $("miniTotal").textContent = money(state.estimate.total);
+
+      const detailBits = [];
+      if (state.serviceKey === "tv_mount" && state.selections.size){
+        detailBits.push(`${sizeLabel(state.selections.size)} • ${mountLabel(state.selections.mount)}`);
+      }
+      if (state.serviceKey === "soundbar" && state.selections.type){
+        detailBits.push(`${typeLabel(state.selections.type)} • ${cableLabel(state.selections.cables)}`);
+      }
+      if (state.serviceKey === "cameras" && state.selections.count){
+        detailBits.push(`${state.selections.count} device(s) • ${complexityLabel(state.selections.complexity)}`);
+      }
+      detailBits.push(`Wall: ${wallLabel(state.details.wallType)}`);
+
+      $("miniDetails").textContent = state.serviceKey ? detailBits.join(" | ") : "Start the wizard to configure options.";
+    }
+
+    function escapeHtml(s){
+      return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
+    }
+
+    /******************************************************************
+     * Step validation
+     ******************************************************************/
+    function validateStep1(){
+      const ok = !!state.serviceKey;
+      setStatus("step1Status", ok);
+      // Enable next button inside step 1
+      const step1 = document.querySelector('.step[data-step="1"]');
+      step1.querySelector(".next").disabled = !ok;
+      return ok;
+    }
+
+    function validateStep2(){
+      const ok = !!state.serviceKey; // options are always set via defaults; service is the key requirement
+      setStatus("step2Status", ok);
+      const step2 = document.querySelector('.step[data-step="2"]');
+      step2.querySelector(".next").disabled = !ok;
+      return ok;
+    }
+
+    function validateStep3(){
+      const ok = !!state.schedule.date && !!state.schedule.slot;
+      setStatus("step3Status", ok);
+      const step3 = document.querySelector('.step[data-step="3"]');
+      step3.querySelector(".next").disabled = !ok;
+      return ok;
+    }
+
+    function validateStep4(){
+      // Require wall type always (has default), require city OR photoLink OR notes? We'll require at least one detail field.
+      const anyDetail = (state.details.city.trim() || state.details.photoLink.trim() || state.details.notes.trim());
+      const ok = !!anyDetail; // forces customers to provide something useful
+      setStatus("step4Status", ok);
+      return ok;
+    }
+
+    /******************************************************************
+     * Availability rendering (simulated)
+     ******************************************************************/
+    function pad2(n){ return String(n).padStart(2,"0"); }
+
+    function toMinutes(hhmm){
+      const [h,m] = hhmm.split(":").map(Number);
+      return h*60 + m;
+    }
+
+    function fromMinutes(min){
+      const h = Math.floor(min/60);
+      const m = min % 60;
+      return `${pad2(h)}:${pad2(m)}`;
+    }
+
+    function formatSlot(hhmm){
+      // 24h -> 12h
+      const [h,m] = hhmm.split(":").map(Number);
+      const ampm = h >= 12 ? "PM" : "AM";
+      const h12 = ((h + 11) % 12) + 1;
+      return `${h12}:${pad2(m)} ${ampm}`;
+    }
+
+    function dateToYMD(d){
+      const y = d.getFullYear();
+      const m = pad2(d.getMonth()+1);
+      const day = pad2(d.getDate());
+      return `${y}-${m}-${day}`;
+    }
+
+    function getDow(ymd){
+      const [y,m,d] = ymd.split("-").map(Number);
+      return new Date(y, m-1, d).getDay();
+    }
+
+    function getSlotsForDate(ymd){
+      if (!ymd) return [];
+      if (availabilityConfig.blackouts.has(ymd)) return [];
+
+      const dow = getDow(ymd);
+      const hours = availabilityConfig.hoursByDow[dow];
+      if (!hours) return [];
+
+      const start = toMinutes(hours.start);
+      const end = toMinutes(hours.end);
+      const step = availabilityConfig.slotMinutes;
+
+      const slots = [];
+      for (let t = start; t + step <= end; t += step){
+        slots.push(fromMinutes(t));
+      }
+
+      // Simulate some slots being taken (deterministic by date hash)
+      const taken = new Set();
+      let hash = 0;
+      for (const ch of ymd) hash = (hash*31 + ch.charCodeAt(0)) % 997;
+      // mark up to 2 taken slots
+      if (slots.length > 3) taken.add(slots[hash % slots.length]);
+      if (slots.length > 6) taken.add(slots[(hash*7) % slots.length]);
+
+      return slots.map(s => ({ time: s, available: !taken.has(s) }));
+    }
+
+    function renderSlots(){
+      const ymd = state.schedule.date;
+      const wrap = $("slotsWrap");
+      wrap.innerHTML = "";
+
+      if (!ymd){
+        $("slotHint").textContent = "Choose a date to load slots.";
+        return;
+      }
+
+      const slots = getSlotsForDate(ymd);
+      if (slots.length === 0){
+        $("slotHint").textContent = "No slots available for this date (or blackout). Choose another date.";
+        return;
+      }
+
+      $("slotHint").textContent = "Select one slot to continue.";
+      slots.forEach(s => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "border rounded-md px-3 py-2 text-sm font-semibold hover:bg-gray-100 transition";
+        btn.textContent = formatSlot(s.time);
+
+        if (!s.available){
+          btn.className = "border rounded-md px-3 py-2 text-sm font-semibold bg-gray-50 text-gray-400 cursor-not-allowed";
+          btn.disabled = true;
+        }
+
+        if (state.schedule.slot === s.time){
+          btn.className = "border rounded-md px-3 py-2 text-sm font-semibold bg-brand text-white border-brand";
+        }
+
+        btn.addEventListener("click", () => {
+          state.schedule.slot = s.time;
+          renderSlots();
+          validateStep3();
+          updateReview();
+        });
+
+        wrap.appendChild(btn);
+      });
+    }
+
+    /******************************************************************
+     * Review text compilation
+     ******************************************************************/
+    function updateReview(){
+      if (state.step !== 5) return;
+      $("reviewText").textContent = buildSummaryText();
+    }
+
+    function buildSummaryText(){
+      const now = new Date();
+      const stamp = now.toLocaleString();
+
+      const lines = [];
+      lines.push(`Service: ${state.serviceName || "—"}`);
+      lines.push(`Estimate: ${money(state.estimate.total)}`);
+      lines.push("");
+
+      // Options
+      if (state.serviceKey === "tv_mount"){
+        const s = state.selections;
+        lines.push("TV Mounting Options:");
+        lines.push(`- TV Size: ${sizeLabel(s.size)}`);
+        lines.push(`- Mount Type: ${mountLabel(s.mount)}`);
+        const addons = [];
+        if (s.addons?.conceal) addons.push("Cable conceal (surface)");
+        if (s.addons?.soundbar) addons.push("Soundbar add-on");
+        if (s.addons?.dismount) addons.push("Dismount old TV");
+        if (s.addons?.in_wall) addons.push("In-wall wiring (quote)");
+        lines.push(`- Add-ons: ${addons.length ? addons.join(", ") : "None"}`);
+        lines.push(`- Customer has mount: ${s.mountProvided ? "Yes" : "No"}`);
+        if (!s.mountProvided) lines.push(`- Add mount supply: ${s.addMountSupply ? "Yes" : "No"}`);
+        lines.push("");
+      }
+
+      if (state.serviceKey === "soundbar"){
+        const s = state.selections;
+        lines.push("Soundbar Options:");
+        lines.push(`- Type: ${typeLabel(s.type)}`);
+        lines.push(`- Cable tidy: ${cableLabel(s.cables)}`);
+        lines.push("");
+      }
+
+      if (state.serviceKey === "cameras"){
+        const s = state.selections;
+        lines.push("Cameras / Devices Options:");
+        lines.push(`- Devices: ${s.count}`);
+        lines.push(`- Complexity: ${complexityLabel(s.complexity)}`);
+        lines.push("");
+      }
+
+      // Schedule
+      lines.push("Schedule:");
+      lines.push(`- Date: ${state.schedule.date || "—"}`);
+      lines.push(`- Slot: ${state.schedule.slot ? formatSlot(state.schedule.slot) : "—"}`);
+      lines.push("");
+
+      // Details
+      lines.push("Details:");
+      lines.push(`- Wall type: ${wallLabel(state.details.wallType)}`);
+      lines.push(`- Area / city: ${state.details.city || "—"}`);
+      lines.push(`- Photos link: ${state.details.photoLink || "—"}`);
+      lines.push(`- Notes: ${state.details.notes ? state.details.notes.replace(/\n/g, " ") : "—"}`);
+      lines.push("");
+      lines.push(`Captured: ${stamp}`);
+
+      return lines.join("\n");
+    }
+
+    /******************************************************************
+     * Wiring: service selection + panel + mount provided behavior
+     ******************************************************************/
+    function selectService(key, name){
+      state.serviceKey = key;
+      state.serviceName = name;
+
+      hideAllPanels();
+      $("panel-" + key).classList.remove("hidden");
+      $("serviceBadge").textContent = name;
+      $("summaryService").textContent = name;
+
+      // Step 1 complete, Step 2 available
+      validateStep1();
+      validateStep2();
+
+      // If TV: render recs + mount toggle behavior
+      if (key === "tv_mount"){
+        renderMountRecs();
+        syncMountProvidedUI();
+      }
+
+      calcEstimate();
+    }
+
+    function syncMountProvidedUI(){
+      const hasMount = $("mountProvided").checked;
+      const wrap = $("mountSupplyWrap");
+      if (hasMount){
+        wrap.classList.add("hidden");
+        $("addMountSupply").checked = false;
+      } else {
+        wrap.classList.remove("hidden");
+      }
+    }
+
+    /******************************************************************
+     * Event handlers
+     ******************************************************************/
+    // Service cards
+    $$(".service-card").forEach(btn => {
+      btn.addEventListener("click", () => {
+        selectService(btn.dataset.key, btn.dataset.service);
+      });
+    });
+
+    // Next/Prev buttons
+    $$(".next").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const current = state.step;
+        if (current === 1 && !validateStep1()) return;
+        if (current === 2 && !validateStep2()) return;
+        if (current === 3 && !validateStep3()) return;
+        if (current === 4 && !validateStep4()) {
+          // still allow next, but indicate required
+          setStatus("step4Status", false);
+          return;
+        }
+        showStep(Math.min(5, current + 1));
+      });
+    });
+
+    $$(".prev").forEach(btn => {
+      btn.addEventListener("click", () => {
+        showStep(Math.max(1, state.step - 1));
+      });
+    });
+
+    // Reset
+    $("resetAll").addEventListener("click", resetAll);
+    $("restart").addEventListener("click", resetAll);
+
+    function resetAll(){
+      state.step = 1;
+      state.serviceKey = null;
+      state.serviceName = null;
+      state.selections = {};
+      state.schedule = { date: null, slot: null };
+      state.details = { wallType: "drywall_studs", city: "", photoLink: "", notes: "" };
+      state.estimate = { total: 0, lines: [] };
+
+      // reset UI inputs
+      $("tvSize").value = "small";
+      $("mountType").value = "fixed";
+      $("addonConceal").checked = false;
+      $("addonSoundbar").checked = false;
+      $("addonInWall").checked = false;
+      $("addonDismount").checked = false;
+
+      $("mountProvided").checked = true;
+      $("addMountSupply").checked = false;
+      $("mountSupplyWrap").classList.add("hidden");
+
+      $("soundbarType").value = "standalone";
+      $("soundbarCables").value = "basic";
+
+      $("cameraCount").value = "1";
+      $("cameraComplexity").value = "basic";
+
+      $("datePick").value = "";
+      state.schedule.date = null;
+      state.schedule.slot = null;
+      $("slotsWrap").innerHTML = "";
+      $("slotHint").textContent = "Choose a date to load slots.";
+
+      $("wallType").value = "drywall_studs";
+      $("city").value = "";
+      $("photoLink").value = "";
+      $("notes").value = "";
+
+      hideAllPanels();
+
+      setStatus("step1Status", false);
+      setStatus("step2Status", false);
+      setStatus("step3Status", false);
+      setStatus("step4Status", false);
+
+      // disable step1 next button
+      const step1 = document.querySelector('.step[data-step="1"]');
+      step1.querySelector(".next").disabled = true;
+
+      // disable step2 next button
+      const step2 = document.querySelector('.step[data-step="2"]');
+      step2.querySelector(".next").disabled = true;
+
+      // disable step3 next button
+      const step3 = document.querySelector('.step[data-step="3"]');
+      step3.querySelector(".next").disabled = true;
+
+      $("serviceBadge").textContent = "No service";
+      $("summaryService").textContent = "No service selected";
+      $("miniService").textContent = "None";
+      $("miniDetails").textContent = "Start the wizard to configure options.";
+
+      updateWallNote();
+      calcEstimate();
+      showStep(1);
+    }
+
+    // Option listeners to recalc estimate
+    const recalcIds = [
+      "tvSize","mountType","addonConceal","addonSoundbar","addonInWall","addonDismount",
+      "soundbarType","soundbarCables","cameraCount","cameraComplexity","wallType"
+    ];
+    recalcIds.forEach(id => {
+      const el = $(id);
+      if (!el) return;
+      el.addEventListener("change", () => {
+        if (id === "wallType"){
+          state.details.wallType = $("wallType").value;
+          updateWallNote();
+        }
+        if (state.serviceKey === "tv_mount" && (id === "tvSize" || id === "mountType")) renderMountRecs();
+        calcEstimate();
+        validateStep2();
+      });
+      el.addEventListener("input", () => {
+        if (id === "wallType"){
+          state.details.wallType = $("wallType").value;
+          updateWallNote();
+        }
+        calcEstimate();
+      });
+    });
+
+    // Mount provided toggle behavior
+    $("mountProvided").addEventListener("change", () => {
+      syncMountProvidedUI();
+      calcEstimate();
+      renderMountRecs();
+    });
+    $("addMountSupply").addEventListener("change", () => {
+      calcEstimate();
+    });
+
+    // Date picker -> load slots
+    $("datePick").addEventListener("change", () => {
+      const ymd = $("datePick").value || null;
+      state.schedule.date = ymd;
+      state.schedule.slot = null;
+      renderSlots();
+      validateStep3();
+    });
+
+    // Details fields
+    $("wallType").addEventListener("change", () => {
+      state.details.wallType = $("wallType").value;
+      updateWallNote();
+      calcEstimate();
+    });
+    $("city").addEventListener("input", () => {
+      state.details.city = $("city").value;
+    });
+    $("photoLink").addEventListener("input", () => {
+      state.details.photoLink = $("photoLink").value;
+    });
+    $("notes").addEventListener("input", () => {
+      state.details.notes = $("notes").value;
+    });
+
+    // Copy + download
+    $("copySummary").addEventListener("click", async () => {
+      const txt = buildSummaryText();
+      try {
+        await navigator.clipboard.writeText(txt);
+        alert("Summary copied to clipboard.");
+      } catch {
+        alert("Clipboard blocked by browser. You can manually copy from the box.");
+      }
+    });
+
+    $("downloadTxt").addEventListener("click", () => {
+      const txt = buildSummaryText();
+      const blob = new Blob([txt], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "booking-summary.txt";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    });
+
+    // Submit demo
+    $("submitForm").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const name = $("custName").value.trim();
+      const phone = $("custPhone").value.trim();
+      const email = $("custEmail").value.trim();
+
+      const txt = buildSummaryText();
+      const payload = { name, phone, email, summary: txt };
+
+      // Demo: just show confirmation. Replace with fetch() to your endpoint.
+      $("submitMsg").className = "text-sm text-green-700";
+      $("submitMsg").textContent = "Demo received. Connect to email/CRM for real submissions.";
+      console.log("SUBMISSION (demo):", payload);
+    });
+
+    /******************************************************************
+     * Initialize
+     ******************************************************************/
+    function init(){
+      // show step 1 only
+      showStep(1);
+      hideAllPanels();
+
+      // set min date to today
+      const today = new Date();
+      $("datePick").min = dateToYMD(today);
+
+      // default wall note
+      updateWallNote();
+
+      // statuses
+      setStatus("step1Status", false);
+      setStatus("step2Status", false);
+      setStatus("step3Status", false);
+      setStatus("step4Status", false);
+
+      // disable next buttons initially
+      const step1 = document.querySelector('.step[data-step="1"]');
+      step1.querySelector(".next").disabled = true;
+
+      const step2 = document.querySelector('.step[data-step="2"]');
+      step2.querySelector(".next").disabled = true;
+
+      const step3 = document.querySelector('.step[data-step="3"]');
+      step3.querySelector(".next").disabled = true;
+
+      // compute
+      calcEstimate();
+    }
+
+    init();
+  </script>
+</body>
+</html>

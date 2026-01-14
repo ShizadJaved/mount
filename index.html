@@ -4,7 +4,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Interactive Booking Wizard – as-tech</title>
-
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = { theme: { extend: { colors: { brand: "#2563EB" } } } }
@@ -12,7 +11,6 @@
 </head>
 
 <body class="bg-white text-gray-900">
-  <!-- Header -->
   <header class="sticky top-0 z-50 bg-white border-b">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -26,7 +24,6 @@
     </div>
   </header>
 
-  <!-- Hero -->
   <section class="bg-gray-50">
     <div class="max-w-7xl mx-auto px-6 py-12 md:py-16 grid md:grid-cols-2 gap-10 items-center">
       <div>
@@ -34,10 +31,10 @@
           Wizard • Live estimate • Cal.com embed
         </div>
         <h1 class="mt-4 text-4xl md:text-5xl font-extrabold leading-tight">
-          Let customers configure the job, then pick a real slot.
+          Configure the job, then pick a real slot.
         </h1>
         <p class="mt-4 text-lg text-gray-600">
-          You keep the custom options/quote flow. Cal.com handles availability + pending approval on your iPhone.
+          Only relevant questions are shown per service. Scheduling is handled by Cal.com with pending approval.
         </p>
         <div class="mt-7 flex gap-3">
           <a href="#wizard" class="bg-brand text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700">Start</a>
@@ -64,26 +61,23 @@
           </div>
         </div>
         <div class="mt-4 text-xs text-gray-500">
-          Placeholder pricing. Adjust the <span class="font-mono">pricing</span> object in the script.
+          Placeholder pricing. Adjust in the script.
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Wizard -->
   <section id="wizard" class="py-12 md:py-16">
     <div class="max-w-7xl mx-auto px-6">
       <div class="flex flex-col lg:flex-row gap-8 items-start">
 
-        <!-- Left -->
         <div class="lg:w-2/3">
           <div class="flex items-center justify-between gap-4">
             <h2 class="text-3xl font-extrabold">Booking Wizard</h2>
             <button id="resetAll" class="border px-4 py-2 rounded-md font-semibold hover:bg-gray-100 text-sm">Reset</button>
           </div>
-          <p class="mt-2 text-gray-600">Step 1–3. Step 3 is the embedded Cal.com scheduler.</p>
+          <p class="mt-2 text-gray-600">Step 1–3. Step 3 embeds your Cal.com scheduler.</p>
 
-          <!-- Progress -->
           <div class="mt-6 bg-gray-100 rounded-lg p-3">
             <div class="flex items-center justify-between text-xs text-gray-600">
               <span id="progressLabel">Step 1 of 3</span>
@@ -95,6 +89,7 @@
           </div>
 
           <div class="mt-6 space-y-6">
+
             <!-- STEP 1 -->
             <div class="step border rounded-xl p-6" data-step="1">
               <div class="flex items-start justify-between gap-4">
@@ -110,14 +105,14 @@
                 <button class="service-card text-left border rounded-xl p-5 hover:shadow-md transition"
                         data-service="TV Mounting" data-key="tv_mount">
                   <div class="font-bold text-lg">TV Mounting</div>
-                  <div class="text-gray-600 mt-1 text-sm">Size, mount type, add-ons.</div>
+                  <div class="text-gray-600 mt-1 text-sm">Size, mount type, wall type, add-ons.</div>
                   <div class="mt-3 text-sm font-semibold text-gray-800">From $129</div>
                 </button>
 
                 <button class="service-card text-left border rounded-xl p-5 hover:shadow-md transition"
                         data-service="Furniture Assembly" data-key="furniture">
                   <div class="font-bold text-lg">Furniture Assembly</div>
-                  <div class="text-gray-600 mt-1 text-sm">Count, complexity, wall anchoring.</div>
+                  <div class="text-gray-600 mt-1 text-sm">Count, complexity, optional anchoring.</div>
                   <div class="mt-3 text-sm font-semibold text-gray-800">From $89</div>
                 </button>
 
@@ -131,7 +126,7 @@
                 <button class="service-card text-left border rounded-xl p-5 hover:shadow-md transition"
                         data-service="Cameras / Devices" data-key="cameras">
                   <div class="font-bold text-lg">Cameras / Devices</div>
-                  <div class="text-gray-600 mt-1 text-sm">Count + complexity.</div>
+                  <div class="text-gray-600 mt-1 text-sm">Count + complexity + surface type.</div>
                   <div class="mt-3 text-sm font-semibold text-gray-800">From $99</div>
                 </button>
               </div>
@@ -148,39 +143,16 @@
               <div class="flex items-start justify-between gap-4">
                 <div>
                   <div class="text-xs font-semibold text-gray-500">STEP 2</div>
-                  <div class="text-xl font-bold">Configure options</div>
-                  <div class="text-gray-600 mt-1">Adjust selections. Estimate updates live.</div>
+                  <div class="text-xl font-bold">Job details</div>
+                  <div class="text-gray-600 mt-1">Only relevant questions are shown for the selected service.</div>
                 </div>
                 <span id="step2Status" class="text-xs bg-gray-100 border px-2 py-1 rounded-full text-gray-600">Required</span>
               </div>
 
-              <!-- Shared details -->
-              <div class="mt-5 grid md:grid-cols-2 gap-4">
-                <label class="text-sm">
-                  <div class="font-medium text-gray-700 mb-1">Wall type</div>
-                  <select id="wallType" class="w-full border rounded-md p-3">
-                    <option value="drywall_studs">Drywall (studs)</option>
-                    <option value="drywall_no_studs">Drywall (no studs / unsure)</option>
-                    <option value="concrete_brick">Concrete / Brick</option>
-                    <option value="metal_studs">Metal studs</option>
-                  </select>
-                </label>
-                <label class="text-sm">
-                  <div class="font-medium text-gray-700 mb-1">City / area</div>
-                  <input id="city" class="w-full border rounded-md p-3" placeholder="Vancouver / Surrey / Langley" />
-                </label>
-              </div>
-
-              <div class="mt-3 border rounded-lg p-4 bg-gray-50">
-                <div class="text-sm font-semibold">Wall note</div>
-                <div id="wallNote" class="text-sm text-gray-700 mt-1">
-                  Standard installs typically assume drywall with studs.
-                </div>
-              </div>
-
-              <!-- TV panel -->
+              <!-- TV Mounting -->
               <div id="panel-tv_mount" class="mt-6 hidden">
-                <div class="font-semibold">TV Mounting Options</div>
+                <div class="font-semibold">TV Mounting</div>
+
                 <div class="mt-4 grid sm:grid-cols-2 gap-4">
                   <label class="text-sm">
                     <div class="font-medium text-gray-700 mb-1">TV Size</div>
@@ -191,6 +163,7 @@
                       <option value="xl">86"+</option>
                     </select>
                   </label>
+
                   <label class="text-sm">
                     <div class="font-medium text-gray-700 mb-1">Mount Type</div>
                     <select id="mountType" class="w-full border rounded-md p-3">
@@ -200,6 +173,22 @@
                       <option value="fireplace">Above Fireplace / Specialty</option>
                     </select>
                   </label>
+                </div>
+
+                <div class="mt-4">
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">Wall type</div>
+                    <select id="tvWallType" class="w-full border rounded-md p-3">
+                      <option value="drywall_studs">Drywall (studs)</option>
+                      <option value="drywall_no_studs">Drywall (no studs / unsure)</option>
+                      <option value="concrete_brick">Concrete / Brick</option>
+                      <option value="metal_studs">Metal studs</option>
+                    </select>
+                  </label>
+                  <div class="mt-3 border rounded-lg p-4 bg-gray-50">
+                    <div class="text-sm font-semibold">Wall note</div>
+                    <div id="tvWallNote" class="text-sm text-gray-700 mt-1"></div>
+                  </div>
                 </div>
 
                 <div class="mt-4 grid sm:grid-cols-2 gap-3">
@@ -235,11 +224,28 @@
                     </div>
                   </label>
                 </div>
+
+                <div class="mt-6 grid md:grid-cols-2 gap-4">
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">City / area</div>
+                    <input id="tvCity" class="w-full border rounded-md p-3" placeholder="Vancouver / Surrey / Langley" />
+                  </label>
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">Photos link (recommended)</div>
+                    <input id="tvPhotoLink" class="w-full border rounded-md p-3" placeholder="Google Drive / iCloud / Dropbox link" />
+                  </label>
+                </div>
+
+                <label class="text-sm block mt-4">
+                  <div class="font-medium text-gray-700 mb-1">Notes</div>
+                  <input id="tvNotes" class="w-full border rounded-md p-3" placeholder="Fireplace height, power outlet location, existing holes, etc." />
+                </label>
               </div>
 
-              <!-- Furniture panel -->
+              <!-- Furniture Assembly -->
               <div id="panel-furniture" class="mt-6 hidden">
-                <div class="font-semibold">Furniture Assembly Options</div>
+                <div class="font-semibold">Furniture Assembly</div>
+
                 <div class="mt-4 grid sm:grid-cols-2 gap-4">
                   <label class="text-sm">
                     <div class="font-medium text-gray-700 mb-1">Item type</div>
@@ -250,6 +256,7 @@
                       <option value="complex">Complex (pax-style, wall systems)</option>
                     </select>
                   </label>
+
                   <label class="text-sm">
                     <div class="font-medium text-gray-700 mb-1">How many items?</div>
                     <select id="furnCount" class="w-full border rounded-md p-3">
@@ -266,7 +273,7 @@
                   <label class="flex items-center gap-3 border rounded-md p-3 cursor-pointer">
                     <input id="furnAnchor" type="checkbox" class="h-4 w-4" />
                     <div>
-                      <div class="font-medium text-sm">Wall anchoring</div>
+                      <div class="font-medium text-sm">Wall anchoring (optional)</div>
                       <div class="text-xs text-gray-600">Anti-tip / safety anchor install</div>
                     </div>
                   </label>
@@ -280,15 +287,44 @@
                   </label>
                 </div>
 
+                <!-- Wall type only if anchoring -->
+                <div id="furnWallWrap" class="mt-4 hidden">
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">Wall type (for anchoring)</div>
+                    <select id="furnWallType" class="w-full border rounded-md p-3">
+                      <option value="drywall_studs">Drywall (studs)</option>
+                      <option value="drywall_no_studs">Drywall (no studs / unsure)</option>
+                      <option value="concrete_brick">Concrete / Brick</option>
+                      <option value="metal_studs">Metal studs</option>
+                    </select>
+                  </label>
+                  <div class="mt-3 border rounded-lg p-4 bg-gray-50">
+                    <div class="text-sm font-semibold">Wall note</div>
+                    <div id="furnWallNote" class="text-sm text-gray-700 mt-1"></div>
+                  </div>
+                </div>
+
+                <div class="mt-6 grid md:grid-cols-2 gap-4">
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">City / area</div>
+                    <input id="furnCity" class="w-full border rounded-md p-3" placeholder="Vancouver / Surrey / Langley" />
+                  </label>
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">Photos link (recommended)</div>
+                    <input id="furnPhotoLink" class="w-full border rounded-md p-3" placeholder="Product page + room photos if possible" />
+                  </label>
+                </div>
+
                 <label class="text-sm block mt-4">
-                  <div class="font-medium text-gray-700 mb-1">Assembly notes (optional)</div>
-                  <input id="furnNotes" class="w-full border rounded-md p-3" placeholder="Brand/model link, room, stairs, parking, etc." />
+                  <div class="font-medium text-gray-700 mb-1">Notes</div>
+                  <input id="furnNotes" class="w-full border rounded-md p-3" placeholder="Brand/model link, stairs/elevator, parking, room, etc." />
                 </label>
               </div>
 
-              <!-- Soundbar panel -->
+              <!-- Soundbar -->
               <div id="panel-soundbar" class="mt-6 hidden">
-                <div class="font-semibold">Soundbar Options</div>
+                <div class="font-semibold">Soundbar</div>
+
                 <div class="mt-4 grid sm:grid-cols-2 gap-4">
                   <label class="text-sm">
                     <div class="font-medium text-gray-700 mb-1">Installation Type</div>
@@ -305,11 +341,28 @@
                     </select>
                   </label>
                 </div>
+
+                <div class="mt-6 grid md:grid-cols-2 gap-4">
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">City / area</div>
+                    <input id="soundCity" class="w-full border rounded-md p-3" placeholder="Vancouver / Surrey / Langley" />
+                  </label>
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">Photos link (optional)</div>
+                    <input id="soundPhotoLink" class="w-full border rounded-md p-3" placeholder="Wall/TV area + soundbar model" />
+                  </label>
+                </div>
+
+                <label class="text-sm block mt-4">
+                  <div class="font-medium text-gray-700 mb-1">Notes</div>
+                  <input id="soundNotes" class="w-full border rounded-md p-3" placeholder="TV model, mounting preference, cable routing, etc." />
+                </label>
               </div>
 
-              <!-- Cameras panel -->
+              <!-- Cameras -->
               <div id="panel-cameras" class="mt-6 hidden">
-                <div class="font-semibold">Cameras / Devices Options</div>
+                <div class="font-semibold">Cameras / Devices</div>
+
                 <div class="mt-4 grid sm:grid-cols-2 gap-4">
                   <label class="text-sm">
                     <div class="font-medium text-gray-700 mb-1">Number of devices</div>
@@ -329,17 +382,33 @@
                     </select>
                   </label>
                 </div>
-              </div>
 
-              <!-- Photos + notes -->
-              <div class="mt-6 grid md:grid-cols-2 gap-4">
-                <label class="text-sm">
-                  <div class="font-medium text-gray-700 mb-1">Photos link (recommended)</div>
-                  <input id="photoLink" class="w-full border rounded-md p-3" placeholder="Google Drive / iCloud / Dropbox link" />
-                </label>
-                <label class="text-sm">
-                  <div class="font-medium text-gray-700 mb-1">General notes</div>
-                  <input id="notes" class="w-full border rounded-md p-3" placeholder="Fireplace height, studs, access, parking, etc." />
+                <div class="mt-4">
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">Surface type (optional)</div>
+                    <select id="camSurface" class="w-full border rounded-md p-3">
+                      <option value="standard">Standard (wood/drywall)</option>
+                      <option value="brick">Brick / concrete</option>
+                      <option value="siding">Exterior siding</option>
+                      <option value="unknown">Not sure</option>
+                    </select>
+                  </label>
+                </div>
+
+                <div class="mt-6 grid md:grid-cols-2 gap-4">
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">City / area</div>
+                    <input id="camCity" class="w-full border rounded-md p-3" placeholder="Vancouver / Surrey / Langley" />
+                  </label>
+                  <label class="text-sm">
+                    <div class="font-medium text-gray-700 mb-1">Photos link (recommended)</div>
+                    <input id="camPhotoLink" class="w-full border rounded-md p-3" placeholder="Install locations + power/coverage" />
+                  </label>
+                </div>
+
+                <label class="text-sm block mt-4">
+                  <div class="font-medium text-gray-700 mb-1">Notes</div>
+                  <input id="camNotes" class="w-full border rounded-md p-3" placeholder="Device models, areas to cover, Wi-Fi info, access, etc." />
                 </label>
               </div>
 
@@ -358,7 +427,7 @@
                   <div class="text-xs font-semibold text-gray-500">STEP 3</div>
                   <div class="text-xl font-bold">Pick a slot (Cal.com)</div>
                   <div class="text-gray-600 mt-1">
-                    This embed will show only available times. Your wizard summary is prefilled into booking notes.
+                    Scheduler shows only available times. Your wizard summary is prefilled into Cal.com booking notes.
                   </div>
                 </div>
                 <span class="text-xs bg-green-50 border border-green-200 px-2 py-1 rounded-full text-green-700">Live scheduler</span>
@@ -373,24 +442,12 @@
                 </button>
               </div>
 
-              <div class="mt-4 text-xs text-gray-500">
-                Make sure your Cal.com event type has “Requires confirmation” enabled for pending approval.
-              </div>
-
               <div class="mt-6 border rounded-xl overflow-hidden">
-                <iframe
-                  id="calFrame"
-                  title="Cal.com Scheduler"
-                  style="width:100%; height: 820px; border:0;"
-                  loading="lazy"
-                ></iframe>
+                <iframe id="calFrame" title="Cal.com Scheduler" style="width:100%; height: 820px; border:0;" loading="lazy"></iframe>
               </div>
 
               <div class="mt-6 flex flex-col sm:flex-row gap-3">
                 <button class="prev border px-5 py-3 rounded-md font-semibold hover:bg-gray-100">Back</button>
-                <a href="#wizard" class="border px-5 py-3 rounded-md font-semibold hover:bg-gray-100 text-center">
-                  Done (customer schedules above)
-                </a>
               </div>
             </div>
 
@@ -425,21 +482,14 @@
     </div>
   </section>
 
-  <!-- FAQ -->
   <section id="faq" class="bg-gray-50 py-12 md:py-16">
     <div class="max-w-7xl mx-auto px-6">
       <h2 class="text-3xl font-extrabold text-center">FAQ</h2>
       <div class="max-w-3xl mx-auto mt-8 grid gap-3">
         <details class="bg-white border rounded-xl p-5">
-          <summary class="font-semibold cursor-pointer">How does “pending approval” work?</summary>
+          <summary class="font-semibold cursor-pointer">How does pending approval work?</summary>
           <div class="mt-2 text-gray-600 text-sm">
-            Enable “Requires confirmation” in your Cal.com event type settings. Requests come in pending; you approve from your phone/app.
-          </div>
-        </details>
-        <details class="bg-white border rounded-xl p-5">
-          <summary class="font-semibold cursor-pointer">Will Cal.com only show available slots?</summary>
-          <div class="mt-2 text-gray-600 text-sm">
-            Yes—Cal.com availability + calendar conflicts determine what customers can pick.
+            Enable “Requires confirmation” in Cal.com event settings. Requests arrive pending; you approve from your phone/app.
           </div>
         </details>
       </div>
@@ -461,10 +511,10 @@
      * Cal.com embed config
      ***********************/
     const CAL_USERNAME = "as-tech";
-    const CAL_EVENT_SLUG = "YOUR_EVENT_SLUG"; // <-- set this (e.g., "tv-mounting" or "install-request")
+    const CAL_EVENT_SLUG = "YOUR_EVENT_SLUG"; // set this to the slug after cal.com/as-tech/...
 
     /******************************************************************
-     * Pricing (placeholder) — update to your model
+     * Pricing (placeholder)
      ******************************************************************/
     const pricing = {
       tv_mount: {
@@ -487,11 +537,11 @@
       cameras: {
         base: 99,
         count: { "1": 0, "2": 60, "3": 120, "4": 170 },
-        complexity: { basic: 0, standard: 40, advanced: 90 }
+        complexity: { basic: 0, standard: 40, advanced: 90 },
+        surface: { standard: 0, brick: 30, siding: 20, unknown: 0 }
       }
     };
 
-    // Wall adjustments
     const wallAdjust = {
       drywall_studs: { add: 0, note: "Standard install assumptions. Stud anchoring where applicable." },
       drywall_no_studs: { add: 30, note: "May require anchors/toggle bolts and extra time to locate framing." },
@@ -499,28 +549,16 @@
       metal_studs: { add: 60, note: "Metal stud anchors/backing may be needed. Extra time typically required." }
     };
 
-    /******************************************************************
-     * State
-     ******************************************************************/
-    const state = {
-      step: 1,
-      serviceKey: null,
-      serviceName: null,
-      selections: {},
-      details: { wallType: "drywall_studs", city: "", photoLink: "", notes: "" },
-      estimate: { total: 0, lines: [] }
-    };
-
-    /******************************************************************
-     * Helpers
-     ******************************************************************/
     const $ = (id) => document.getElementById(id);
     const $$ = (sel) => Array.from(document.querySelectorAll(sel));
     const money = (n) => "$" + Number(n).toFixed(0);
 
-    function escapeHtml(s){
-      return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;");
-    }
+    const state = {
+      step: 1,
+      serviceKey: null,
+      serviceName: null,
+      estimate: { total: 0, lines: [] }
+    };
 
     function setProgress(){
       const pct = Math.round(((state.step - 1) / 2) * 100);
@@ -531,10 +569,7 @@
 
     function showStep(step){
       state.step = step;
-      $$(".step").forEach(el => {
-        const s = Number(el.dataset.step);
-        el.style.display = (s === step) ? "block" : "none";
-      });
+      $$(".step").forEach(el => el.style.display = (Number(el.dataset.step) === step) ? "block" : "none");
       setProgress();
     }
 
@@ -551,7 +586,7 @@
     }
 
     function hideAllPanels(){
-      ["tv_mount","soundbar","cameras","furniture"].forEach(k => $("panel-" + k).classList.add("hidden"));
+      ["tv_mount","furniture","soundbar","cameras"].forEach(k => $("panel-" + k).classList.add("hidden"));
     }
 
     function wallLabel(v){
@@ -562,37 +597,39 @@
         metal_studs: "Metal studs"
       })[v] || v;
     }
-
-    function updateWallNote(){
-      const w = state.details.wallType;
-      $("wallNote").textContent = wallAdjust[w].note;
+    function updateWallNoteTV(){
+      const w = $("tvWallType").value;
+      $("tvWallNote").textContent = wallAdjust[w].note;
+    }
+    function updateWallNoteFurn(){
+      const w = $("furnWallType").value;
+      $("furnWallNote").textContent = wallAdjust[w].note;
     }
 
-    /******************************************************************
-     * Labels
-     ******************************************************************/
-    function sizeLabel(v){
-      return ({ small:'Up to 43"', mid:'44"–65"', large:'66"–85"', xl:'86"+' })[v] || v;
-    }
-    function mountLabel(v){
-      return ({ fixed:"Fixed", tilt:"Tilt", full:"Full Motion", fireplace:"Above Fireplace / Specialty" })[v] || v;
-    }
-    function typeLabel(v){
-      return ({ standalone:"Standalone", with_tv:"With TV mount" })[v] || v;
-    }
-    function cableLabel(v){
-      return ({ basic:"Basic tidy", conceal:"Conceal (surface)" })[v] || v;
-    }
-    function complexityLabel(v){
-      return ({ basic:"Basic", standard:"Standard", advanced:"Advanced" })[v] || v;
-    }
-    function furnTypeLabel(v){
-      return ({ small:"Small", medium:"Medium", large:"Large", complex:"Complex" })[v] || v;
+    function validateStep1(){
+      const ok = !!state.serviceKey;
+      setStatus("step1Status", ok);
+      document.querySelector('.step[data-step="1"] .next').disabled = !ok;
+      return ok;
     }
 
-    /******************************************************************
-     * Estimate calculation
-     ******************************************************************/
+    function validateStep2(){
+      const ok = !!state.serviceKey;
+      setStatus("step2Status", ok);
+      document.querySelector('.step[data-step="2"] .next').disabled = !ok;
+      return ok;
+    }
+
+    function selectService(key, name){
+      state.serviceKey = key;
+      state.serviceName = name;
+      hideAllPanels();
+      $("panel-" + key).classList.remove("hidden");
+      validateStep1();
+      validateStep2();
+      calcEstimate();
+    }
+
     function calcEstimate(){
       if (!state.serviceKey){
         state.estimate = { total: 0, lines: [] };
@@ -608,25 +645,21 @@
         const p = pricing.tv_mount;
         const size = $("tvSize").value;
         const mount = $("mountType").value;
-
-        const addons = {
-          conceal: $("addonConceal").checked,
-          soundbar: $("addonSoundbar").checked,
-          in_wall: $("addonInWall").checked,
-          dismount: $("addonDismount").checked
-        };
+        const wall = $("tvWallType").value;
 
         total += p.base + p.size[size] + p.mount[mount];
         lines.push({ label: "Base TV mount", value: money(p.base) });
-        lines.push({ label: `TV size: ${sizeLabel(size)}`, value: money(p.size[size]) });
-        lines.push({ label: `Mount type: ${mountLabel(mount)}`, value: money(p.mount[mount]) });
+        lines.push({ label: `TV size`, value: money(p.size[size]) });
+        lines.push({ label: `Mount type`, value: money(p.mount[mount]) });
 
-        if (addons.conceal){ total += p.addons.conceal; lines.push({ label: "Cable conceal (surface)", value: money(p.addons.conceal) }); }
-        if (addons.soundbar){ total += p.addons.soundbar; lines.push({ label: "Soundbar add-on", value: money(p.addons.soundbar) }); }
-        if (addons.dismount){ total += p.addons.dismount; lines.push({ label: "Dismount old TV", value: money(p.addons.dismount) }); }
-        if (addons.in_wall){ lines.push({ label: "In-wall wiring", value: "Quote" }); }
+        if ($("addonConceal").checked){ total += p.addons.conceal; lines.push({ label: "Cable conceal (surface)", value: money(p.addons.conceal) }); }
+        if ($("addonSoundbar").checked){ total += p.addons.soundbar; lines.push({ label: "Soundbar add-on", value: money(p.addons.soundbar) }); }
+        if ($("addonDismount").checked){ total += p.addons.dismount; lines.push({ label: "Dismount old TV", value: money(p.addons.dismount) }); }
+        if ($("addonInWall").checked){ lines.push({ label: "In-wall wiring", value: "Quote" }); }
 
-        state.selections = { size, mount, addons };
+        const wallAdd = wallAdjust[wall]?.add ?? 0;
+        total += wallAdd;
+        lines.push({ label: `Wall type`, value: money(wallAdd) });
       }
 
       if (state.serviceKey === "furniture"){
@@ -635,50 +668,47 @@
         const count = $("furnCount").value;
         const anchor = $("furnAnchor").checked;
         const cleanup = $("furnDisposal").checked;
-        const furnNotes = $("furnNotes").value || "";
 
         total += p.base + p.type[type] + p.count[count];
         lines.push({ label: "Base assembly", value: money(p.base) });
-        lines.push({ label: `Type: ${furnTypeLabel(type)}`, value: money(p.type[type]) });
-        lines.push({ label: `Items: ${count === "5" ? "5+" : count}`, value: money(p.count[count]) });
+        lines.push({ label: "Item type", value: money(p.type[type]) });
+        lines.push({ label: "Item count", value: money(p.count[count]) });
 
         if (anchor){ total += p.addons.anchor; lines.push({ label: "Wall anchoring", value: money(p.addons.anchor) }); }
         if (cleanup){ total += p.addons.cleanup; lines.push({ label: "Box cleanup", value: money(p.addons.cleanup) }); }
 
-        state.selections = { type, count, anchor, cleanup, furnNotes };
+        if (anchor){
+          const wall = $("furnWallType").value;
+          const wallAdd = wallAdjust[wall]?.add ?? 0;
+          total += wallAdd;
+          lines.push({ label: "Wall type (anchoring)", value: money(wallAdd) });
+        } else {
+          lines.push({ label: "Wall anchoring", value: "No" });
+        }
       }
 
       if (state.serviceKey === "soundbar"){
         const p = pricing.soundbar;
         const type = $("soundbarType").value;
         const cables = $("soundbarCables").value;
-
         total += p.base + p.type[type] + p.cables[cables];
         lines.push({ label: "Base soundbar install", value: money(p.base) });
-        lines.push({ label: `Type: ${typeLabel(type)}`, value: money(p.type[type]) });
-        lines.push({ label: `Cable tidy: ${cableLabel(cables)}`, value: money(p.cables[cables]) });
-
-        state.selections = { type, cables };
+        lines.push({ label: "Type", value: money(p.type[type]) });
+        lines.push({ label: "Cable tidy", value: money(p.cables[cables]) });
       }
 
       if (state.serviceKey === "cameras"){
         const p = pricing.cameras;
         const count = $("cameraCount").value;
         const complexity = $("cameraComplexity").value;
+        const surface = $("camSurface").value;
 
-        total += p.base + p.count[count] + p.complexity[complexity];
+        total += p.base + p.count[count] + p.complexity[complexity] + p.surface[surface];
         lines.push({ label: "Base device install", value: money(p.base) });
-        lines.push({ label: `Devices: ${count}`, value: money(p.count[count]) });
-        lines.push({ label: `Complexity: ${complexityLabel(complexity)}`, value: money(p.complexity[complexity]) });
-
-        state.selections = { count, complexity };
+        lines.push({ label: "Devices", value: money(p.count[count]) });
+        lines.push({ label: "Complexity", value: money(p.complexity[complexity]) });
+        lines.push({ label: "Surface type", value: money(p.surface[surface]) });
       }
-
-      // Wall adjustment
-      const w = state.details.wallType;
-      const wallAdd = wallAdjust[w]?.add ?? 0;
-      total += wallAdd;
-      lines.push({ label: `Wall type: ${wallLabel(w)}`, value: money(wallAdd) });
 
       state.estimate = { total, lines };
       renderSummary();
@@ -687,9 +717,8 @@
 
     function renderSummary(){
       $("summaryTotal").textContent = money(state.estimate.total);
-      $("serviceBadge").textContent = state.serviceName ? state.serviceName : "No service";
-      $("summaryService").textContent = state.serviceName ? state.serviceName : "No service selected";
-
+      $("serviceBadge").textContent = state.serviceName || "No service";
+      $("summaryService").textContent = state.serviceName || "No service selected";
       const box = $("summaryLines");
       box.innerHTML = "";
       if (!state.serviceKey){
@@ -699,7 +728,7 @@
       state.estimate.lines.forEach(l => {
         const row = document.createElement("div");
         row.className = "flex justify-between gap-4";
-        row.innerHTML = `<span class="text-gray-700">${escapeHtml(l.label)}</span><span class="font-semibold">${escapeHtml(l.value)}</span>`;
+        row.innerHTML = `<span class="text-gray-700">${l.label}</span><span class="font-semibold">${l.value}</span>`;
         box.appendChild(row);
       });
     }
@@ -707,74 +736,108 @@
     function renderMini(){
       $("miniService").textContent = state.serviceName || "None";
       $("miniTotal").textContent = money(state.estimate.total);
-
-      const detailBits = [];
-      if (state.serviceKey === "tv_mount" && state.selections.size){
-        detailBits.push(`${sizeLabel(state.selections.size)} • ${mountLabel(state.selections.mount)}`);
-      }
-      if (state.serviceKey === "furniture" && state.selections.type){
-        const c = state.selections.count === "5" ? "5+" : state.selections.count;
-        detailBits.push(`${furnTypeLabel(state.selections.type)} • ${c} item(s)`);
-      }
-      if (state.serviceKey === "soundbar" && state.selections.type){
-        detailBits.push(`${typeLabel(state.selections.type)} • ${cableLabel(state.selections.cables)}`);
-      }
-      if (state.serviceKey === "cameras" && state.selections.count){
-        detailBits.push(`${state.selections.count} device(s) • ${complexityLabel(state.selections.complexity)}`);
-      }
-      detailBits.push(`Wall: ${wallLabel(state.details.wallType)}`);
-
-      $("miniDetails").textContent = state.serviceKey ? detailBits.join(" | ") : "Start the wizard to configure options.";
+      $("miniDetails").textContent = state.serviceKey ? "Configured. Proceed to scheduling." : "Start the wizard to configure options.";
     }
 
-    /******************************************************************
-     * Summary text -> pass into Cal.com as notes
-     ******************************************************************/
+    function getServiceSpecificDetails(){
+      // Collect only the relevant inputs based on selected service
+      if (state.serviceKey === "tv_mount"){
+        return {
+          city: $("tvCity").value || "",
+          photos: $("tvPhotoLink").value || "",
+          notes: $("tvNotes").value || "",
+          wallType: $("tvWallType").value,
+          tvSize: $("tvSize").value,
+          mountType: $("mountType").value,
+          addons: {
+            conceal: $("addonConceal").checked,
+            soundbar: $("addonSoundbar").checked,
+            inwall: $("addonInWall").checked,
+            dismount: $("addonDismount").checked
+          }
+        };
+      }
+
+      if (state.serviceKey === "furniture"){
+        return {
+          city: $("furnCity").value || "",
+          photos: $("furnPhotoLink").value || "",
+          notes: $("furnNotes").value || "",
+          type: $("furnType").value,
+          count: $("furnCount").value,
+          anchor: $("furnAnchor").checked,
+          cleanup: $("furnDisposal").checked,
+          wallType: $("furnAnchor").checked ? $("furnWallType").value : ""
+        };
+      }
+
+      if (state.serviceKey === "soundbar"){
+        return {
+          city: $("soundCity").value || "",
+          photos: $("soundPhotoLink").value || "",
+          notes: $("soundNotes").value || "",
+          type: $("soundbarType").value,
+          cables: $("soundbarCables").value
+        };
+      }
+
+      if (state.serviceKey === "cameras"){
+        return {
+          city: $("camCity").value || "",
+          photos: $("camPhotoLink").value || "",
+          notes: $("camNotes").value || "",
+          count: $("cameraCount").value,
+          complexity: $("cameraComplexity").value,
+          surface: $("camSurface").value
+        };
+      }
+
+      return {};
+    }
+
     function buildSummaryText(){
+      const d = getServiceSpecificDetails();
       const lines = [];
       lines.push(`Service: ${state.serviceName || "—"}`);
       lines.push(`Estimate: ${money(state.estimate.total)}`);
-      lines.push(`Wall type: ${wallLabel(state.details.wallType)}`);
-      if (state.details.city) lines.push(`City/Area: ${state.details.city}`);
-      if (state.details.photoLink) lines.push(`Photos: ${state.details.photoLink}`);
-      if (state.details.notes) lines.push(`Notes: ${state.details.notes}`);
+      if (d.city) lines.push(`City/Area: ${d.city}`);
+      if (d.photos) lines.push(`Photos: ${d.photos}`);
+      if (d.notes) lines.push(`Notes: ${d.notes}`);
       lines.push("");
 
       if (state.serviceKey === "tv_mount"){
-        const s = state.selections;
         lines.push("TV Mounting:");
-        lines.push(`- TV Size: ${sizeLabel(s.size)}`);
-        lines.push(`- Mount Type: ${mountLabel(s.mount)}`);
+        lines.push(`- TV size: ${$("tvSize").selectedOptions[0].textContent}`);
+        lines.push(`- Mount type: ${$("mountType").selectedOptions[0].textContent}`);
+        lines.push(`- Wall type: ${wallLabel(d.wallType)}`);
         const addons = [];
-        if (s.addons?.conceal) addons.push("Cable conceal (surface)");
-        if (s.addons?.soundbar) addons.push("Soundbar add-on");
-        if (s.addons?.dismount) addons.push("Dismount old TV");
-        if (s.addons?.in_wall) addons.push("In-wall wiring (quote)");
+        if (d.addons.conceal) addons.push("Cable conceal (surface)");
+        if (d.addons.soundbar) addons.push("Soundbar add-on");
+        if (d.addons.dismount) addons.push("Dismount old TV");
+        if (d.addons.inwall) addons.push("In-wall wiring (quote)");
         lines.push(`- Add-ons: ${addons.length ? addons.join(", ") : "None"}`);
       }
 
       if (state.serviceKey === "furniture"){
-        const s = state.selections;
         lines.push("Furniture Assembly:");
-        lines.push(`- Type: ${furnTypeLabel(s.type)}`);
-        lines.push(`- Items: ${s.count === "5" ? "5+" : s.count}`);
-        lines.push(`- Wall anchoring: ${s.anchor ? "Yes" : "No"}`);
-        lines.push(`- Box cleanup: ${s.cleanup ? "Yes" : "No"}`);
-        if (s.furnNotes) lines.push(`- Assembly notes: ${s.furnNotes}`);
+        lines.push(`- Item type: ${$("furnType").selectedOptions[0].textContent}`);
+        lines.push(`- Count: ${$("furnCount").selectedOptions[0].textContent}`);
+        lines.push(`- Wall anchoring: ${d.anchor ? "Yes" : "No"}`);
+        lines.push(`- Box cleanup: ${d.cleanup ? "Yes" : "No"}`);
+        if (d.anchor && d.wallType) lines.push(`- Wall type (anchoring): ${wallLabel(d.wallType)}`);
       }
 
       if (state.serviceKey === "soundbar"){
-        const s = state.selections;
         lines.push("Soundbar:");
-        lines.push(`- Type: ${typeLabel(s.type)}`);
-        lines.push(`- Cable tidy: ${cableLabel(s.cables)}`);
+        lines.push(`- Type: ${$("soundbarType").selectedOptions[0].textContent}`);
+        lines.push(`- Cable tidy: ${$("soundbarCables").selectedOptions[0].textContent}`);
       }
 
       if (state.serviceKey === "cameras"){
-        const s = state.selections;
         lines.push("Cameras/Devices:");
-        lines.push(`- Devices: ${s.count}`);
-        lines.push(`- Complexity: ${complexityLabel(s.complexity)}`);
+        lines.push(`- Devices: ${$("cameraCount").selectedOptions[0].textContent}`);
+        lines.push(`- Complexity: ${$("cameraComplexity").selectedOptions[0].textContent}`);
+        lines.push(`- Surface: ${$("camSurface").selectedOptions[0].textContent}`);
       }
 
       lines.push("");
@@ -784,7 +847,7 @@
 
     function loadCalEmbed(){
       if (!CAL_EVENT_SLUG || CAL_EVENT_SLUG === "YOUR_EVENT_SLUG"){
-        alert("Set CAL_EVENT_SLUG in the script first (the part after cal.com/as-tech/...).");
+        alert("Set CAL_EVENT_SLUG in the script (the part after cal.com/as-tech/...).");
         return;
       }
       const notes = encodeURIComponent(buildSummaryText());
@@ -792,43 +855,8 @@
       $("calFrame").src = url;
     }
 
-    /******************************************************************
-     * Validation
-     ******************************************************************/
-    function validateStep1(){
-      const ok = !!state.serviceKey;
-      setStatus("step1Status", ok);
-      document.querySelector('.step[data-step="1"] .next').disabled = !ok;
-      return ok;
-    }
-
-    function validateStep2(){
-      const ok = !!state.serviceKey; // defaults exist once service selected
-      setStatus("step2Status", ok);
-      document.querySelector('.step[data-step="2"] .next').disabled = !ok;
-      return ok;
-    }
-
-    /******************************************************************
-     * Service selection
-     ******************************************************************/
-    function selectService(key, name){
-      state.serviceKey = key;
-      state.serviceName = name;
-      hideAllPanels();
-      $("panel-" + key).classList.remove("hidden");
-      validateStep1();
-      validateStep2();
-      calcEstimate();
-    }
-
-    /******************************************************************
-     * Wiring
-     ******************************************************************/
     // Service cards
-    $$(".service-card").forEach(btn => {
-      btn.addEventListener("click", () => selectService(btn.dataset.key, btn.dataset.service));
-    });
+    $$(".service-card").forEach(btn => btn.addEventListener("click", () => selectService(btn.dataset.key, btn.dataset.service)));
 
     // Step nav
     $$(".next").forEach(btn => btn.addEventListener("click", () => {
@@ -836,43 +864,39 @@
       if (state.step === 2 && !validateStep2()) return;
       showStep(state.step + 1);
     }));
-
     $$(".prev").forEach(btn => btn.addEventListener("click", () => showStep(state.step - 1)));
 
-    // Recalc listeners
+    // Furniture anchoring toggles wall type section
+    $("furnAnchor").addEventListener("change", () => {
+      $("furnWallWrap").classList.toggle("hidden", !$("furnAnchor").checked);
+      if ($("furnAnchor").checked) updateWallNoteFurn();
+      calcEstimate();
+    });
+
+    // Wall note update listeners
+    $("tvWallType").addEventListener("change", () => { updateWallNoteTV(); calcEstimate(); });
+    $("furnWallType").addEventListener("change", () => { updateWallNoteFurn(); calcEstimate(); });
+
+    // Recalc listeners for all service-specific inputs
     const recalcIds = [
-      "wallType","city","photoLink","notes",
-      "tvSize","mountType","addonConceal","addonSoundbar","addonInWall","addonDismount",
-      "furnType","furnCount","furnAnchor","furnDisposal","furnNotes",
-      "soundbarType","soundbarCables",
-      "cameraCount","cameraComplexity"
+      "tvSize","mountType","addonConceal","addonSoundbar","addonInWall","addonDismount","tvCity","tvPhotoLink","tvNotes",
+      "furnType","furnCount","furnDisposal","furnCity","furnPhotoLink","furnNotes",
+      "soundbarType","soundbarCables","soundCity","soundPhotoLink","soundNotes",
+      "cameraCount","cameraComplexity","camSurface","camCity","camPhotoLink","camNotes"
     ];
     recalcIds.forEach(id => {
       const el = $(id);
       if (!el) return;
-      const handler = () => {
-        // sync shared details
-        state.details.wallType = $("wallType").value;
-        state.details.city = $("city").value || "";
-        state.details.photoLink = $("photoLink").value || "";
-        state.details.notes = $("notes").value || "";
-        updateWallNote();
-        calcEstimate();
-      };
-      el.addEventListener("change", handler);
-      el.addEventListener("input", handler);
+      el.addEventListener("change", calcEstimate);
+      el.addEventListener("input", calcEstimate);
     });
 
-    // Cal.com buttons
-    $("loadCal").addEventListener("click", () => loadCalEmbed());
+    // Cal buttons
+    $("loadCal").addEventListener("click", loadCalEmbed);
     $("copySummary").addEventListener("click", async () => {
       const txt = buildSummaryText();
-      try {
-        await navigator.clipboard.writeText(txt);
-        alert("Wizard summary copied.");
-      } catch {
-        alert("Clipboard blocked. Copy manually from the summary panel if needed.");
-      }
+      try { await navigator.clipboard.writeText(txt); alert("Wizard summary copied."); }
+      catch { alert("Clipboard blocked. Copy manually if needed."); }
     });
 
     // Reset
@@ -880,43 +904,22 @@
       state.step = 1;
       state.serviceKey = null;
       state.serviceName = null;
-      state.selections = {};
-      state.details = { wallType: "drywall_studs", city: "", photoLink: "", notes: "" };
       state.estimate = { total: 0, lines: [] };
 
-      // reset inputs
-      $("wallType").value = "drywall_studs";
-      $("city").value = "";
-      $("photoLink").value = "";
-      $("notes").value = "";
-
-      $("tvSize").value = "small";
-      $("mountType").value = "fixed";
-      $("addonConceal").checked = false;
-      $("addonSoundbar").checked = false;
-      $("addonInWall").checked = false;
-      $("addonDismount").checked = false;
-
-      $("furnType").value = "small";
-      $("furnCount").value = "1";
-      $("furnAnchor").checked = false;
-      $("furnDisposal").checked = false;
-      $("furnNotes").value = "";
-
-      $("soundbarType").value = "standalone";
-      $("soundbarCables").value = "basic";
-
-      $("cameraCount").value = "1";
-      $("cameraComplexity").value = "basic";
-
-      $("calFrame").src = "";
       hideAllPanels();
+      $("calFrame").src = "";
+
       setStatus("step1Status", false);
       setStatus("step2Status", false);
+
       document.querySelector('.step[data-step="1"] .next').disabled = true;
       document.querySelector('.step[data-step="2"] .next').disabled = true;
 
-      updateWallNote();
+      $("furnWallWrap").classList.add("hidden");
+
+      updateWallNoteTV();
+      updateWallNoteFurn();
+
       calcEstimate();
       showStep(1);
     }
@@ -926,11 +929,15 @@
     function init(){
       showStep(1);
       hideAllPanels();
-      updateWallNote();
-      setStatus("step1Status", false);
-      setStatus("step2Status", false);
       document.querySelector('.step[data-step="1"] .next').disabled = true;
       document.querySelector('.step[data-step="2"] .next').disabled = true;
+
+      updateWallNoteTV();
+      updateWallNoteFurn();
+
+      setStatus("step1Status", false);
+      setStatus("step2Status", false);
+
       calcEstimate();
     }
     init();

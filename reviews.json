@@ -1,0 +1,31 @@
+{
+  "reviews": [
+    {
+      "id": "r-001",
+      "name": "Adeel",
+      "initials": "A",
+      "rating": 5,
+      "date": "2026-01-10",
+      "serviceTags": ["TV Mounting", "Soundbar"],
+      "text": "Clean install, on time, and the setup looks perfect. Highly recommend AsTech."
+    },
+    {
+      "id": "r-002",
+      "name": "Sarah",
+      "initials": "S",
+      "rating": 5,
+      "date": "2025-12-28",
+      "serviceTags": ["Furniture Assembly"],
+      "text": "Fast assembly and everything feels solid. Very professional and tidy."
+    },
+    {
+      "id": "r-003",
+      "name": "Usman",
+      "initials": "U",
+      "rating": 5,
+      "date": "2025-12-14",
+      "serviceTags": ["Cameras / Devices"],
+      "text": "Installed cameras perfectly and helped with placement and setup. Great service."
+    }
+  ]
+}

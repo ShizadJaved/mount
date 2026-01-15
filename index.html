@@ -22,6 +22,95 @@
   }
   </script>
 
+   <style><section id="reviews" class="py-12 md:py-16">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+      <div>
+        <div class="text-sm font-semibold text-gray-500">Customer Reviews</div>
+        <h2 class="text-3xl md:text-4xl font-extrabold text-brand mt-2">5-Star Reviews</h2>
+        <p class="text-gray-600 mt-2 max-w-2xl">
+          Curated highlights from our Google reviews. Filter by service type.
+        </p>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button id="revPrev" class="border px-4 py-2 rounded-md font-semibold hover:bg-gray-100" type="button" aria-label="Previous reviews">
+          ←
+        </button>
+        <button id="revNext" class="border px-4 py-2 rounded-md font-semibold hover:bg-gray-100" type="button" aria-label="Next reviews">
+          →
+        </button>
+        <!-- Optional: Link to your Google reviews page -->
+        <a id="revGoogleLink" href="#" target="_blank" rel="noopener"
+           class="bg-brand text-white px-4 py-2 rounded-md font-semibold hover:brightness-110">
+          Read on Google
+        </a>
+      </div>
+    </div>
+
+    <!-- Tag filters -->
+    <div class="mt-6 flex flex-wrap gap-2" id="reviewTags">
+      <!-- Buttons injected by JS -->
+    </div>
+
+    <!-- Carousel -->
+    <div class="mt-6 relative">
+      <div id="reviewRail"
+           class="flex gap-4 overflow-x-auto pb-4 scroll-smooth"
+           style="
+              scroll-snap-type:x mandatory;
+              -webkit-overflow-scrolling: touch;
+           ">
+        <!-- Cards injected by JS -->
+      </div>
+
+      <div id="reviewEmpty" class="hidden border rounded-xl p-6 bg-gray-50 text-gray-700">
+        No 5-star reviews found for this filter yet.
+      </div>
+    </div>
+
+    <div class="mt-2 text-xs text-gray-500">
+      Tip: swipe on mobile to scroll reviews.
+    </div>
+  </div>
+</section>
+
+<style>
+  /* Review cards */
+  .rev-card{
+    scroll-snap-align: start;
+    min-width: 320px;
+    max-width: 420px;
+  }
+  @media (min-width: 768px){
+    .rev-card{ min-width: 380px; }
+  }
+  .rev-rail::-webkit-scrollbar{ height: 10px; }
+  .rev-rail::-webkit-scrollbar-thumb{ background: rgba(0,0,0,.18); border-radius: 999px; }
+  .tag-btn{
+    border: 1px solid rgba(0,0,0,.14);
+    padding: 8px 12px;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 13px;
+    background: white;
+  }
+  .tag-btn:hover{ background: rgba(43,127,219,.06); border-color: rgba(43,127,219,.35); }
+  .tag-btn.active{
+    background: rgba(43,127,219,.10);
+    border-color: rgba(43,127,219,.55);
+    color: #2B7FDB;
+  }
+</style>
+
+    /* AsTech light theme accents (readability-first) */
+    .service-card { border-color: rgba(17,24,39,.12); }
+    .service-card:hover { border-color: rgba(43,127,219,.45); }
+    .panel-card { background: #FFFFFF; border: 1px solid rgba(17,24,39,.10); box-shadow: 0 10px 30px rgba(17,24,39,.06); border-radius: 16px; }
+    .muted { color: rgba(17,24,39,.65); }
+  </style>
+
+  
   <style><section id="reviews" class="py-12 md:py-16">
   <div class="max-w-7xl mx-auto px-6">
     <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
@@ -1203,5 +1292,6 @@
 
 </body>
 </html>
+
 
 

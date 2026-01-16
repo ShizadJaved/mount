@@ -28,6 +28,29 @@
     .service-card:hover { border-color: rgba(43,127,219,.45); }
     .panel-card { background: #FFFFFF; border: 1px solid rgba(17,24,39,.10); box-shadow: 0 10px 30px rgba(17,24,39,.06); border-radius: 16px; }
     .muted { color: rgba(17,24,39,.65); }
+
+    /* Reviews carousel */
+    .rev-card { scroll-snap-align: start; min-width: 320px; max-width: 420px; }
+    @media (min-width: 768px){ .rev-card { min-width: 380px; } }
+
+    .rev-rail { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+    .rev-rail::-webkit-scrollbar { height: 10px; }
+    .rev-rail::-webkit-scrollbar-thumb { background: rgba(0,0,0,.18); border-radius: 999px; }
+
+    .tag-btn{
+      border: 1px solid rgba(17,24,39,.14);
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 13px;
+      background: #fff;
+    }
+    .tag-btn:hover{ background: rgba(43,127,219,.06); border-color: rgba(43,127,219,.35); }
+    .tag-btn.active{
+      background: rgba(43,127,219,.10);
+      border-color: rgba(43,127,219,.55);
+      color: #2B7FDB; /* brand */
+    }
   </style>
 
 </head>
@@ -504,6 +527,47 @@
     </div>
   </section>
 
+  <!-- REVIEWS (auto-hides if reviews.json missing or no 5-star reviews) -->
+  <section id="reviews" class="py-12 md:py-16">
+    <div class="max-w-7xl mx-auto px-6">
+      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+        <div>
+          <div class="text-sm font-semibold text-gray-500">Customer Reviews</div>
+          <h2 class="text-3xl md:text-4xl font-extrabold text-brand mt-2">5-Star Reviews</h2>
+          <p class="text-gray-600 mt-2 max-w-2xl">
+            Curated highlights from our Google reviews. Filter by service type.
+          </p>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button id="revPrev" class="border px-4 py-2 rounded-md font-semibold hover:bg-gray-100" type="button" aria-label="Previous reviews">
+            ←
+          </button>
+          <button id="revNext" class="border px-4 py-2 rounded-md font-semibold hover:bg-gray-100" type="button" aria-label="Next reviews">
+            →
+          </button>
+
+          <a id="revGoogleLink" href="#" target="_blank" rel="noopener"
+             class="bg-brand text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700">
+            Read on Google
+          </a>
+        </div>
+      </div>
+
+      <div class="mt-6 flex flex-wrap gap-2" id="reviewTags"></div>
+
+      <div class="mt-6 relative">
+        <div id="reviewRail" class="rev-rail flex gap-4 overflow-x-auto pb-4 scroll-smooth"></div>
+
+        <div id="reviewEmpty" class="hidden border rounded-xl p-6 bg-gray-50 text-gray-700">
+          No 5-star reviews found for this filter yet.
+        </div>
+      </div>
+
+      <div class="mt-2 text-xs text-gray-500">Tip: swipe on mobile to scroll reviews.</div>
+    </div>
+  </section>
+
   <section id="faq" class="bg-gray-50 py-12 md:py-16">
     <div class="max-w-7xl mx-auto px-6">
       <h2 class="text-3xl font-extrabold text-center">FAQ</h2>
@@ -523,6 +587,7 @@
       <div>© 2026 as-tech</div>
       <div class="flex gap-6 text-sm">
         <a href="#wizard" class="hover:text-white">Wizard</a>
+        <a href="#reviews" class="hover:text-white">Reviews</a>
         <a href="#faq" class="hover:text-white">FAQ</a>
       </div>
     </div>
@@ -762,7 +827,6 @@
     }
 
     function getServiceSpecificDetails(){
-      // Collect only the relevant inputs based on selected service
       if (state.serviceKey === "tv_mount"){
         return {
           city: $("tvCity").value || "",
@@ -877,10 +941,8 @@
       $("calFrame").src = url;
     }
 
-    // Service cards
     $$(".service-card").forEach(btn => btn.addEventListener("click", () => selectService(btn.dataset.key, btn.dataset.service)));
 
-    // Step nav
     $$(".next").forEach(btn => btn.addEventListener("click", () => {
       if (state.step === 1 && !validateStep1()) return;
       if (state.step === 2 && !validateStep2()) return;
@@ -888,18 +950,15 @@
     }));
     $$(".prev").forEach(btn => btn.addEventListener("click", () => showStep(state.step - 1)));
 
-    // Furniture anchoring toggles wall type section
     $("furnAnchor").addEventListener("change", () => {
       $("furnWallWrap").classList.toggle("hidden", !$("furnAnchor").checked);
       if ($("furnAnchor").checked) updateWallNoteFurn();
       calcEstimate();
     });
 
-    // Wall note update listeners
     $("tvWallType").addEventListener("change", () => { updateWallNoteTV(); calcEstimate(); });
     $("furnWallType").addEventListener("change", () => { updateWallNoteFurn(); calcEstimate(); });
 
-    // Recalc listeners for all service-specific inputs
     const recalcIds = [
       "tvSize","mountType","addonConceal","addonSoundbar","addonInWall","addonDismount","tvCity","tvPhotoLink","tvNotes",
       "furnType","furnCount","furnDisposal","furnCity","furnPhotoLink","furnNotes",
@@ -913,7 +972,6 @@
       el.addEventListener("input", calcEstimate);
     });
 
-    // Cal buttons
     $("loadCal").addEventListener("click", loadCalEmbed);
     $("copySummary").addEventListener("click", async () => {
       const txt = buildSummaryText();
@@ -921,7 +979,6 @@
       catch { alert("Clipboard blocked. Copy manually if needed."); }
     });
 
-    // Reset
     function resetAll(){
       state.step = 1;
       state.serviceKey = null;
@@ -947,7 +1004,6 @@
     }
     $("resetAll").addEventListener("click", resetAll);
 
-    // Init
     function init(){
       showStep(1);
       hideAllPanels();
@@ -963,6 +1019,172 @@
       calcEstimate();
     }
     init();
+  </script>
+
+  <!-- Reviews JS (separate; safe; does NOT touch wizard) -->
+  <script>
+    /**
+     * Reviews carousel (curated, static-site friendly)
+     * - Loads ./reviews.json
+     * - Renders ONLY rating === 5
+     * - Adds tag filters (All + serviceTags)
+     * - Auto-hides entire section if missing/empty
+     */
+
+    // OPTIONAL: Paste your Google reviews URL here. If "#", the button is hidden.
+    const GOOGLE_REVIEWS_URL = "#";
+
+    (function initReviewsCarousel(){
+      const section = document.getElementById("reviews");
+      const rail = document.getElementById("reviewRail");
+      const empty = document.getElementById("reviewEmpty");
+      const tagsWrap = document.getElementById("reviewTags");
+      const prevBtn = document.getElementById("revPrev");
+      const nextBtn = document.getElementById("revNext");
+      const googleLink = document.getElementById("revGoogleLink");
+
+      function hideSection(){
+        if (section) section.classList.add("hidden");
+      }
+
+      if (!section || !rail || !tagsWrap) return hideSection();
+
+      if (googleLink && GOOGLE_REVIEWS_URL && GOOGLE_REVIEWS_URL !== "#") {
+        googleLink.href = GOOGLE_REVIEWS_URL;
+      } else if (googleLink) {
+        googleLink.classList.add("hidden");
+      }
+
+      let allReviews = [];
+      let activeTag = "All";
+
+      function fmtDate(iso){
+        try{
+          const d = new Date(iso);
+          if (isNaN(d.getTime())) return "";
+          return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
+        } catch { return ""; }
+      }
+
+      function escapeHtml(str){
+        return String(str)
+          .replaceAll("&","&amp;")
+          .replaceAll("<","&lt;")
+          .replaceAll(">","&gt;")
+          .replaceAll("\"","&quot;")
+          .replaceAll("'","&#039;");
+      }
+
+      function computeTags(reviews){
+        const set = new Set();
+        reviews.forEach(r => (r.serviceTags || []).forEach(t => set.add(t)));
+        return ["All", ...Array.from(set).sort()];
+      }
+
+      function renderTags(tags){
+        tagsWrap.innerHTML = "";
+        tags.forEach(t => {
+          const b = document.createElement("button");
+          b.type = "button";
+          b.className = "tag-btn" + (t === activeTag ? " active" : "");
+          b.textContent = t;
+          b.addEventListener("click", () => {
+            activeTag = t;
+            renderTags(tags);
+            renderCards();
+            rail.scrollTo({ left: 0, behavior: "smooth" });
+          });
+          tagsWrap.appendChild(b);
+        });
+      }
+
+      function getFiltered(){
+        const fiveStar = allReviews.filter(r => Number(r.rating) === 5);
+        if (activeTag === "All") return fiveStar;
+        return fiveStar.filter(r => (r.serviceTags || []).includes(activeTag));
+      }
+
+      function renderCards(){
+        const filtered = getFiltered();
+
+        rail.innerHTML = "";
+
+        if (!filtered.length){
+          // If there are 5-star reviews overall but none for this tag, show empty state.
+          empty.classList.remove("hidden");
+          return;
+        }
+        empty.classList.add("hidden");
+
+        filtered
+          .slice()
+          .sort((a,b) => (new Date(b.date) - new Date(a.date)))
+          .forEach(r => {
+            const initials = (r.initials || (r.name || "?").slice(0,1)).toUpperCase();
+            const tags = (r.serviceTags || [])
+              .map(t => `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-gray-100 text-gray-700">${escapeHtml(t)}</span>`)
+              .join(" ");
+
+            const card = document.createElement("article");
+            card.className = "rev-card border rounded-xl p-5 bg-white shadow-sm";
+            card.innerHTML = `
+              <div class="flex items-start justify-between gap-4">
+                <div class="flex items-center gap-3">
+                  <div class="h-10 w-10 rounded-full bg-blue-50 text-brand font-extrabold flex items-center justify-center">
+                    ${escapeHtml(initials)}
+                  </div>
+                  <div class="leading-tight">
+                    <div class="font-bold text-gray-900">${escapeHtml(r.name || "Customer")}</div>
+                    <div class="text-xs text-gray-500">${fmtDate(r.date)}</div>
+                  </div>
+                </div>
+                <div class="text-sm"><span class="text-gold" aria-label="5 out of 5 stars">★★★★★</span></div>
+              </div>
+
+              <p class="mt-4 text-gray-700 leading-relaxed">
+                ${escapeHtml(r.text || "")}
+              </p>
+
+              <div class="mt-4 flex flex-wrap gap-2">
+                ${tags}
+              </div>
+            `;
+            rail.appendChild(card);
+          });
+      }
+
+      function scrollByCards(dir){
+        const firstCard = rail.querySelector(".rev-card");
+        const cardWidth = firstCard ? firstCard.getBoundingClientRect().width : 360;
+        const gap = 16; // tailwind gap-4
+        rail.scrollBy({ left: dir * (cardWidth + gap), behavior: "smooth" });
+      }
+
+      if (prevBtn) prevBtn.addEventListener("click", () => scrollByCards(-1));
+      if (nextBtn) nextBtn.addEventListener("click", () => scrollByCards(1));
+
+      fetch("reviews.json", { cache: "no-store" })
+        .then(r => {
+          if (!r.ok) throw new Error("reviews.json not found");
+          return r.json();
+        })
+        .then(data => {
+          allReviews = Array.isArray(data.reviews) ? data.reviews : [];
+          const fiveStar = allReviews.filter(x => Number(x.rating) === 5);
+
+          // If there are no 5-star reviews at all, hide the entire section
+          if (!fiveStar.length) return hideSection();
+
+          const tags = computeTags(fiveStar);
+          renderTags(tags);
+          renderCards();
+        })
+        .catch(() => {
+          // Missing reviews.json or invalid JSON -> hide section so page stays clean
+          hideSection();
+        });
+
+    })();
   </script>
 </body>
 </html>

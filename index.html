@@ -23,11 +23,21 @@
   </script>
 
   <style>
-    /* AsTech light theme accents (readability-first) */
-    .service-card { border-color: rgba(17,24,39,.12); }
-    .service-card:hover { border-color: rgba(43,127,219,.45); }
-    .panel-card { background: #FFFFFF; border: 1px solid rgba(17,24,39,.10); box-shadow: 0 10px 30px rgba(17,24,39,.06); border-radius: 16px; }
-    .muted { color: rgba(17,24,39,.65); }
+    /* Dark / metallic theme (readability-first) */
+    :root{
+      --panel: rgba(255,255,255,.04);
+      --panel2: rgba(255,255,255,.06);
+      --border: rgba(212,214,215,.14);
+      --border2: rgba(212,214,215,.22);
+      --text: rgba(212,214,215,.92);
+      --muted: rgba(212,214,215,.70);
+    }
+
+    /* Cards */
+    .service-card { border-color: var(--border); background: var(--panel); }
+    .service-card:hover { border-color: rgba(43,127,219,.55); background: var(--panel2); }
+    .panel-card { background: rgba(255,255,255,.03); border: 1px solid var(--border); box-shadow: 0 18px 40px rgba(0,0,0,.35); border-radius: 16px; }
+    .muted { color: var(--muted); }
 
     /* Reviews carousel */
     .rev-card { scroll-snap-align: start; min-width: 320px; max-width: 420px; }
@@ -35,100 +45,119 @@
 
     .rev-rail { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
     .rev-rail::-webkit-scrollbar { height: 10px; }
-    .rev-rail::-webkit-scrollbar-thumb { background: rgba(0,0,0,.18); border-radius: 999px; }
+    .rev-rail::-webkit-scrollbar-thumb { background: rgba(255,255,255,.14); border-radius: 999px; }
 
     .tag-btn{
-      border: 1px solid rgba(17,24,39,.14);
+      border: 1px solid var(--border);
       padding: 8px 12px;
       border-radius: 999px;
       font-weight: 700;
       font-size: 13px;
-      background: #fff;
+      background: rgba(255,255,255,.02);
+      color: rgba(212,214,215,.90);
     }
-    .tag-btn:hover{ background: rgba(43,127,219,.06); border-color: rgba(43,127,219,.35); }
+    .tag-btn:hover{ background: rgba(43,127,219,.10); border-color: rgba(43,127,219,.40); }
     .tag-btn.active{
-      background: rgba(43,127,219,.10);
-      border-color: rgba(43,127,219,.55);
+      background: rgba(43,127,219,.18);
+      border-color: rgba(43,127,219,.65);
       color: #2B7FDB; /* brand */
     }
+
+    /* Subtle hero texture */
+    .bg-noise{
+      background:
+        radial-gradient(1200px 600px at 50% 0%, rgba(43,127,219,.18), transparent 60%),
+        radial-gradient(900px 500px at 10% 20%, rgba(247,191,34,.08), transparent 55%),
+        radial-gradient(900px 500px at 90% 30%, rgba(212,214,215,.10), transparent 55%),
+        linear-gradient(180deg, #010103 0%, #1C1B20 40%, #010103 100%);
+    }
+
+    /* Make default form controls match dark theme without changing structure */
+    select, input{
+      background: rgba(255,255,255,.04) !important;
+      border-color: rgba(212,214,215,.18) !important;
+      color: rgba(212,214,215,.92) !important;
+    }
+    select option{ color: #111827; } /* dropdown list */
   </style>
 
 </head>
 
-<body class="bg-white text-gray-900">
-  <header class="sticky top-0 z-50 bg-white/90 border-b backdrop-blur">
+<body class="bg-ink text-silver">
+  <header class="sticky top-0 z-50 bg-charcoal/85 border-b border-white/10 backdrop-blur">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img src="assets/mountmytv-logo.png" alt="mountmytv.ca by AsTech" class="h-10 w-auto" />
+        <!-- NEW LOGO -->
+        <img src="assets/mountmytv-logo.png" alt="mountmytv.ca" class="h-10 w-auto" />
         <div class="leading-tight">
-          <div class="font-extrabold tracking-wide text-gray-900">mountmytv.ca by AsTech</div>
-          <div class="text-xs text-gray-500">TV Mounting • Furniture Assembly • Soundbar • Cameras / Devices</div>
+          <div class="font-extrabold tracking-wide text-silver">mountmytv.ca</div>
+          <div class="text-xs text-silver/70">by AsTech • TV Mounting • Furniture Assembly • Soundbar • Cameras / Devices</div>
         </div>
       </div>
       <a href="#wizard" class="hidden md:inline-flex bg-brand text-white px-4 py-2 rounded-md font-semibold hover:brightness-110">Start</a>
     </div>
   </header>
 
-  <section class="bg-gray-50">
+  <section class="bg-noise">
     <div class="max-w-7xl mx-auto px-6 py-12 md:py-16 grid md:grid-cols-2 gap-10 items-center">
       <div>
-        <div class="inline-flex items-center gap-2 text-xs bg-white border rounded-full px-3 py-1 text-gray-600">
+        <div class="inline-flex items-center gap-2 text-xs bg-white/5 border border-white/10 rounded-full px-3 py-1 text-silver/80">
           Wizard • Live estimate • Cal.com embed
         </div>
-        <h1 class="mt-4 text-4xl md:text-5xl font-extrabold leading-tight">
+        <h1 class="mt-4 text-4xl md:text-5xl font-extrabold leading-tight text-silver">
           Configure the job, then pick a real slot.
         </h1>
-        <p class="mt-4 text-lg text-gray-600">
+        <p class="mt-4 text-lg text-silver/75">
           Only relevant questions are shown per service. Scheduling is handled by Cal.com with pending approval.
         </p>
         <div class="mt-7 flex gap-3">
-          <a href="#wizard" class="bg-brand text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700">Start</a>
-          <a href="#faq" class="border px-6 py-3 rounded-md font-semibold hover:bg-gray-100">FAQ</a>
+          <a href="#wizard" class="bg-brand text-white px-6 py-3 rounded-md font-semibold hover:brightness-110">Start</a>
+          <a href="#faq" class="border border-white/15 px-6 py-3 rounded-md font-semibold hover:bg-white/5 text-silver">FAQ</a>
         </div>
       </div>
 
-      <div class="bg-white border rounded-xl p-6 shadow-sm">
+      <div class="panel-card p-6">
         <div class="flex items-center justify-between">
-          <div class="text-sm font-semibold">Live estimate</div>
-          <span class="text-xs bg-blue-50 text-brand border border-blue-100 px-2 py-1 rounded-full">Updates instantly</span>
+          <div class="text-sm font-semibold text-silver">Live estimate</div>
+          <span class="text-xs bg-white/5 text-brand border border-blue-500/20 px-2 py-1 rounded-full">Updates instantly</span>
         </div>
-        <div class="mt-4 border rounded-lg p-4 bg-gray-50">
+        <div class="mt-4 border border-white/10 rounded-lg p-4 bg-white/5">
           <div class="flex items-start justify-between gap-4">
             <div>
-              <div class="text-xs text-gray-500">Current selection</div>
-              <div id="miniService" class="font-semibold">None</div>
-              <div id="miniDetails" class="text-sm text-gray-600 mt-1">Start the wizard to configure options.</div>
+              <div class="text-xs text-silver/70">Current selection</div>
+              <div id="miniService" class="font-semibold text-silver">None</div>
+              <div id="miniDetails" class="text-sm text-silver/75 mt-1">Start the wizard to configure options.</div>
             </div>
             <div class="text-right">
-              <div class="text-xs text-gray-500">Estimate</div>
+              <div class="text-xs text-silver/70">Estimate</div>
               <div id="miniTotal" class="text-2xl font-extrabold text-brand">$0</div>
             </div>
           </div>
         </div>
-        <div class="mt-4 text-xs text-gray-500">
+        <div class="mt-4 text-xs text-silver/60">
           Placeholder pricing. Adjust in the script.
         </div>
       </div>
     </div>
   </section>
 
-  <section id="wizard" class="py-12 md:py-16">
+  <section id="wizard" class="py-12 md:py-16 bg-ink">
     <div class="max-w-7xl mx-auto px-6">
       <div class="flex flex-col lg:flex-row gap-8 items-start">
 
         <div class="lg:w-2/3">
           <div class="flex items-center justify-between gap-4">
-            <h2 class="text-3xl font-extrabold">Booking Wizard</h2>
-            <button id="resetAll" class="border px-4 py-2 rounded-md font-semibold hover:bg-gray-100 text-sm">Reset</button>
+            <h2 class="text-3xl font-extrabold text-silver">Booking Wizard</h2>
+            <button id="resetAll" class="border border-white/15 px-4 py-2 rounded-md font-semibold hover:bg-white/5 text-sm text-silver">Reset</button>
           </div>
-          <p class="mt-2 text-gray-600">Step 1–3. Step 3 embeds your Cal.com scheduler.</p>
+          <p class="mt-2 text-silver/75">Step 1–3. Step 3 embeds your Cal.com scheduler.</p>
 
-          <div class="mt-6 bg-gray-100 rounded-lg p-3">
-            <div class="flex items-center justify-between text-xs text-gray-600">
+          <div class="mt-6 bg-white/5 border border-white/10 rounded-lg p-3">
+            <div class="flex items-center justify-between text-xs text-silver/70">
               <span id="progressLabel">Step 1 of 3</span>
               <span id="progressPct">0%</span>
             </div>
-            <div class="mt-2 h-2 bg-white rounded-full overflow-hidden border">
+            <div class="mt-2 h-2 bg-white/5 rounded-full overflow-hidden border border-white/10">
               <div id="progressBar" class="h-full bg-brand" style="width: 0%"></div>
             </div>
           </div>
@@ -136,71 +165,71 @@
           <div class="mt-6 space-y-6">
 
             <!-- STEP 1 -->
-            <div class="step border rounded-xl p-6" data-step="1">
+            <div class="step border border-white/10 rounded-xl p-6 bg-white/3" data-step="1">
               <div class="flex items-start justify-between gap-4">
                 <div>
-                  <div class="text-xs font-semibold text-gray-500">STEP 1</div>
-                  <div class="text-xl font-bold">Choose a service</div>
-                  <div class="text-gray-600 mt-1">Click a card to continue.</div>
+                  <div class="text-xs font-semibold text-silver/60">STEP 1</div>
+                  <div class="text-xl font-bold text-silver">Choose a service</div>
+                  <div class="text-silver/70 mt-1">Click a card to continue.</div>
                 </div>
-                <span id="step1Status" class="text-xs bg-gray-100 border px-2 py-1 rounded-full text-gray-600">Required</span>
+                <span id="step1Status" class="text-xs bg-white/5 border border-white/10 px-2 py-1 rounded-full text-silver/70">Required</span>
               </div>
 
               <div class="mt-5 grid md:grid-cols-2 gap-4">
                 <button class="service-card text-left border rounded-xl p-5 hover:shadow-md transition"
                         data-service="TV Mounting" data-key="tv_mount">
-                  <div class="font-bold text-lg">TV Mounting</div>
-                  <div class="text-gray-600 mt-1 text-sm">Size, mount type, wall type, add-ons.</div>
+                  <div class="font-bold text-lg text-silver">TV Mounting</div>
+                  <div class="text-silver/75 mt-1 text-sm">Size, mount type, wall type, add-ons.</div>
                   <div class="mt-3 text-sm font-semibold text-brand">From $69</div>
                 </button>
 
                 <button class="service-card text-left border rounded-xl p-5 hover:shadow-md transition"
                         data-service="Furniture Assembly" data-key="furniture">
-                  <div class="font-bold text-lg">Furniture Assembly</div>
-                  <div class="text-gray-600 mt-1 text-sm">Count, complexity, optional anchoring.</div>
+                  <div class="font-bold text-lg text-silver">Furniture Assembly</div>
+                  <div class="text-silver/75 mt-1 text-sm">Count, complexity, optional anchoring.</div>
                   <div class="mt-3 text-sm font-semibold text-brand">From $89</div>
                 </button>
 
                 <button class="service-card text-left border rounded-xl p-5 hover:shadow-md transition"
                         data-service="Soundbar Installation" data-key="soundbar">
-                  <div class="font-bold text-lg">Soundbar</div>
-                  <div class="text-gray-600 mt-1 text-sm">Standalone or with TV.</div>
+                  <div class="font-bold text-lg text-silver">Soundbar</div>
+                  <div class="text-silver/75 mt-1 text-sm">Standalone or with TV.</div>
                   <div class="mt-3 text-sm font-semibold text-brand">From $79</div>
                 </button>
 
                 <button class="service-card text-left border rounded-xl p-5 hover:shadow-md transition"
                         data-service="Cameras / Devices" data-key="cameras">
-                  <div class="font-bold text-lg">Cameras / Devices</div>
-                  <div class="text-gray-600 mt-1 text-sm">Count + complexity + surface type.</div>
+                  <div class="font-bold text-lg text-silver">Cameras / Devices</div>
+                  <div class="text-silver/75 mt-1 text-sm">Count + complexity + surface type.</div>
                   <div class="mt-3 text-sm font-semibold text-brand">From $99</div>
                 </button>
               </div>
 
               <div class="mt-5 flex gap-3">
-                <button class="next bg-brand text-white px-5 py-3 rounded-md font-semibold hover:bg-blue-700 disabled:opacity-60" disabled>
+                <button class="next bg-brand text-white px-5 py-3 rounded-md font-semibold hover:brightness-110 disabled:opacity-60" disabled>
                   Next: Options
                 </button>
               </div>
             </div>
 
             <!-- STEP 2 -->
-            <div class="step border rounded-xl p-6" data-step="2">
+            <div class="step border border-white/10 rounded-xl p-6 bg-white/3" data-step="2">
               <div class="flex items-start justify-between gap-4">
                 <div>
-                  <div class="text-xs font-semibold text-gray-500">STEP 2</div>
-                  <div class="text-xl font-bold">Job details</div>
-                  <div class="text-gray-600 mt-1">Only relevant questions are shown for the selected service.</div>
+                  <div class="text-xs font-semibold text-silver/60">STEP 2</div>
+                  <div class="text-xl font-bold text-silver">Job details</div>
+                  <div class="text-silver/70 mt-1">Only relevant questions are shown for the selected service.</div>
                 </div>
-                <span id="step2Status" class="text-xs bg-gray-100 border px-2 py-1 rounded-full text-gray-600">Required</span>
+                <span id="step2Status" class="text-xs bg-white/5 border border-white/10 px-2 py-1 rounded-full text-silver/70">Required</span>
               </div>
 
               <!-- TV Mounting -->
               <div id="panel-tv_mount" class="mt-6 hidden">
-                <div class="font-semibold">TV Mounting</div>
+                <div class="font-semibold text-silver">TV Mounting</div>
 
                 <div class="mt-4 grid sm:grid-cols-2 gap-4">
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">TV Size</div>
+                    <div class="font-medium text-silver/85 mb-1">TV Size</div>
                     <select id="tvSize" class="w-full border rounded-md p-3">
                       <option value="small">Up to 43"</option>
                       <option value="mid">44"–65"</option>
@@ -211,7 +240,7 @@
                   </label>
 
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">Mount Type</div>
+                    <div class="font-medium text-silver/85 mb-1">Mount Type</div>
                     <select id="mountType" class="w-full border rounded-md p-3">
                       <option value="fixed">I have my own mount</option>
                       <option value="tilt">Tilt</option>
@@ -223,7 +252,7 @@
 
                 <div class="mt-4">
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">Wall type</div>
+                    <div class="font-medium text-silver/85 mb-1">Wall type</div>
                     <select id="tvWallType" class="w-full border rounded-md p-3">
                       <option value="drywall_studs">Drywall (studs)</option>
                       <option value="drywall_no_studs">Drywall (no studs / unsure)</option>
@@ -231,70 +260,70 @@
                       <option value="metal_studs">Metal studs</option>
                     </select>
                   </label>
-                  <div class="mt-3 border rounded-lg p-4 bg-gray-50">
-                    <div class="text-sm font-semibold">Wall note</div>
-                    <div id="tvWallNote" class="text-sm text-gray-700 mt-1"></div>
+                  <div class="mt-3 border border-white/10 rounded-lg p-4 bg-white/5">
+                    <div class="text-sm font-semibold text-silver">Wall note</div>
+                    <div id="tvWallNote" class="text-sm text-silver/80 mt-1"></div>
                   </div>
                 </div>
 
                 <div class="mt-4 grid sm:grid-cols-2 gap-3">
-                  <label class="flex items-center gap-3 border rounded-md p-3 cursor-pointer">
+                  <label class="flex items-center gap-3 border border-white/10 rounded-md p-3 cursor-pointer bg-white/3 hover:bg-white/5">
                     <input id="addonConceal" type="checkbox" class="h-4 w-4" />
                     <div>
-                      <div class="font-medium text-sm">Cable Concealment (surface)</div>
-                      <div class="text-xs text-gray-600">Raceway / conceal kit</div>
+                      <div class="font-medium text-sm text-silver">Cable Concealment (surface)</div>
+                      <div class="text-xs text-silver/70">Raceway / conceal kit</div>
                     </div>
                   </label>
 
-                  <label class="flex items-center gap-3 border rounded-md p-3 cursor-pointer">
+                  <label class="flex items-center gap-3 border border-white/10 rounded-md p-3 cursor-pointer bg-white/3 hover:bg-white/5">
                     <input id="addonSoundbar" type="checkbox" class="h-4 w-4" />
                     <div>
-                      <div class="font-medium text-sm">Add Soundbar Install</div>
-                      <div class="text-xs text-gray-600">Mount + align soundbar</div>
+                      <div class="font-medium text-sm text-silver">Add Soundbar Install</div>
+                      <div class="text-xs text-silver/70">Mount + align soundbar</div>
                     </div>
                   </label>
 
-                  <label class="flex items-center gap-3 border rounded-md p-3 cursor-pointer">
+                  <label class="flex items-center gap-3 border border-white/10 rounded-md p-3 cursor-pointer bg-white/3 hover:bg-white/5">
                     <input id="addonInWall" type="checkbox" class="h-4 w-4" />
                     <div>
-                      <div class="font-medium text-sm">In-wall Wiring</div>
-                      <div class="text-xs text-gray-600">Quote only (assessment)</div>
+                      <div class="font-medium text-sm text-silver">In-wall Wiring</div>
+                      <div class="text-xs text-silver/70">Quote only (assessment)</div>
                     </div>
                   </label>
 
-                  <label class="flex items-center gap-3 border rounded-md p-3 cursor-pointer">
+                  <label class="flex items-center gap-3 border border-white/10 rounded-md p-3 cursor-pointer bg-white/3 hover:bg-white/5">
                     <input id="addonDismount" type="checkbox" class="h-4 w-4" />
                     <div>
-                      <div class="font-medium text-sm">Dismount Old TV</div>
-                      <div class="text-xs text-gray-600">Remove existing mount</div>
+                      <div class="font-medium text-sm text-silver">Dismount Old TV</div>
+                      <div class="text-xs text-silver/70">Remove existing mount</div>
                     </div>
                   </label>
                 </div>
 
                 <div class="mt-6 grid md:grid-cols-2 gap-4">
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">City / area</div>
+                    <div class="font-medium text-silver/85 mb-1">City / area</div>
                     <input id="tvCity" class="w-full border rounded-md p-3" placeholder="Vancouver / Surrey / Langley" />
                   </label>
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">Photos link (recommended)</div>
+                    <div class="font-medium text-silver/85 mb-1">Photos link (recommended)</div>
                     <input id="tvPhotoLink" class="w-full border rounded-md p-3" placeholder="Google Drive / iCloud / Dropbox link" />
                   </label>
                 </div>
 
                 <label class="text-sm block mt-4">
-                  <div class="font-medium text-gray-700 mb-1">Notes</div>
+                  <div class="font-medium text-silver/85 mb-1">Notes</div>
                   <input id="tvNotes" class="w-full border rounded-md p-3" placeholder="Fireplace height, power outlet location, existing holes, etc." />
                 </label>
               </div>
 
               <!-- Furniture Assembly -->
               <div id="panel-furniture" class="mt-6 hidden">
-                <div class="font-semibold">Furniture Assembly</div>
+                <div class="font-semibold text-silver">Furniture Assembly</div>
 
                 <div class="mt-4 grid sm:grid-cols-2 gap-4">
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">Item type</div>
+                    <div class="font-medium text-silver/85 mb-1">Item type</div>
                     <select id="furnType" class="w-full border rounded-md p-3">
                       <option value="small">Small (chair, side table, nightstand)</option>
                       <option value="medium">Medium (desk, dresser, TV stand)</option>
@@ -304,7 +333,7 @@
                   </label>
 
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">How many items?</div>
+                    <div class="font-medium text-silver/85 mb-1">How many items?</div>
                     <select id="furnCount" class="w-full border rounded-md p-3">
                       <option value="1">1</option>
                       <option value="2">2</option>
@@ -316,19 +345,19 @@
                 </div>
 
                 <div class="mt-4 grid sm:grid-cols-2 gap-3">
-                  <label class="flex items-center gap-3 border rounded-md p-3 cursor-pointer">
+                  <label class="flex items-center gap-3 border border-white/10 rounded-md p-3 cursor-pointer bg-white/3 hover:bg-white/5">
                     <input id="furnAnchor" type="checkbox" class="h-4 w-4" />
                     <div>
-                      <div class="font-medium text-sm">Wall anchoring (optional)</div>
-                      <div class="text-xs text-gray-600">Anti-tip / safety anchor install</div>
+                      <div class="font-medium text-sm text-silver">Wall anchoring (optional)</div>
+                      <div class="text-xs text-silver/70">Anti-tip / safety anchor install</div>
                     </div>
                   </label>
 
-                  <label class="flex items-center gap-3 border rounded-md p-3 cursor-pointer">
+                  <label class="flex items-center gap-3 border border-white/10 rounded-md p-3 cursor-pointer bg-white/3 hover:bg-white/5">
                     <input id="furnDisposal" type="checkbox" class="h-4 w-4" />
                     <div>
-                      <div class="font-medium text-sm">Box cleanup</div>
-                      <div class="text-xs text-gray-600">Basic packaging cleanup/stacking</div>
+                      <div class="font-medium text-sm text-silver">Box cleanup</div>
+                      <div class="text-xs text-silver/70">Basic packaging cleanup/stacking</div>
                     </div>
                   </label>
                 </div>
@@ -336,7 +365,7 @@
                 <!-- Wall type only if anchoring -->
                 <div id="furnWallWrap" class="mt-4 hidden">
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">Wall type (for anchoring)</div>
+                    <div class="font-medium text-silver/85 mb-1">Wall type (for anchoring)</div>
                     <select id="furnWallType" class="w-full border rounded-md p-3">
                       <option value="drywall_studs">Drywall (studs)</option>
                       <option value="drywall_no_studs">Drywall (no studs / unsure)</option>
@@ -344,43 +373,43 @@
                       <option value="metal_studs">Metal studs</option>
                     </select>
                   </label>
-                  <div class="mt-3 border rounded-lg p-4 bg-gray-50">
-                    <div class="text-sm font-semibold">Wall note</div>
-                    <div id="furnWallNote" class="text-sm text-gray-700 mt-1"></div>
+                  <div class="mt-3 border border-white/10 rounded-lg p-4 bg-white/5">
+                    <div class="text-sm font-semibold text-silver">Wall note</div>
+                    <div id="furnWallNote" class="text-sm text-silver/80 mt-1"></div>
                   </div>
                 </div>
 
                 <div class="mt-6 grid md:grid-cols-2 gap-4">
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">City / area</div>
+                    <div class="font-medium text-silver/85 mb-1">City / area</div>
                     <input id="furnCity" class="w-full border rounded-md p-3" placeholder="Vancouver / Surrey / Langley" />
                   </label>
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">Photos link (recommended)</div>
+                    <div class="font-medium text-silver/85 mb-1">Photos link (recommended)</div>
                     <input id="furnPhotoLink" class="w-full border rounded-md p-3" placeholder="Product page + room photos if possible" />
                   </label>
                 </div>
 
                 <label class="text-sm block mt-4">
-                  <div class="font-medium text-gray-700 mb-1">Notes</div>
+                  <div class="font-medium text-silver/85 mb-1">Notes</div>
                   <input id="furnNotes" class="w-full border rounded-md p-3" placeholder="Brand/model link, stairs/elevator, parking, room, etc." />
                 </label>
               </div>
 
               <!-- Soundbar -->
               <div id="panel-soundbar" class="mt-6 hidden">
-                <div class="font-semibold">Soundbar</div>
+                <div class="font-semibold text-silver">Soundbar</div>
 
                 <div class="mt-4 grid sm:grid-cols-2 gap-4">
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">Installation Type</div>
+                    <div class="font-medium text-silver/85 mb-1">Installation Type</div>
                     <select id="soundbarType" class="w-full border rounded-md p-3">
                       <option value="standalone">Standalone soundbar install</option>
                       <option value="with_tv">Installed with TV mount</option>
                     </select>
                   </label>
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">Cable tidy</div>
+                    <div class="font-medium text-silver/85 mb-1">Cable tidy</div>
                     <select id="soundbarCables" class="w-full border rounded-md p-3">
                       <option value="basic">Basic tidy</option>
                       <option value="conceal">Conceal cables (surface)</option>
@@ -390,28 +419,28 @@
 
                 <div class="mt-6 grid md:grid-cols-2 gap-4">
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">City / area</div>
+                    <div class="font-medium text-silver/85 mb-1">City / area</div>
                     <input id="soundCity" class="w-full border rounded-md p-3" placeholder="Vancouver / Surrey / Langley" />
                   </label>
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">Photos link (optional)</div>
+                    <div class="font-medium text-silver/85 mb-1">Photos link (optional)</div>
                     <input id="soundPhotoLink" class="w-full border rounded-md p-3" placeholder="Wall/TV area + soundbar model" />
                   </label>
                 </div>
 
                 <label class="text-sm block mt-4">
-                  <div class="font-medium text-gray-700 mb-1">Notes</div>
+                  <div class="font-medium text-silver/85 mb-1">Notes</div>
                   <input id="soundNotes" class="w-full border rounded-md p-3" placeholder="TV model, mounting preference, cable routing, etc." />
                 </label>
               </div>
 
               <!-- Cameras -->
               <div id="panel-cameras" class="mt-6 hidden">
-                <div class="font-semibold">Cameras / Devices</div>
+                <div class="font-semibold text-silver">Cameras / Devices</div>
 
                 <div class="mt-4 grid sm:grid-cols-2 gap-4">
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">Number of devices</div>
+                    <div class="font-medium text-silver/85 mb-1">Number of devices</div>
                     <select id="cameraCount" class="w-full border rounded-md p-3">
                       <option value="1">1 device</option>
                       <option value="2">2 devices</option>
@@ -420,7 +449,7 @@
                     </select>
                   </label>
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">Complexity</div>
+                    <div class="font-medium text-silver/85 mb-1">Complexity</div>
                     <select id="cameraComplexity" class="w-full border rounded-md p-3">
                       <option value="basic">Basic mount</option>
                       <option value="standard">Standard (routing / minor setup)</option>
@@ -431,7 +460,7 @@
 
                 <div class="mt-4">
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">Surface type (optional)</div>
+                    <div class="font-medium text-silver/85 mb-1">Surface type (optional)</div>
                     <select id="camSurface" class="w-full border rounded-md p-3">
                       <option value="standard">Standard (wood/drywall)</option>
                       <option value="brick">Brick / concrete</option>
@@ -443,57 +472,57 @@
 
                 <div class="mt-6 grid md:grid-cols-2 gap-4">
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">City / area</div>
+                    <div class="font-medium text-silver/85 mb-1">City / area</div>
                     <input id="camCity" class="w-full border rounded-md p-3" placeholder="Vancouver / Surrey / Langley" />
                   </label>
                   <label class="text-sm">
-                    <div class="font-medium text-gray-700 mb-1">Photos link (recommended)</div>
+                    <div class="font-medium text-silver/85 mb-1">Photos link (recommended)</div>
                     <input id="camPhotoLink" class="w-full border rounded-md p-3" placeholder="Install locations + power/coverage" />
                   </label>
                 </div>
 
                 <label class="text-sm block mt-4">
-                  <div class="font-medium text-gray-700 mb-1">Notes</div>
+                  <div class="font-medium text-silver/85 mb-1">Notes</div>
                   <input id="camNotes" class="w-full border rounded-md p-3" placeholder="Device models, areas to cover, Wi-Fi info, access, etc." />
                 </label>
               </div>
 
               <div class="mt-6 flex flex-col sm:flex-row gap-3">
-                <button class="prev border px-5 py-3 rounded-md font-semibold hover:bg-gray-100">Back</button>
-                <button class="next bg-brand text-white px-5 py-3 rounded-md font-semibold hover:bg-blue-700 disabled:opacity-60" disabled>
+                <button class="prev border border-white/15 px-5 py-3 rounded-md font-semibold hover:bg-white/5 text-silver">Back</button>
+                <button class="next bg-brand text-white px-5 py-3 rounded-md font-semibold hover:brightness-110 disabled:opacity-60" disabled>
                   Next: Schedule (Cal.com)
                 </button>
               </div>
             </div>
 
             <!-- STEP 3 (Cal.com embed) -->
-            <div class="step border rounded-xl p-6" data-step="3">
+            <div class="step border border-white/10 rounded-xl p-6 bg-white/3" data-step="3">
               <div class="flex items-start justify-between gap-4">
                 <div>
-                  <div class="text-xs font-semibold text-gray-500">STEP 3</div>
-                  <div class="text-xl font-bold">Pick a slot (Cal.com)</div>
-                  <div class="text-gray-600 mt-1">
+                  <div class="text-xs font-semibold text-silver/60">STEP 3</div>
+                  <div class="text-xl font-bold text-silver">Pick a slot (Cal.com)</div>
+                  <div class="text-silver/70 mt-1">
                     Scheduler shows only available times. Your wizard summary is prefilled into Cal.com booking notes.
                   </div>
                 </div>
-                <span class="text-xs bg-green-50 border border-green-200 px-2 py-1 rounded-full text-green-700">Live scheduler</span>
+                <span class="text-xs bg-green-500/10 border border-green-500/20 px-2 py-1 rounded-full text-green-300">Live scheduler</span>
               </div>
 
               <div class="mt-5 flex flex-col md:flex-row gap-3">
-                <button id="loadCal" class="bg-brand text-white px-5 py-3 rounded-md font-semibold hover:bg-blue-700">
+                <button id="loadCal" class="bg-brand text-white px-5 py-3 rounded-md font-semibold hover:brightness-110">
                   Load scheduler with my selections
                 </button>
-                <button id="copySummary" class="border px-5 py-3 rounded-md font-semibold hover:bg-gray-100">
+                <button id="copySummary" class="border border-white/15 px-5 py-3 rounded-md font-semibold hover:bg-white/5 text-silver">
                   Copy wizard summary
                 </button>
               </div>
 
-              <div class="mt-6 border rounded-xl overflow-hidden">
+              <div class="mt-6 border border-white/10 rounded-xl overflow-hidden bg-black/20">
                 <iframe id="calFrame" title="Cal.com Scheduler" style="width:100%; height: 820px; border:0;" loading="lazy"></iframe>
               </div>
 
               <div class="mt-6 flex flex-col sm:flex-row gap-3">
-                <button class="prev border px-5 py-3 rounded-md font-semibold hover:bg-gray-100">Back</button>
+                <button class="prev border border-white/15 px-5 py-3 rounded-md font-semibold hover:bg-white/5 text-silver">Back</button>
               </div>
             </div>
 
@@ -502,23 +531,23 @@
 
         <!-- Right Summary -->
         <div class="lg:w-1/3 lg:sticky lg:top-24">
-          <div class="border rounded-xl p-6 bg-white shadow-sm">
+          <div class="panel-card p-6">
             <div class="flex items-center justify-between">
               <div>
-                <div class="text-xs text-gray-500">Estimate</div>
+                <div class="text-xs text-silver/70">Estimate</div>
                 <div id="summaryTotal" class="text-3xl font-extrabold text-brand">$0</div>
               </div>
-              <span id="serviceBadge" class="text-xs bg-gray-100 border px-2 py-1 rounded-full text-gray-600">No service</span>
+              <span id="serviceBadge" class="text-xs bg-white/5 border border-white/10 px-2 py-1 rounded-full text-silver/70">No service</span>
             </div>
 
-            <div class="mt-4 border rounded-lg p-4 bg-gray-50">
-              <div class="text-sm font-semibold" id="summaryService">No service selected</div>
-              <div id="summaryLines" class="mt-3 space-y-2 text-sm text-gray-800">
-                <div class="text-gray-500">Choose a service to see line items.</div>
+            <div class="mt-4 border border-white/10 rounded-lg p-4 bg-white/5">
+              <div class="text-sm font-semibold text-silver" id="summaryService">No service selected</div>
+              <div id="summaryLines" class="mt-3 space-y-2 text-sm text-silver">
+                <div class="text-silver/70">Choose a service to see line items.</div>
               </div>
             </div>
 
-            <div class="mt-4 text-xs text-gray-500">
+            <div class="mt-4 text-xs text-silver/60">
               In-wall wiring is “Quote” by default.
             </div>
           </div>
@@ -529,32 +558,28 @@
   </section>
 
   <!-- REVIEWS (auto-hides if no 5-star reviews) -->
-  <section id="reviews" class="py-12 md:py-16">
+  <section id="reviews" class="py-12 md:py-16 bg-charcoal">
     <div class="max-w-7xl mx-auto px-6">
       <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
         <div>
-          <div class="text-sm font-semibold text-gray-500">Customer Reviews</div>
+          <div class="text-sm font-semibold text-silver/70">Customer Reviews</div>
           <h2 class="text-3xl md:text-4xl font-extrabold text-brand mt-2">5-Star Reviews</h2>
-          <p class="text-gray-600 mt-2 max-w-2xl">
+          <p class="text-silver/75 mt-2 max-w-2xl">
             Curated highlights from our Google reviews. Filter by service type.
           </p>
         </div>
 
         <div class="flex items-center gap-3">
-          <button id="revPrev" class="border px-4 py-2 rounded-md font-semibold hover:bg-gray-100" type="button" aria-label="Previous reviews">
+          <button id="revPrev" class="border border-white/15 px-4 py-2 rounded-md font-semibold hover:bg-white/5 text-silver" type="button" aria-label="Previous reviews">
             ←
           </button>
-          <button id="revNext" class="border px-4 py-2 rounded-md font-semibold hover:bg-gray-100" type="button" aria-label="Next reviews">
+          <button id="revNext" class="border border-white/15 px-4 py-2 rounded-md font-semibold hover:bg-white/5 text-silver" type="button" aria-label="Next reviews">
             →
           </button>
 
-          <a id="revGoogleLink" href="#" target="_blank" rel="noopener"
-             class="bg-brand text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700">
-            View more on Google
-          </a>
-
+          <!-- Only Write Review (as requested) -->
           <a id="revWriteLink" href="#" target="_blank" rel="noopener"
-             class="border px-4 py-2 rounded-md font-semibold hover:bg-gray-100">
+             class="bg-brand text-white px-4 py-2 rounded-md font-semibold hover:brightness-110">
             Write a review
           </a>
         </div>
@@ -565,22 +590,22 @@
       <div class="mt-6 relative">
         <div id="reviewRail" class="rev-rail flex gap-4 overflow-x-auto pb-4 scroll-smooth"></div>
 
-        <div id="reviewEmpty" class="hidden border rounded-xl p-6 bg-gray-50 text-gray-700">
+        <div id="reviewEmpty" class="hidden border border-white/10 rounded-xl p-6 bg-white/5 text-silver">
           No 5-star reviews found for this filter yet.
         </div>
       </div>
 
-      <div class="mt-2 text-xs text-gray-500">Tip: swipe on mobile to scroll reviews.</div>
+      <div class="mt-2 text-xs text-silver/60">Tip: swipe on mobile to scroll reviews.</div>
     </div>
   </section>
 
-  <section id="faq" class="bg-gray-50 py-12 md:py-16">
+  <section id="faq" class="bg-ink py-12 md:py-16">
     <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-3xl font-extrabold text-center">FAQ</h2>
+      <h2 class="text-3xl font-extrabold text-center text-silver">FAQ</h2>
       <div class="max-w-3xl mx-auto mt-8 grid gap-3">
-        <details class="bg-white border rounded-xl p-5">
-          <summary class="font-semibold cursor-pointer">How does pending approval work?</summary>
-          <div class="mt-2 text-gray-600 text-sm">
+        <details class="bg-white/3 border border-white/10 rounded-xl p-5">
+          <summary class="font-semibold cursor-pointer text-silver">How does pending approval work?</summary>
+          <div class="mt-2 text-silver/75 text-sm">
             Enable “Requires confirmation” in Cal.com event settings. Requests arrive pending; you approve from your phone/app.
           </div>
         </details>
@@ -588,7 +613,7 @@
     </div>
   </section>
 
-  <footer class="bg-gray-900 text-gray-300 py-10">
+  <footer class="bg-ink text-silver/70 py-10 border-t border-white/10">
     <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
       <div>© 2026 as-tech</div>
       <div class="flex gap-6 text-sm">
@@ -671,10 +696,10 @@
       if (!el) return;
       if (ok){
         el.textContent = "Done";
-        el.className = "text-xs bg-green-50 border border-green-200 px-2 py-1 rounded-full text-green-700";
+        el.className = "text-xs bg-green-500/10 border border-green-500/20 px-2 py-1 rounded-full text-green-300";
       } else {
         el.textContent = "Required";
-        el.className = "text-xs bg-gray-100 border px-2 py-1 rounded-full text-gray-600";
+        el.className = "text-xs bg-white/5 border border-white/10 px-2 py-1 rounded-full text-silver/70";
       }
     }
 
@@ -815,13 +840,13 @@
       const box = $("summaryLines");
       box.innerHTML = "";
       if (!state.serviceKey){
-        box.innerHTML = `<div class="text-gray-500">Choose a service to see line items.</div>`;
+        box.innerHTML = `<div class="text-silver/70">Choose a service to see line items.</div>`;
         return;
       }
       state.estimate.lines.forEach(l => {
         const row = document.createElement("div");
         row.className = "flex justify-between gap-4";
-        row.innerHTML = `<span class="text-gray-700">${l.label}</span><span class="font-semibold">${l.value}</span>`;
+        row.innerHTML = `<span class="text-silver/85">${l.label}</span><span class="font-semibold text-silver">${l.value}</span>`;
         box.appendChild(row);
       });
     }
@@ -1027,7 +1052,7 @@
     init();
   </script>
 
-  <!-- Reviews JS (separate; safe; does NOT touch wizard) -->
+  <!-- Reviews JS (inline; safe; does NOT touch wizard) -->
   <script>
     /**
      * Reviews carousel (curated, inline; static-site friendly)
@@ -1037,18 +1062,15 @@
      * - Auto-hides entire section if missing/empty
      */
 
-    // Google links
-    const GOOGLE_REVIEWS_URL = "https://www.google.com/maps/search/?api=1&query_place_id=ChIJqVSvzclaxwAROoaeRGEeyig";
     const WRITE_REVIEW_URL  = "https://search.google.com/local/writereview?placeid=ChIJqVSvzclaxwAROoaeRGEeyig";
 
-    // Curated reviews (inline)
     const INLINE_REVIEWS = [
       { name: "Leon", initials: "L", rating: 5, date: "2026-02-13", text: "Perfect TV hook up great price good guy excellent service.", serviceTags: ["TV Mounting"] },
       { name: "Sachin Shetty", initials: "SS", rating: 5, date: "2026-02-13", text: "I recently had my TV wall-mounted and I couldn’t be more pleased with the service. The technician (Salman) was punctual,...", serviceTags: ["TV Mounting"] },
       { name: "Gary Luis Chiong", initials: "GLC", rating: 5, date: "2026-02-12", text: "Salman did a marvellous job in fixing TV mound. Very friendly guy too. Good value for the price they charged.", serviceTags: ["TV Mounting"] },
       { name: "robbie toor", initials: "RT", rating: 5, date: "2026-02-10", text: "Arrived on time. Clean, professional help.", serviceTags: ["TV Mounting"] },
-      { name: "Wanjiku Njuguna", initials: "WN", rating: 5, date: "2026-02-09", text: "Very professional am very much on time. I would highly recommend their job. My Tv looks great and well positioned", serviceTags: ["TV Mounting"] },
-      { name: "Rajabu Mzenga", initials: "RM", rating: 5, date: "2026-02-07", text: "Fantastic, fast, and secure! Salman javed arrived on time and quickly mounted my TV.Very knowledgeable about wall kinds and ensured the angle was correct. I'll absolutely use their services again.", serviceTags: ["TV Mounting"] },
+      { name: "Wanjiku Njuguna", initials: "WN", rating: 5, date: "2026-02-09", text: "Very professional am very much on time. I would highly recommend their job My Tv looks great and well positioned", serviceTags: ["TV Mounting"] },
+      { name: "Rajabu Mzenga", initials: "RM", rating: 5, date: "2026-02-07", text: "Fantastic, fast, and secure! Salman javed arrived on time and quickly mounted my TV Very knowledgeable about wall kinds and ensured the angle was correct. I'll absolutely use their services again.", serviceTags: ["TV Mounting"] },
       { name: "Tim Cheese", initials: "TC", rating: 5, date: "2026-02-06", text: "Very professional, neat work. Asked customer properly and executed the objective!", serviceTags: ["TV Mounting"] },
       { name: "Ricky Pahal", initials: "RP", rating: 5, date: "2026-02-06", text: "Excellent service! Would def use again.", serviceTags: ["TV Mounting"] },
       { name: "Faraz Javed", initials: "FJ", rating: 5, date: "2026-02-06", text: "I’m glad I got the monitors on my work station professionally mounted. It looks great and the whole installation process...", serviceTags: ["TV Mounting"] },
@@ -1071,7 +1093,6 @@
       const tagsWrap = document.getElementById("reviewTags");
       const prevBtn = document.getElementById("revPrev");
       const nextBtn = document.getElementById("revNext");
-      const googleLink = document.getElementById("revGoogleLink");
       const writeLink = document.getElementById("revWriteLink");
 
       function hideSection(){
@@ -1079,12 +1100,6 @@
       }
 
       if (!section || !rail || !tagsWrap) return hideSection();
-
-      if (googleLink && GOOGLE_REVIEWS_URL && GOOGLE_REVIEWS_URL !== "#") {
-        googleLink.href = GOOGLE_REVIEWS_URL;
-      } else if (googleLink) {
-        googleLink.classList.add("hidden");
-      }
 
       if (writeLink && WRITE_REVIEW_URL && WRITE_REVIEW_URL !== "#") {
         writeLink.href = WRITE_REVIEW_URL;
@@ -1143,11 +1158,9 @@
 
       function renderCards(){
         const filtered = getFiltered();
-
         rail.innerHTML = "";
 
         if (!filtered.length){
-          // If there are 5-star reviews overall but none for this tag, show empty state.
           empty.classList.remove("hidden");
           return;
         }
@@ -1159,26 +1172,26 @@
           .forEach(r => {
             const initials = (r.initials || (r.name || "?").slice(0,1)).toUpperCase();
             const tags = (r.serviceTags || [])
-              .map(t => `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-gray-100 text-gray-700">${escapeHtml(t)}</span>`)
+              .map(t => `<span class="text-xs font-semibold px-2 py-1 rounded-full bg-white/5 border border-white/10 text-silver/80">${escapeHtml(t)}</span>`)
               .join(" ");
 
             const card = document.createElement("article");
-            card.className = "rev-card border rounded-xl p-5 bg-white shadow-sm";
+            card.className = "rev-card border border-white/10 rounded-xl p-5 bg-white/3 shadow-sm";
             card.innerHTML = `
               <div class="flex items-start justify-between gap-4">
                 <div class="flex items-center gap-3">
-                  <div class="h-10 w-10 rounded-full bg-blue-50 text-brand font-extrabold flex items-center justify-center">
+                  <div class="h-10 w-10 rounded-full bg-white/5 text-brand font-extrabold flex items-center justify-center border border-white/10">
                     ${escapeHtml(initials)}
                   </div>
                   <div class="leading-tight">
-                    <div class="font-bold text-gray-900">${escapeHtml(r.name || "Customer")}</div>
-                    <div class="text-xs text-gray-500">${fmtDate(r.date)}</div>
+                    <div class="font-bold text-silver">${escapeHtml(r.name || "Customer")}</div>
+                    <div class="text-xs text-silver/60">${fmtDate(r.date)}</div>
                   </div>
                 </div>
                 <div class="text-sm"><span class="text-gold" aria-label="5 out of 5 stars">★★★★★</span></div>
               </div>
 
-              <p class="mt-4 text-gray-700 leading-relaxed">
+              <p class="mt-4 text-silver/80 leading-relaxed">
                 ${escapeHtml(r.text || "")}
               </p>
 
@@ -1200,11 +1213,8 @@
       if (prevBtn) prevBtn.addEventListener("click", () => scrollByCards(-1));
       if (nextBtn) nextBtn.addEventListener("click", () => scrollByCards(1));
 
-      // Inline reviews (no external file)
       allReviews = INLINE_REVIEWS.slice();
       const fiveStar = allReviews.filter(x => Number(x.rating) === 5);
-
-      // If there are no 5-star reviews at all, hide the entire section
       if (!fiveStar.length) return hideSection();
 
       const tags = computeTags(fiveStar);
@@ -1215,4 +1225,3 @@
   </script>
 </body>
 </html>
-

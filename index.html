@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Interactive Booking Wizard – mountmytv.ca</title>
+  <title>Interactive Booking Wizard – as-tech</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
     theme: {
       extend: {
         colors: {
-          brand: "#0F8DD6",     // logo blue
-          brandRed: "#D81621",  // logo red
-          silver: "#7D8891",
-          charcoal: "#13151A",
-          slate: "#2F3035",
-          ink: "#0B0D10"
+          brand: "#2B7FDB",
+          gold: "#F7BF22",
+          silver: "#D4D6D7",
+          charcoal: "#1C1B20",
+          slate: "#363740",
+          ink: "#010103"
         }
       }
     }
@@ -59,13 +59,13 @@
   <header class="sticky top-0 z-50 bg-white/90 border-b backdrop-blur">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img src="assets/mountmytv-logo.jpg" alt="mountmytv.ca" class="h-10 w-auto" />
+        <img src="assets/astech-logo.png" alt="AsTech" class="h-10 w-auto" />
         <div class="leading-tight">
-          <div class="font-extrabold tracking-wide text-gray-900">mountmytv.ca</div>
-          <div class="text-xs text-gray-500">TV Mounting • Soundbar • Devices • Clean installs</div>
+          <div class="font-extrabold tracking-wide text-gray-900">AsTech</div>
+          <div class="text-xs text-gray-500">TV Mounting • Furniture Assembly • Soundbar • Cameras / Devices</div>
         </div>
       </div>
-      <a href="#wizard" class="hidden md:inline-flex bg-brandRed text-white px-4 py-2 rounded-md font-semibold hover:brightness-110">Start</a>
+      <a href="#wizard" class="hidden md:inline-flex bg-brand text-white px-4 py-2 rounded-md font-semibold hover:brightness-110">Start</a>
     </div>
   </header>
 
@@ -82,7 +82,7 @@
           Only relevant questions are shown per service. Scheduling is handled by Cal.com with pending approval.
         </p>
         <div class="mt-7 flex gap-3">
-          <a href="#wizard" class="bg-brandRed text-white px-6 py-3 rounded-md font-semibold hover:brightness-110">Start</a>
+          <a href="#wizard" class="bg-brand text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700">Start</a>
           <a href="#faq" class="border px-6 py-3 rounded-md font-semibold hover:bg-gray-100">FAQ</a>
         </div>
       </div>
@@ -101,7 +101,7 @@
             </div>
             <div class="text-right">
               <div class="text-xs text-gray-500">Estimate</div>
-              <div id="miniTotal</div>
+              <div id="miniTotal" class="text-2xl font-extrabold text-brand">$0</div>
             </div>
           </div>
         </div>
@@ -363,7 +363,7 @@
 
                 <label class="text-sm block mt-4">
                   <div class="font-medium text-gray-700 mb-1">Notes</div>
-                    <input id="furnNotes" class="w-full border rounded-md p-3" placeholder="Brand/model link, stairs/elevator, parking, room, etc." />
+                  <input id="furnNotes" class="w-full border rounded-md p-3" placeholder="Brand/model link, stairs/elevator, parking, room, etc." />
                 </label>
               </div>
 
@@ -486,7 +486,7 @@
                 <button id="copySummary" class="border px-5 py-3 rounded-md font-semibold hover:bg-gray-100">
                   Copy wizard summary
                 </button>
-                </div>
+              </div>
 
               <div class="mt-6 border rounded-xl overflow-hidden">
                 <iframe id="calFrame" title="Cal.com Scheduler" style="width:100%; height: 820px; border:0;" loading="lazy"></iframe>
@@ -528,7 +528,7 @@
     </div>
   </section>
 
-  <!-- REVIEWS (auto-hides if reviews.json missing or no 5-star reviews) -->
+  <!-- REVIEWS (auto-hides if no 5-star reviews) -->
   <section id="reviews" class="py-12 md:py-16">
     <div class="max-w-7xl mx-auto px-6">
       <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-6">
@@ -550,7 +550,12 @@
 
           <a id="revGoogleLink" href="#" target="_blank" rel="noopener"
              class="bg-brand text-white px-4 py-2 rounded-md font-semibold hover:bg-blue-700">
-            Read on Google
+            View more on Google
+          </a>
+
+          <a id="revWriteLink" href="#" target="_blank" rel="noopener"
+             class="border px-4 py-2 rounded-md font-semibold hover:bg-gray-100">
+            Write a review
           </a>
         </div>
       </div>
@@ -585,7 +590,7 @@
 
   <footer class="bg-gray-900 text-gray-300 py-10">
     <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-      <div>© 2026 mountmytv.ca</div>
+      <div>© 2026 as-tech</div>
       <div class="flex gap-6 text-sm">
         <a href="#wizard" class="hover:text-white">Wizard</a>
         <a href="#reviews" class="hover:text-white">Reviews</a>
@@ -1025,15 +1030,39 @@
   <!-- Reviews JS (separate; safe; does NOT touch wizard) -->
   <script>
     /**
-     * Reviews carousel (curated, static-site friendly)
-     * - Loads ./reviews.json
+     * Reviews carousel (curated, inline; static-site friendly)
+     * - Uses INLINE_REVIEWS embedded in this HTML
      * - Renders ONLY rating === 5
      * - Adds tag filters (All + serviceTags)
      * - Auto-hides entire section if missing/empty
      */
 
-    // OPTIONAL: Paste your Google reviews URL here. If "#", the button is hidden.
-    const GOOGLE_REVIEWS_URL = "#";
+    // Google links
+    const GOOGLE_REVIEWS_URL = "https://www.google.com/maps/search/?api=1&query_place_id=ChIJqVSvzclaxwAROoaeRGEeyig";
+    const WRITE_REVIEW_URL  = "https://search.google.com/local/writereview?placeid=ChIJqVSvzclaxwAROoaeRGEeyig";
+
+    // Curated reviews (inline)
+    const INLINE_REVIEWS = [
+      { name: "Leon", initials: "L", rating: 5, date: "2026-02-13", text: "Perfect TV hook up great price good guy excellent service.", serviceTags: ["TV Mounting"] },
+      { name: "Sachin Shetty", initials: "SS", rating: 5, date: "2026-02-13", text: "I recently had my TV wall-mounted and I couldn’t be more pleased with the service. The technician (Salman) was punctual,...", serviceTags: ["TV Mounting"] },
+      { name: "Gary Luis Chiong", initials: "GLC", rating: 5, date: "2026-02-12", text: "Salman did a marvellous job in fixing TV mound. Very friendly guy too. Good value for the price they charged.", serviceTags: ["TV Mounting"] },
+      { name: "robbie toor", initials: "RT", rating: 5, date: "2026-02-10", text: "Arrived on time. Clean, professional help.", serviceTags: ["TV Mounting"] },
+      { name: "Wanjiku Njuguna", initials: "WN", rating: 5, date: "2026-02-09", text: "Very professional am very much on time. I would highly recommend their job. My Tv looks great and well positioned", serviceTags: ["TV Mounting"] },
+      { name: "Rajabu Mzenga", initials: "RM", rating: 5, date: "2026-02-07", text: "Fantastic, fast, and secure! Salman javed arrived on time and quickly mounted my TV.Very knowledgeable about wall kinds and ensured the angle was correct. I'll absolutely use their services again.", serviceTags: ["TV Mounting"] },
+      { name: "Tim Cheese", initials: "TC", rating: 5, date: "2026-02-06", text: "Very professional, neat work. Asked customer properly and executed the objective!", serviceTags: ["TV Mounting"] },
+      { name: "Ricky Pahal", initials: "RP", rating: 5, date: "2026-02-06", text: "Excellent service! Would def use again.", serviceTags: ["TV Mounting"] },
+      { name: "Faraz Javed", initials: "FJ", rating: 5, date: "2026-02-06", text: "I’m glad I got the monitors on my work station professionally mounted. It looks great and the whole installation process...", serviceTags: ["TV Mounting"] },
+      { name: "chris billon", initials: "CB", rating: 5, date: "2026-01-30", text: "Sal the guy that came and installed my TV was very nice very professional and very efficient. He made our new place look...", serviceTags: ["TV Mounting"] },
+      { name: "Himanshu Nagpal", initials: "HN", rating: 5, date: "2026-01-30", text: "very professional came on time charge me the best price guaranteed I shopped around called a bunch of people and he was the best price and did the best work super professional, and super polite", serviceTags: ["TV Mounting"] },
+      { name: "Waqas Bahadar", initials: "WB", rating: 5, date: "2026-01-30", text: "Salman was available on short notice and mounted my TV at a very reasonable price. He was professional, polite, and did an excellent job. Would definitely recommend him.", serviceTags: ["TV Mounting"] },
+      { name: "Miriel Kiiza", initials: "MK", rating: 5, date: "2026-01-30", text: "Salman, was very professional and kind. He did a great job.", serviceTags: ["TV Mounting"] },
+      { name: "Ahmed Yaqub", initials: "AY", rating: 5, date: "2026-01-30", text: "Very professional and clean used to install my two tvs in a condo in whiterock was punctual on time and cheaper then the rest will use him again for sure !", serviceTags: ["TV Mounting"] },
+      { name: "Jawad Raza", initials: "JR", rating: 5, date: "2026-01-30", text: "He was very professional, came on time, and did the work for the best price", serviceTags: ["TV Mounting"] },
+      { name: "Harini", initials: "H", rating: 5, date: "2026-01-30", text: "Professional, timely and very polite. Definitely recommend for tv install/ deinstall!", serviceTags: ["TV Mounting"] },
+      { name: "Arash B", initials: "AB", rating: 5, date: "2026-01-30", text: "Thank you for mounting my 98 inch tv with care, definitely will call again", serviceTags: ["TV Mounting"] },
+      { name: "Thierry Laroche", initials: "TL", rating: 5, date: "2026-01-30", text: "From the moment I reached out for information on mounting my 65 inch TV above my fireplace on a brick wall this very...", serviceTags: ["TV Mounting"] },
+      { name: "Hassam zahid", initials: "HZ", rating: 5, date: "2026-01-30", text: "Super professional Best price Out there and did the best job highly recommend", serviceTags: ["TV Mounting"] }
+    ];
 
     (function initReviewsCarousel(){
       const section = document.getElementById("reviews");
@@ -1043,6 +1072,7 @@
       const prevBtn = document.getElementById("revPrev");
       const nextBtn = document.getElementById("revNext");
       const googleLink = document.getElementById("revGoogleLink");
+      const writeLink = document.getElementById("revWriteLink");
 
       function hideSection(){
         if (section) section.classList.add("hidden");
@@ -1054,6 +1084,12 @@
         googleLink.href = GOOGLE_REVIEWS_URL;
       } else if (googleLink) {
         googleLink.classList.add("hidden");
+      }
+
+      if (writeLink && WRITE_REVIEW_URL && WRITE_REVIEW_URL !== "#") {
+        writeLink.href = WRITE_REVIEW_URL;
+      } else if (writeLink) {
+        writeLink.classList.add("hidden");
       }
 
       let allReviews = [];
@@ -1164,29 +1200,18 @@
       if (prevBtn) prevBtn.addEventListener("click", () => scrollByCards(-1));
       if (nextBtn) nextBtn.addEventListener("click", () => scrollByCards(1));
 
-      fetch("reviews.json", { cache: "no-store" })
-        .then(r => {
-          if (!r.ok) throw new Error("reviews.json not found");
-          return r.json();
-        })
-        .then(data => {
-          allReviews = Array.isArray(data.reviews) ? data.reviews : [];
-          const fiveStar = allReviews.filter(x => Number(x.rating) === 5);
+      // Inline reviews (no external file)
+      allReviews = INLINE_REVIEWS.slice();
+      const fiveStar = allReviews.filter(x => Number(x.rating) === 5);
 
-          // If there are no 5-star reviews at all, hide the entire section
-          if (!fiveStar.length) return hideSection();
+      // If there are no 5-star reviews at all, hide the entire section
+      if (!fiveStar.length) return hideSection();
 
-          const tags = computeTags(fiveStar);
-          renderTags(tags);
-          renderCards();
-        })
-        .catch(() => {
-          // Missing reviews.json or invalid JSON -> hide section so page stays clean
-          hideSection();
-        });
+      const tags = computeTags(fiveStar);
+      renderTags(tags);
+      renderCards();
 
     })();
   </script>
 </body>
 </html>
-

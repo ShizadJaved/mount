@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Interactive Booking Wizard – as-tech</title>
+  <title>Interactive Booking Wizard – mountmytv.ca</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
     theme: {
       extend: {
         colors: {
-          brand: "#2B7FDB",
-          gold: "#F7BF22",
-          silver: "#D4D6D7",
-          charcoal: "#1C1B20",
-          slate: "#363740",
-          ink: "#010103"
+          brand: "#0F8DD6",     // logo blue
+          brandRed: "#D81621",  // logo red
+          silver: "#7D8891",
+          charcoal: "#13151A",
+          slate: "#2F3035",
+          ink: "#0B0D10"
         }
       }
     }
@@ -59,13 +59,13 @@
   <header class="sticky top-0 z-50 bg-white/90 border-b backdrop-blur">
     <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
       <div class="flex items-center gap-3">
-        <img src="assets/astech-logo.png" alt="AsTech" class="h-10 w-auto" />
+        <img src="assets/mountmytv-logo.jpg" alt="mountmytv.ca" class="h-10 w-auto" />
         <div class="leading-tight">
-          <div class="font-extrabold tracking-wide text-gray-900">AsTech</div>
-          <div class="text-xs text-gray-500">TV Mounting • Furniture Assembly • Soundbar • Cameras / Devices</div>
+          <div class="font-extrabold tracking-wide text-gray-900">mountmytv.ca</div>
+          <div class="text-xs text-gray-500">TV Mounting • Soundbar • Devices • Clean installs</div>
         </div>
       </div>
-      <a href="#wizard" class="hidden md:inline-flex bg-brand text-white px-4 py-2 rounded-md font-semibold hover:brightness-110">Start</a>
+      <a href="#wizard" class="hidden md:inline-flex bg-brandRed text-white px-4 py-2 rounded-md font-semibold hover:brightness-110">Start</a>
     </div>
   </header>
 
@@ -82,7 +82,7 @@
           Only relevant questions are shown per service. Scheduling is handled by Cal.com with pending approval.
         </p>
         <div class="mt-7 flex gap-3">
-          <a href="#wizard" class="bg-brand text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700">Start</a>
+          <a href="#wizard" class="bg-brandRed text-white px-6 py-3 rounded-md font-semibold hover:brightness-110">Start</a>
           <a href="#faq" class="border px-6 py-3 rounded-md font-semibold hover:bg-gray-100">FAQ</a>
         </div>
       </div>
@@ -101,7 +101,7 @@
             </div>
             <div class="text-right">
               <div class="text-xs text-gray-500">Estimate</div>
-              <div id="miniTotal" class="text-2xl font-extrabold text-brand">$0</div>
+              <div id="miniTotal</div>
             </div>
           </div>
         </div>
@@ -363,7 +363,7 @@
 
                 <label class="text-sm block mt-4">
                   <div class="font-medium text-gray-700 mb-1">Notes</div>
-                  <input id="furnNotes" class="w-full border rounded-md p-3" placeholder="Brand/model link, stairs/elevator, parking, room, etc." />
+                    <input id="furnNotes" class="w-full border rounded-md p-3" placeholder="Brand/model link, stairs/elevator, parking, room, etc." />
                 </label>
               </div>
 
@@ -486,7 +486,7 @@
                 <button id="copySummary" class="border px-5 py-3 rounded-md font-semibold hover:bg-gray-100">
                   Copy wizard summary
                 </button>
-              </div>
+                </div>
 
               <div class="mt-6 border rounded-xl overflow-hidden">
                 <iframe id="calFrame" title="Cal.com Scheduler" style="width:100%; height: 820px; border:0;" loading="lazy"></iframe>
@@ -585,7 +585,7 @@
 
   <footer class="bg-gray-900 text-gray-300 py-10">
     <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-      <div>© 2026 as-tech</div>
+      <div>© 2026 mountmytv.ca</div>
       <div class="flex gap-6 text-sm">
         <a href="#wizard" class="hover:text-white">Wizard</a>
         <a href="#reviews" class="hover:text-white">Reviews</a>
@@ -1033,7 +1033,7 @@
      */
 
     // OPTIONAL: Paste your Google reviews URL here. If "#", the button is hidden.
-    const GOOGLE_REVIEWS_URL = "https://www.google.com/search?sca_esv=25010ec7c4de7282&sxsrf=ANbL-n6t8QnNFRvFMc6tUBGl0uMCCqnI8A:1768524939310&q=khyber+chai+house&si=AL3DRZEsmMGCryMMFSHJ3StBhOdZ2-6yYkXd_doETEE1OR-qOSmV4MpUs1ZHs_IljOjOwnwifUosz8uI-Xx4vnAog_ZQetC3yxg-p0yoxka8guQOubGjw0TeBvnkyNtaOBPjz0RLF1BWYAI5Jcjq8mx9Xjjd4bh4KA%3D%3D&sa=X&ved=2ahUKEwiYxaLm7I6SAxWbMjQIHW0ABKsQrrQLegQIGxAA&biw=1203&bih=920&dpr=2&aic=0#";
+    const GOOGLE_REVIEWS_URL = "#";
 
     (function initReviewsCarousel(){
       const section = document.getElementById("reviews");
@@ -1189,7 +1189,3 @@
   </script>
 </body>
 </html>
-
-
-
-

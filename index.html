@@ -962,31 +962,32 @@
     }
 
     function loadCalEmbed() {
-  if (!CAL_USERNAME || !CAL_EVENT_SLUG) {
-    alert("Cal.com configuration missing.");
-    return;
-  }
+      if (!CAL_USERNAME || !CAL_EVENT_SLUG) {
+        alert("Cal.com configuration missing.");
+        return;
+      }
 
-  const d = getServiceSpecificDetails();
-  const summary = buildSummaryText();
+      const d = getServiceSpecificDetails();
+      const summary = buildSummaryText();
 
-  const params = new URLSearchParams({
-    service: state.serviceName || "",
-    estimate: money(state.estimate?.total || 0),
-    city: d.city || "",
-    photos: d.photos || "",
-    jobNotes: d.notes || "",
-    notes: summary
-  });
+      const params = new URLSearchParams({
+        service: state.serviceName || "",
+        estimate: money(state.estimate?.total || 0),
+        city: d.city || "",
+        photos: d.photos || "",
+        jobNotes: d.notes || "",
+        notes: summary
+      });
 
-  const bookingUrl = `https://cal.com/${CAL_USERNAME}/${CAL_EVENT_SLUG}?${params.toString()}`;
+      const bookingUrl = `https://cal.com/${CAL_USERNAME}/${CAL_EVENT_SLUG}?${params.toString()}`;
 
-  const iframe = document.getElementById("calFrame");
-  if (iframe) {
-    iframe.src = bookingUrl;
-  } else {
-    console.error("calFrame iframe not found.");
-    });
+      const iframe = document.getElementById("calFrame");
+      if (iframe) {
+        iframe.src = bookingUrl;
+      } else {
+        console.error("calFrame iframe not found.");
+      }
+    }
 
     $("tvWallType").addEventListener("change", () => { updateWallNoteTV(); calcEstimate(); });
     $("furnWallType").addEventListener("change", () => { updateWallNoteFurn(); calcEstimate(); });

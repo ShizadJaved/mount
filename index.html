@@ -628,7 +628,7 @@
      * Cal.com embed config
      ***********************/
     const CAL_USERNAME = "as-tech";
-    const CAL_EVENT_SLUG = "YOUR_EVENT_SLUG"; // set this to the slug after cal.com/as-tech/...
+    const CAL_EVENT_SLUG = "mount"; // set this to the slug after cal.com/as-tech/...
 
     /******************************************************************
      * Pricing (placeholder)
@@ -961,29 +961,31 @@
       return lines.join("\n");
     }
 
-    function loadCalEmbed(){
-      if (!CAL_EVENT_SLUG || CAL_EVENT_SLUG === "YOUR_EVENT_SLUG"){
-        alert("Set CAL_EVENT_SLUG in the script (the part after cal.com/as-tech/...).");
-        return;
-      }
-      const notes = encodeURIComponent(buildSummaryText());
-      const url = `https://cal.com/${CAL_USERNAME}/${CAL_EVENT_SLUG}?notes=${notes}`;
-      $("calFrame").src = url;
-    }
+    function loadCalEmbed() {
+  if (!CAL_USERNAME || !CAL_EVENT_SLUG) {
+    alert("Cal.com configuration missing.");
+    return;
+  }
 
-    $$(".service-card").forEach(btn => btn.addEventListener("click", () => selectService(btn.dataset.key, btn.dataset.service)));
+  const d = getServiceSpecificDetails();
+  const summary = buildSummaryText();
 
-    $$(".next").forEach(btn => btn.addEventListener("click", () => {
-      if (state.step === 1 && !validateStep1()) return;
-      if (state.step === 2 && !validateStep2()) return;
-      showStep(state.step + 1);
-    }));
-    $$(".prev").forEach(btn => btn.addEventListener("click", () => showStep(state.step - 1)));
+  const params = new URLSearchParams({
+    service: state.serviceName || "",
+    estimate: money(state.estimate?.total || 0),
+    city: d.city || "",
+    photos: d.photos || "",
+    jobNotes: d.notes || "",
+    notes: summary
+  });
 
-    $("furnAnchor").addEventListener("change", () => {
-      $("furnWallWrap").classList.toggle("hidden", !$("furnAnchor").checked);
-      if ($("furnAnchor").checked) updateWallNoteFurn();
-      calcEstimate();
+  const bookingUrl = `https://cal.com/${CAL_USERNAME}/${CAL_EVENT_SLUG}?${params.toString()}`;
+
+  const iframe = document.getElementById("calFrame");
+  if (iframe) {
+    iframe.src = bookingUrl;
+  } else {
+    console.error("calFrame iframe not found.");
     });
 
     $("tvWallType").addEventListener("change", () => { updateWallNoteTV(); calcEstimate(); });

@@ -1008,6 +1008,39 @@
 
     
     function loadCalEmbed() {
+      const d = getServiceSpecificDetails();
+      const summary = buildSummaryText();
+
+      // Prefill Cal booking questions by identifier (must match Cal.com question identifiers)
+      const params = new URLSearchParams({
+        service: state.serviceName || "",
+        estimate: money(state.estimate.total),
+        city: d.city || "",
+        photos: d.photos || "",
+        jobNotes: d.notes || "",
+        notes: summary
+      });
+
+      const calLink = `${CAL_USERNAME}/${CAL_EVENT_SLUG}?${params.toString()}`;
+
+      // Reset completion UI
+      const done = document.getElementById("bookingDone");
+      if (done) done.classList.add("hidden");
+
+      // Render inline embed
+      const host = document.getElementById("calInline");
+      if (!host) {
+        console.error("calInline host not found.");
+        return;
+      }
+      host.innerHTML = "";
+
+      // Cal() queues calls until embed.js loads
+      Cal("inline", {
+        elementOrSelector: "#calInline",
+        calLink: calLink
+      });
+    }
 
     $("tvWallType").addEventListener("change", () => { updateWallNoteTV(); calcEstimate(); });
     $("furnWallType").addEventListener("change", () => { updateWallNoteFurn(); calcEstimate(); });

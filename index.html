@@ -1005,8 +1005,8 @@
       el.addEventListener("input", calcEstimate);
     });
 
-    $("loadCal").addEventListener("click", loadCalEmbed);
-    $("copySummary").addEventListener("click", async () => {
+    $("loadCal").addEventListener("click", (e) => { e.preventDefault(); loadCalEmbed(); });
+    $("copySummary").addEventListener("click", async (e) => { e.preventDefault();
       const txt = buildSummaryText();
       try { await navigator.clipboard.writeText(txt); alert("Wizard summary copied."); }
       catch { alert("Clipboard blocked. Copy manually if needed."); }
@@ -1035,7 +1035,7 @@
       calcEstimate();
       showStep(1);
     }
-    $("resetAll").addEventListener("click", resetAll);
+    $("resetAll").addEventListener("click", (e) => { e.preventDefault(); resetAll(); });
 
     function init(){
       showStep(1);
@@ -1050,6 +1050,43 @@
       setStatus("step2Status", false);
 
       calcEstimate();
+
+      // Bind service selection cards (prevent form submits)
+      $$(".service-card").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          selectService(btn.dataset.key, btn.dataset.service);
+        });
+      });
+
+      // Bind step navigation
+      $$(".step .next").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          const stepEl = btn.closest(".step");
+          const step = Number(stepEl?.dataset.step || 1);
+
+          if (step === 1 && !validateStep1()) return;
+          if (step === 2 && !validateStep2()) return;
+
+          showStep(step + 1);
+
+          if (step + 1 === 3) {
+            renderSummary();
+            renderMini();
+          }
+        });
+      });
+
+      $$(".step .prev").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          e.preventDefault();
+          const stepEl = btn.closest(".step");
+          const step = Number(stepEl?.dataset.step || 1);
+          showStep(Math.max(1, step - 1));
+        });
+      });
+
     }
     init();
   </script>

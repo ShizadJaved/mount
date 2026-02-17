@@ -1008,61 +1008,6 @@
 
     
     function loadCalEmbed() {
-      const d = getServiceSpecificDetails();
-      const summary = buildSummaryText();
-
-      // Prefill Cal booking questions by identifier (must match Cal.com question identifiers)
-      const params = new URLSearchParams({
-        service: state.serviceName || "",
-        estimate: money(state.estimate.total),
-        city: d.city || "",
-        photos: d.photos || "",
-        jobNotes: d.notes || "",
-        notes: summary
-      });
-
-      const calLink = `${CAL_USERNAME}/${CAL_EVENT_SLUG}?${params.toString()}`;
-
-      // Reset completion UI
-      const done = document.getElementById("bookingDone");
-      if (done) done.classList.add("hidden");
-
-      // Render inline embed
-      const host = document.getElementById("calInline");
-      if (!host) {
-        console.error("calInline host not found.");
-        return;
-      }
-      host.innerHTML = "";
-
-      // Cal() queues calls until embed.js loads, so this is safe even on first click
-      Cal("inline", {
-        elementOrSelector: "#calInline",
-        calLink: calLink
-      });
-    }
-
-  const d = getServiceSpecificDetails();
-  const summary = buildSummaryText();
-
-  const params = new URLSearchParams({
-    service: state.serviceName || "",
-    estimate: money(state.estimate?.total || 0),
-    city: d.city || "",
-    photos: d.photos || "",
-    jobNotes: d.notes || "",
-    notes: summary
-  });
-
-  const bookingUrl = `https://cal.com/${CAL_USERNAME}/${CAL_EVENT_SLUG}?${params.toString()}`;
-
-  const iframe = document.getElementById("calInline");
-  if (iframe) {
-    iframe.src = bookingUrl;
-  } else {
-    console.error("calFrame iframe not found.");
-      }
-    }
 
     $("tvWallType").addEventListener("change", () => { updateWallNoteTV(); calcEstimate(); });
     $("furnWallType").addEventListener("change", () => { updateWallNoteFurn(); calcEstimate(); });

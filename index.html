@@ -558,7 +558,40 @@
       ["tv_mount","furniture","soundbar","cameras"].forEach(k => $("panel-" + k).classList.add("hidden"));
     }
 
-    function wallLabel(v){
+    
+function updateMountOptions(){
+  const sizeEl = $("tvSize");
+  const mountEl = $("mountType");
+  if (!sizeEl || !mountEl) return;
+
+  const size = sizeEl.value;
+  const current = mountEl.value;
+
+  const allowedBySize = {
+    small: ["fixed", "tilt", "full"],
+    mid: ["fixed", "tilt", "full"],
+    large: ["fixed", "tilt", "full"],
+    xl: ["fixed", "tilt"],
+    xxl: ["fixed", "tilt"]
+  };
+
+  const labels = {
+    fixed: "I have my own mount",
+    tilt: "Tilt",
+    full: "Full Motion"
+  };
+
+  const allowed = allowedBySize[size] || ["fixed", "tilt", "full"];
+  mountEl.innerHTML = allowed.map(v => `<option value="${v}">${labels[v]}</option>`).join("");
+
+  if (allowed.includes(current)) {
+    mountEl.value = current;
+  } else {
+    mountEl.value = allowed[0];
+  }
+}
+
+function wallLabel(v){
       return ({
         drywall_studs: "Drywall (studs)",
         drywall_no_studs: "Drywall (no studs/unsure)",
@@ -1133,6 +1166,7 @@
       $$(".service-card").forEach(btn => btn.classList.remove("active"));
 
       updateWallNoteTV();
+      updateMountOptions();
       updateWallNoteFurn();
       syncTvMountOptions();
       calcEstimate();
@@ -1279,6 +1313,7 @@
       initReviewSection();
 
       $("tvWallType").addEventListener("change", () => { updateWallNoteTV(); calcEstimate(); });
+      $("tvSize").addEventListener("change", () => { updateMountOptions(); calcEstimate(); });
       $("tvSize").addEventListener("change", () => {
         syncTvMountOptions();
         calcEstimate();

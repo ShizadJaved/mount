@@ -72,29 +72,6 @@
     .tag-btn.active{ background: rgba(43,127,219,.18); border-color: rgba(43,127,219,.65); color: #2B7FDB; }
     .rev-card { scroll-snap-align: start; min-width: 320px; max-width: 420px; }
     .rev-rail { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
-
-    .hero-visual{
-      position: relative;
-      border-radius: 24px;
-      overflow: hidden;
-      border: 1px solid rgba(255,255,255,.10);
-      min-height: 280px;
-      background:
-        linear-gradient(180deg, rgba(1,1,3,.08) 0%, rgba(1,1,3,.30) 100%),
-        url('https://image.thum.io/get/width/1600/https://mountmytv.ca/') center/cover no-repeat;
-      box-shadow: 0 24px 60px rgba(0,0,0,.35);
-    }
-    .hero-visual::before{
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(900px 280px at 50% 100%, rgba(1,1,3,.92), transparent 58%),
-        linear-gradient(180deg, rgba(43,127,219,.18), transparent 42%),
-        linear-gradient(0deg, rgba(1,1,3,.60), rgba(1,1,3,.08));
-      pointer-events: none;
-    }
-
   </style>
 </head>
 <body class="bg-ink text-silver">
@@ -117,7 +94,6 @@
         <h1 class="mt-4 text-4xl md:text-5xl font-extrabold leading-tight text-silver">
           Configure the job, then request a slot.
         </h1>
-        <div class="mt-6 hero-visual"></div>
         <div class="mt-7 flex gap-3">
           <a href="#wizard" class="bg-brand text-white px-6 py-3 rounded-md font-semibold hover:brightness-110">Start</a>
         </div>
@@ -344,6 +320,8 @@
                 <input type="hidden" name="_template" value="table" />
                 <input type="hidden" name="_captcha" value="false" />
                 <input type="hidden" name="_next" value="https://mountmytv.ca" />
+                <input type="hidden" name="_url" value="https://mountmytv.ca" />
+                <input type="hidden" name="_replyto" id="formReplyTo" />
 
                 <div class="rounded-lg bg-black/20 p-4 border border-white/10">
                   <div class="text-sm text-silver/60">Current estimate</div>
@@ -443,8 +421,8 @@
           small: { fixed: 0, tilt: 50, full: 60 },
           mid: { fixed: 0, tilt: 50, full: 60 },
           large: { fixed: 0, tilt: 60, full: 90 },
-          xl: { fixed: 0, tilt: 70 },
-          xxl: { fixed: 0, tilt: 90 }
+          xl: { fixed: 0, tilt: 80, full: 60 },
+          xxl: { fixed: 0, tilt: 80 }
         },
         addons: { conceal: 35, soundbar: 79, inwall: 169, dismount: 20, fireplace: 25 }
       },
@@ -1042,134 +1020,6 @@
       "cameraCount","cameraComplexity","camSurface","camCity","camNotes"
     ];
 
-    function initReviewSection() {
-      const WRITE_REVIEW_URL = "https://search.google.com/local/writereview?placeid=ChIJqVSvzclaxwAROoaeRGEeyig";
-      const INLINE_REVIEWS = [
-        {
-                "name": "Jasjeet Panag",
-                "initials": "JP",
-                "rating": 5,
-                "date": "2026-04-12",
-                "text": "Great service by the technician (Salman)! TV installed perfectly—clean, professional, and on time. Highly recommend!",
-                "serviceTags": [
-                        "TV Mounting"
-                ]
-        },
-        {
-                "name": "True Canadian",
-                "initials": "TC",
-                "rating": 5,
-                "date": "2026-04-11",
-                "text": "Very honest installer, did the job professionally and under budget. Definitely recommend Salman for TV mounting installation services.",
-                "serviceTags": [
-                        "TV Mounting"
-                ]
-        },
-        {
-                "name": "Emma Ferris",
-                "initials": "EF",
-                "rating": 5,
-                "date": "2026-04-06",
-                "text": "I am so happy that I found this company. Sal is professional, punctual, and extremely thorough. He has mounted two of my TVs and I would highly recommend him.",
-                "serviceTags": [
-                        "TV Mounting"
-                ]
-        },
-        {
-                "name": "James Lee",
-                "initials": "JL",
-                "rating": 5,
-                "date": "2026-03-30",
-                "text": "Sal was punctual and very professional. He mounted my TV/soundbar securely without any issues. I would definitely recommend him for any mounting services!!",
-                "serviceTags": [
-                        "TV Mounting",
-                        "Soundbar Installation"
-                ]
-        },
-        {
-                "name": "West Coast Hydro Vac Services",
-                "initials": "WH",
-                "rating": 5,
-                "date": "2026-03-23",
-                "text": "Very smooth transaction. Got all monitors mounted for the office and wired precisely.",
-                "serviceTags": [
-                        "TV Mounting"
-                ]
-        },
-        {
-                "name": "Roma Dhaliwal",
-                "initials": "RD",
-                "rating": 5,
-                "date": "2026-03-23",
-                "text": "Salman installed two TVs in our home. He was efficient, friendly and knowledgeable. We would highly recommend him for all TV and camera installations.",
-                "serviceTags": [
-                        "TV Mounting",
-                        "Cameras / Devices"
-                ]
-        },
-        {
-                "name": "Martina Purewal",
-                "initials": "MP",
-                "rating": 5,
-                "date": "2026-03-22",
-                "text": "Very satisfied with the TV mount and installation! The team was professional, efficient, and made sure everything was perfectly aligned. Highly recommend their service.",
-                "serviceTags": [
-                        "TV Mounting"
-                ]
-        },
-        {
-                "name": "Diyar Developments",
-                "initials": "DD",
-                "rating": 5,
-                "date": "2026-04-05",
-                "text": "Best in town for TV mounting services. Used multiple times and have had no complaints.",
-                "serviceTags": [
-                        "TV Mounting"
-                ]
-        },
-        {
-                "name": "Paul S",
-                "initials": "PS",
-                "rating": 5,
-                "date": "2026-04-09",
-                "text": "Great experience with Salman. Showed up on time, and did the job very quickly.",
-                "serviceTags": [
-                        "TV Mounting"
-                ]
-        },
-        {
-                "name": "Andrea Papp",
-                "initials": "AP",
-                "rating": 5,
-                "date": "2026-04-08",
-                "text": "Wicked, very professional, great price. Super happy with the TV mounting installation Sal did for me.",
-                "serviceTags": [
-                        "TV Mounting"
-                ]
-        },
-        {
-                "name": "Mohammad Qaiser",
-                "initials": "MQ",
-                "rating": 5,
-                "date": "2026-04-05",
-                "text": "Great service and did a perfect job of mounting my 70” TV and neatly tucked in all the cables.",
-                "serviceTags": [
-                        "TV Mounting"
-                ]
-        },
-        {
-                "name": "Afolabi Deborah",
-                "initials": "AD",
-                "rating": 5,
-                "date": "2026-04-13",
-                "text": "Sel is really good at what he does. He mounted my shelves just the way I wanted it.",
-                "serviceTags": [
-                        "Furniture Assembly"
-                ]
-        }
-];
-
-      $("revWriteLink").href = WRITE_REVIEW_URL;
 
       function shuffleArray(arr) {
         const copy = [...arr];
@@ -1179,6 +1029,18 @@
         }
         return copy;
       }
+
+    function initReviewSection() {
+      const WRITE_REVIEW_URL = "https://search.google.com/local/writereview?placeid=ChIJqVSvzclaxwAROoaeRGEeyig";
+      const INLINE_REVIEWS = [
+        { name: "Leon", initials: "L", rating: 5, date: "2026-02-13", text: "Perfect TV hook up great price good guy excellent service.", serviceTags: ["TV Mounting"] },
+        { name: "Sachin Shetty", initials: "SS", rating: 5, date: "2026-02-13", text: "I recently had my TV wall-mounted and I couldn’t be more pleased with the service. The technician was punctual, professional, and made sure everything was perfectly level and secure.", serviceTags: ["TV Mounting"] },
+        { name: "Gary Luis Chiong", initials: "GLC", rating: 5, date: "2026-02-12", text: "Very friendly guy too. Good value for the price they charged.", serviceTags: ["TV Mounting"] },
+        { name: "Wanjiku Njuguna", initials: "WN", rating: 5, date: "2026-02-09", text: "Very professional and on time. My TV looks great and well positioned.", serviceTags: ["TV Mounting"] },
+        { name: "Customer", initials: "C", rating: 5, date: "2026-02-08", text: "Fast, clean, and professional service.", serviceTags: ["Furniture Assembly", "Soundbar Installation"] }
+      ];
+
+      $("revWriteLink").href = WRITE_REVIEW_URL;
 
       const reviews = shuffleArray(INLINE_REVIEWS.filter(r => r.rating === 5)).slice(0, 8);
       const section = $("reviews");

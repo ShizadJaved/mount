@@ -72,6 +72,9 @@
     .tag-btn.active{ background: rgba(43,127,219,.18); border-color: rgba(43,127,219,.65); color: #2B7FDB; }
     .rev-card { scroll-snap-align: start; min-width: 320px; max-width: 420px; }
     .rev-rail { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+    .modal-backdrop{position:fixed;inset:0;background:rgba(1,1,3,.78);backdrop-filter:blur(4px);display:flex;align-items:center;justify-content:center;padding:24px;z-index:80;}
+    .modal-panel{width:min(900px,100%);max-height:min(88vh,900px);overflow:hidden;background:rgba(28,27,32,.98);border:1px solid rgba(212,214,215,.14);box-shadow:0 18px 40px rgba(0,0,0,.45);border-radius:20px;display:flex;flex-direction:column;}
+    .modal-body{overflow:auto;padding:24px;}
   </style>
 </head>
 <body class="bg-ink text-silver">
@@ -322,6 +325,7 @@
                 <input type="hidden" name="_next" value="https://mountmytv.ca" />
                 <input type="hidden" name="_url" value="https://mountmytv.ca" />
                 <input type="hidden" name="_replyto" id="formReplyTo" />
+                <input type="hidden" name="terms_accepted" id="formTermsAccepted" value="No" />
 
                 <div class="rounded-lg bg-black/20 p-4 border border-white/10">
                   <div class="text-sm text-silver/60">Current estimate</div>
@@ -331,6 +335,7 @@
                 </div>
 
                 <div id="formError" class="hidden rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200"></div>
+                <div id="formSuccess" class="hidden rounded-lg border border-green-500/30 bg-green-500/10 p-4 text-sm text-green-200"></div>
 
                 <div class="mt-6 flex flex-col sm:flex-row gap-3">
                   <button type="button" class="prev border border-white/15 px-5 py-3 rounded-md font-semibold hover:bg-white/5 text-silver">Back</button>
@@ -394,16 +399,69 @@
     </div>
   </footer>
 
+  <div id="termsModal" class="modal-backdrop hidden" aria-hidden="true">
+    <div class="modal-panel">
+      <div class="px-6 py-5 border-b border-white/10 flex items-start justify-between gap-4">
+        <div>
+          <div class="text-lg font-extrabold text-silver">Terms of Service, Installation Waiver, and Release of Liability</div>
+          <div class="text-sm text-silver/70 mt-1">You must review and agree before sending your booking request.</div>
+        </div>
+        <button type="button" id="termsCloseBtn" class="border border-white/15 px-3 py-2 rounded-md font-semibold hover:bg-white/5 text-silver">Close</button>
+      </div>
+      <div class="modal-body">
+        <div class="text-sm text-silver/85 space-y-4 leading-6">
+          <p><strong>MountMyTV.ca – Terms of Service, Installation Waiver, and Release of Liability</strong></p>
+          <p><strong>Last Updated:</strong> April 13, 2026</p>
+          <p><strong>Important:</strong> This agreement contains a <strong>release of liability and waiver of legal rights. Please read carefully before booking.</strong></p>
+          <p>By booking installation services through the MountMyTV.ca website, you (“Customer”) acknowledge that you have read, understood, and agreed to the following Terms of Service, Installation Waiver, and Release of Liability.</p>
+          <p>These terms apply to services performed in <strong>private homes, condominiums, apartments, strata units, offices, commercial premises, and other property types.</strong></p>
+          <p><strong>1. Scope of Services</strong><br>MountMyTV.ca provides television mounting and related installation services including installation of television wall mounts, televisions, and basic cable management solutions. Services are performed using <strong>standard industry installation practices based on visual inspection of the mounting surface</strong>. MountMyTV.ca does not provide structural, engineering, electrical, or construction services.</p>
+          <p><strong>2. Customer Authorization</strong><br>The Customer represents and confirms that they are the property owner, tenant, or authorized occupant of the installation location, have obtained permission from the <strong>property owner, landlord, strata corporation, or building management</strong> where required, and authorize MountMyTV.ca to drill into walls or surfaces necessary for installation. MountMyTV.ca is not responsible for disputes arising from lack of authorization.</p>
+          <p><strong>3. Strata, Apartment, and Multi-Unit Buildings</strong><br>For installations performed in <strong>condominiums, apartments, or other multi-unit buildings</strong>, the Customer acknowledges that walls and ceilings may contain <strong>common property or shared building infrastructure</strong> and strata bylaws, landlord policies, or building rules may apply. The Customer is responsible for ensuring compliance with all applicable building rules. MountMyTV.ca shall not be responsible for <strong>fines, penalties, repair costs, or disputes</strong> arising from strata or building regulations.</p>
+          <p><strong>4. Hidden Utilities and Building Infrastructure</strong><br>Walls and ceilings may contain <strong>concealed electrical wiring, plumbing, gas lines, HVAC ducts, fire barriers, insulation, data cables, network lines, or structural components</strong> that cannot be fully identified through visual inspection or standard stud-finding tools. While reasonable care will be taken during installation, drilling into walls carries inherent risk. MountMyTV.ca shall not be responsible for damage to <strong>concealed utilities, electrical wiring, plumbing, data cables, fire systems, or other infrastructure</strong> that could not reasonably be detected prior to drilling.</p>
+          <p><strong>5. Installation Location Approval</strong><br>Prior to drilling, MountMyTV.ca will confirm the proposed mounting location with the Customer. By permitting installation to proceed, the Customer confirms that the <strong>height, placement, and orientation of the television</strong> have been approved. MountMyTV.ca shall not be responsible for relocation requests after installation has begun or been completed.</p>
+          <p><strong>6. Equipment Compatibility and TV Weight</strong><br>The Customer is responsible for ensuring that the <strong>television, wall mount, and mounting hardware</strong> are suitable for the size and weight of the television. MountMyTV.ca does not guarantee the structural performance of equipment <strong>supplied by the Customer or purchased independently</strong>. MountMyTV.ca reserves the right to decline installation if equipment or wall conditions are deemed unsafe.</p>
+          <p><strong>7. Handling of Customer Equipment</strong><br>Televisions and electronic equipment are fragile and may be susceptible to damage during handling. While MountMyTV.ca will exercise reasonable care, MountMyTV.ca shall not be responsible for damage caused by pre-existing defects, weakened mounting points, internal screen damage, manufacturer defects, or previous handling or transportation damage.</p>
+          <p><strong>8. Brick, Concrete, Tile, or Specialty Walls</strong><br>Installation on <strong>brick, concrete, tile, stone, plaster, metal studs, or other specialty surfaces</strong> may involve additional risk. MountMyTV.ca does not guarantee installation success on such surfaces and may decline installation if the wall structure is unsuitable.</p>
+          <p><strong>9. Cosmetic Effects of Installation</strong><br>Installation may result in minor cosmetic effects including drywall dust, small drill holes, minor paint disturbance, and minor wall marks. Unless agreed in writing, <strong>drywall repair, patching, or painting is not included</strong> in installation services.</p>
+          <p><strong>10. Unsafe Wall Conditions</strong><br>MountMyTV.ca reserves the right to refuse or discontinue installation if the wall structure or mounting surface is considered unsafe, including insufficient stud support, damaged drywall or framing, unstable wall materials, or metal studs without reinforcement.</p>
+          <p><strong>11. Access and Safety</strong><br>The Customer agrees to provide <strong>safe and unobstructed access</strong> to the installation area. MountMyTV.ca may reschedule installation if the environment presents safety risks.</p>
+          <p><strong>12. Leveling, Alignment, and Customer Acceptance</strong><br>MountMyTV.ca installs televisions using standard leveling tools to ensure the mount is installed as level as reasonably possible. The Customer acknowledges that <strong>walls, floors, ceilings, and surrounding structures may not be perfectly level or square</strong>. Before completion, the Customer will have the opportunity to confirm that the <strong>height, alignment, and position of the television are satisfactory</strong>. Requests for repositioning after installation may require additional service charges.</p>
+          <p><strong>13. Mount Integrity and Post-Installation Responsibility</strong><br>Once installation is completed and accepted by the Customer, the Customer acknowledges that the mount was stable at the time of installation, and future movement or detachment may occur due to factors outside MountMyTV.ca’s control, including structural movement, wall deterioration, impact, or third-party adjustments. MountMyTV.ca shall not be responsible for <strong>damage or injury resulting from a television becoming loose or detached after installation</strong> except where required by law.</p>
+          <p><strong>14. Assumption of Risk</strong><br>The Customer voluntarily assumes the risks associated with installation except where prohibited by law.</p>
+          <p><strong>15. Release of Liability</strong><br>To the fullest extent permitted by the laws of <strong>British Columbia</strong>, the Customer releases and discharges MountMyTV.ca from claims arising from drilling into walls, damage to drywall or finishes, concealed wiring, plumbing, or infrastructure, televisions or mounts supplied by the Customer, and post-installation movement or detachment.</p>
+          <p><strong>16. Limitation of Liability</strong><br>MountMyTV.ca’s liability for any claim relating to installation services shall be <strong>limited to the amount paid for the installation service</strong>. MountMyTV.ca shall not be liable for <strong>indirect or consequential damages</strong>.</p>
+          <p><strong>17. Indemnification</strong><br>The Customer agrees to indemnify and hold harmless MountMyTV.ca from claims arising from lack of authorization to perform installation, violation of building or strata rules, or inaccurate information provided by the Customer.</p>
+          <p><strong>18. Governing Law</strong><br>This agreement shall be governed by the laws of the <strong>Province of British Columbia and the applicable laws of Canada</strong>. Any disputes shall be resolved in the courts of British Columbia.</p>
+          <p><strong>19. Electronic Agreement</strong><br>By accepting these terms through the MountMyTV.ca website, including selecting the acknowledgment checkbox, the Customer agrees that this constitutes a <strong>legally binding electronic agreement equivalent to a written signature</strong>.</p>
+          <p><strong>20. Acceptance</strong><br>By booking installation services and selecting the acknowledgment checkbox, the Customer confirms that they have read and understood these Terms, agree to be legally bound by them, and acknowledge that this agreement contains a <strong>release of liability and waiver of legal rights</strong>.</p>
+        </div>
+        <label class="mt-6 flex items-start gap-3 border border-white/10 rounded-xl p-4 bg-white/5 cursor-pointer">
+          <input id="termsAgreeCheckbox" type="checkbox" class="h-4 w-4 mt-1" />
+          <div class="text-sm text-silver/85">I have read and agree to the MountMyTV.ca Terms of Service, Installation Waiver, and Release of Liability.</div>
+        </label>
+        <div id="termsError" class="hidden mt-4 rounded-lg border border-red-500/30 bg-red-500/10 p-4 text-sm text-red-200"></div>
+      </div>
+      <div class="px-6 py-5 border-t border-white/10 flex flex-col sm:flex-row gap-3 justify-end">
+        <button type="button" id="termsCancelBtn" class="border border-white/15 px-5 py-3 rounded-md font-semibold hover:bg-white/5 text-silver">Cancel</button>
+        <button type="button" id="termsContinueBtn" class="bg-brand text-white px-5 py-3 rounded-md font-semibold hover:brightness-110">Agree & Send Booking Request</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script>
     /******************************************************************
      * CONFIG
      * Replace these placeholders before going live
      ******************************************************************/
-    const FORM_RECIPIENT_EMAIL = "mountmytvca@gmail.com";
-    const FORMSUBMIT_ENDPOINT = `https://formsubmit.co/${FORM_RECIPIENT_EMAIL}`;
+    const EMAILJS_PUBLIC_KEY = "tCYg4YqMBejtfSore";
+    const EMAILJS_SERVICE_ID = "service_m9nvl3l";
+    const EMAILJS_TEMPLATE_ID = "template_fn7ey1l";
+    const SUCCESS_REDIRECT_URL = "https://mountmytv.ca";
 
     // Optional: Apps Script endpoints. If provided, the site will read live blocked slots
-    // and also send each submission to the script via FormSubmit webhook.
+    // and also send each submission to the script via EmailJS-driven workflow.
     const APPS_SCRIPT_DATA_URL = "PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE?action=slots";
     const APPS_SCRIPT_WEBHOOK_URL = "PASTE_YOUR_APPS_SCRIPT_WEBAPP_URL_HERE";
 
@@ -421,8 +479,8 @@
           small: { fixed: 0, tilt: 50, full: 60 },
           mid: { fixed: 0, tilt: 50, full: 60 },
           large: { fixed: 0, tilt: 60, full: 90 },
-          xl: { fixed: 0, tilt: 80, full: 60 },
-          xxl: { fixed: 0, tilt: 80 }
+          xl: { fixed: 0, tilt: 70 },
+          xxl: { fixed: 0, tilt: 90 }
         },
         addons: { conceal: 35, soundbar: 79, inwall: 169, dismount: 20, fireplace: 25 }
       },
@@ -477,7 +535,8 @@
         allowedWindows: DEFAULT_TIME_WINDOWS
       },
       selectedSlot: "",
-      secondSelectedSlot: ""
+      secondSelectedSlot: "",
+      termsAccepted: false
     };
 
     function setProgress(){
@@ -947,8 +1006,53 @@
       });
     }
 
+    function showTermsError(message) {
+      const box = $("termsError");
+      box.textContent = message;
+      box.classList.remove("hidden");
+    }
+
+    function clearTermsError() {
+      const box = $("termsError");
+      box.classList.add("hidden");
+      box.textContent = "";
+    }
+
+    function openTermsModal() {
+      clearTermsError();
+      $("termsModal").classList.remove("hidden");
+      $("termsModal").setAttribute("aria-hidden", "false");
+      document.body.classList.add("overflow-hidden");
+    }
+
+    function closeTermsModal() {
+      $("termsModal").classList.add("hidden");
+      $("termsModal").setAttribute("aria-hidden", "true");
+      document.body.classList.remove("overflow-hidden");
+    }
+
+    async function handleBookingSubmit() {
+      const submitBtn = $("bookingForm").querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending...";
+
+      try {
+        await sendBookingRequest();
+        showFormSuccess("Booking request sent successfully. Redirecting to the main page...");
+        setTimeout(() => {
+          window.location.href = SUCCESS_REDIRECT_URL;
+        }, 1600);
+      } catch (error) {
+        console.error(error);
+        showFormError(error?.text || error?.message || "We could not send your booking request. Please try again.");
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    }
+
     function populateBookingForm() {
-      $("bookingForm").action = FORMSUBMIT_ENDPOINT;
       $("formServiceName").value = state.serviceName || "";
       $("formEstimateTotal").value = money(state.estimate.total || 0);
       $("formEstimateLines").value = serializeEstimateLines();
@@ -958,18 +1062,51 @@
       const date = $("preferredDate").value || "";
       const time = state.selectedSlot || "";
       $("formSubject").value = `Booking Request | ${name} | ${state.serviceName || "Service"} | ${date} ${time}`.trim();
+      $("formReplyTo").value = $("clientEmail").value || "";
+      $("formTermsAccepted").value = state.termsAccepted ? "Yes" : "No";
+    }
 
-      let webhookField = document.getElementById("formWebhook");
-      if (!webhookField) {
-        webhookField = document.createElement("input");
-        webhookField.type = "hidden";
-        webhookField.name = "_webhook";
-        webhookField.id = "formWebhook";
-        $("bookingForm").appendChild(webhookField);
+    function isEmailJsConfigured() {
+      return [EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID].every(
+        (value) => value && !value.includes("PASTE_YOUR_EMAILJS")
+      );
+    }
+
+    function buildEmailJsParams() {
+      const details = getServiceSpecificDetails();
+      return {
+        to_email: "mountmytvca@gmail.com",
+        reply_to: $("clientEmail").value || "",
+        client_name: $("clientName").value || "",
+        client_email: $("clientEmail").value || "",
+        client_phone: $("clientPhone").value || "",
+        client_address: $("clientAddress").value || "",
+        preferred_date: $("preferredDate").value || "",
+        preferred_time: state.selectedSlot || "",
+        second_choice_date: $("secondChoiceDate").value || "",
+        second_choice_time: state.secondSelectedSlot || "",
+        service_name: state.serviceName || "",
+        estimate_total: money(state.estimate.total || 0),
+        estimate_lines: serializeEstimateLines(),
+        job_summary: buildSummaryText(),
+        client_extra_notes: $("clientExtraNotes").value || "",
+        city: details.city || "",
+        notes: details.notes || "",
+        subject: $("formSubject").value || "Booking Request",
+        submitted_at: new Date().toLocaleString()
+      };
+    }
+
+    async function sendBookingRequest() {
+      populateBookingForm();
+
+      if (!isEmailJsConfigured()) {
+        throw new Error("EmailJS is not configured yet. Add your Public Key, Service ID, and Template ID in the HTML config block.");
       }
-      webhookField.value = APPS_SCRIPT_WEBHOOK_URL && !APPS_SCRIPT_WEBHOOK_URL.includes("PASTE_YOUR")
-        ? APPS_SCRIPT_WEBHOOK_URL
-        : "";
+
+      return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, buildEmailJsParams(), {
+        publicKey: EMAILJS_PUBLIC_KEY
+      });
     }
 
     function showFormError(message) {
@@ -983,6 +1120,17 @@
       $("formError").textContent = "";
     }
 
+    function showFormSuccess(message) {
+      const box = $("formSuccess");
+      box.textContent = message;
+      box.classList.remove("hidden");
+    }
+
+    function clearFormSuccess() {
+      $("formSuccess").classList.add("hidden");
+      $("formSuccess").textContent = "";
+    }
+
     function resetAll(){
       state.step = 1;
       state.serviceKey = null;
@@ -990,6 +1138,7 @@
       state.estimate = { total: 0, lines: [] };
       state.selectedSlot = "";
       state.secondSelectedSlot = "";
+      state.termsAccepted = false;
 
       hideAllPanels();
       setStatus("step1Status", false);
@@ -1011,6 +1160,10 @@
       renderSecondSlots();
       showStep(1);
       clearFormError();
+      clearFormSuccess();
+      closeTermsModal();
+      $("termsAgreeCheckbox").checked = false;
+      $("formTermsAccepted").value = "No";
     }
 
     const recalcIds = [
@@ -1108,6 +1261,10 @@
     }
 
     async function init(){
+      if (window.emailjs) {
+        emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+      }
+
       await loadSlotConfig();
       setupDateRules();
 
@@ -1148,6 +1305,7 @@
         state.selectedSlot = "";
         $("preferredTime").value = "";
         clearFormError();
+        clearFormSuccess();
         renderSlots();
         updateSlotSummaryLine();
       });
@@ -1191,28 +1349,53 @@
         resetAll();
       });
 
-      $("bookingForm").addEventListener("submit", (e) => {
+      $("termsCloseBtn").addEventListener("click", closeTermsModal);
+      $("termsCancelBtn").addEventListener("click", closeTermsModal);
+      $("termsModal").addEventListener("click", (e) => {
+        if (e.target === $("termsModal")) closeTermsModal();
+      });
+      $("termsAgreeCheckbox").addEventListener("change", () => {
+        if ($("termsAgreeCheckbox").checked) clearTermsError();
+      });
+      $("termsContinueBtn").addEventListener("click", async () => {
+        if (!$("termsAgreeCheckbox").checked) {
+          showTermsError("Please agree to the Terms of Service, Installation Waiver, and Release of Liability before continuing.");
+          return;
+        }
+        state.termsAccepted = true;
+        $("formTermsAccepted").value = "Yes";
+        closeTermsModal();
+        await handleBookingSubmit();
+      });
+
+      $("bookingForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
         clearFormError();
+        clearFormSuccess();
 
         if (!state.serviceKey) {
-          e.preventDefault();
           showFormError("Please select a service first.");
           return;
         }
 
         if (!$("preferredDate").value) {
-          e.preventDefault();
           showFormError("Please choose a preferred date.");
           return;
         }
 
         if (!state.selectedSlot) {
-          e.preventDefault();
           showFormError("Please choose a preferred time window.");
           return;
         }
 
-        populateBookingForm();
+        if (!state.termsAccepted) {
+          $("termsAgreeCheckbox").checked = false;
+          $("formTermsAccepted").value = "No";
+          openTermsModal();
+          return;
+        }
+
+        await handleBookingSubmit();
       });
     }
 

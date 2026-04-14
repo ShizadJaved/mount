@@ -1074,6 +1074,15 @@
 
     function buildEmailJsParams() {
       const details = getServiceSpecificDetails();
+      const serviceName = state.serviceName || "";
+      const estimateTotal = money(state.estimate.total || 0);
+      const estimateLines = serializeEstimateLines();
+      const estimateBreakdown = state.estimate.lines
+        .map((line) => `${line.label}: ${line.value}`)
+        .join("\n");
+      const summaryText = buildSummaryText();
+      const extraNotes = $("clientExtraNotes").value || "";
+
       return {
         to_email: "mountmytvca@gmail.com",
         reply_to: $("clientEmail").value || "",
@@ -1085,11 +1094,17 @@
         preferred_time: state.selectedSlot || "",
         second_choice_date: $("secondChoiceDate").value || "",
         second_choice_time: state.secondSelectedSlot || "",
-        service_name: state.serviceName || "",
-        estimate_total: money(state.estimate.total || 0),
-        estimate_lines: serializeEstimateLines(),
-        job_summary: buildSummaryText(),
-        client_extra_notes: $("clientExtraNotes").value || "",
+        service: serviceName,
+        service_name: serviceName,
+        estimate: estimateTotal,
+        estimate_total: estimateTotal,
+        estimate_lines: estimateLines,
+        estimate_breakdown: estimateBreakdown,
+        pricing_breakdown: estimateBreakdown,
+        summary: summaryText,
+        job_summary: summaryText,
+        client_extra_notes: extraNotes,
+        extra_notes: extraNotes,
         city: details.city || "",
         notes: details.notes || "",
         subject: $("formSubject").value || "Booking Request",

@@ -72,6 +72,29 @@
     .tag-btn.active{ background: rgba(43,127,219,.18); border-color: rgba(43,127,219,.65); color: #2B7FDB; }
     .rev-card { scroll-snap-align: start; min-width: 320px; max-width: 420px; }
     .rev-rail { scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; }
+
+    .hero-visual{
+      position: relative;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.10);
+      min-height: 280px;
+      background:
+        linear-gradient(180deg, rgba(1,1,3,.08) 0%, rgba(1,1,3,.30) 100%),
+        url('https://image.thum.io/get/width/1600/https://mountmytv.ca/') center/cover no-repeat;
+      box-shadow: 0 24px 60px rgba(0,0,0,.35);
+    }
+    .hero-visual::before{
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(900px 280px at 50% 100%, rgba(1,1,3,.92), transparent 58%),
+        linear-gradient(180deg, rgba(43,127,219,.18), transparent 42%),
+        linear-gradient(0deg, rgba(1,1,3,.60), rgba(1,1,3,.08));
+      pointer-events: none;
+    }
+
   </style>
 </head>
 <body class="bg-ink text-silver">
@@ -91,18 +114,12 @@
   <section class="bg-noise">
     <div class="max-w-7xl mx-auto px-6 py-12 md:py-16 grid md:grid-cols-2 gap-10 items-center">
       <div>
-        <div class="inline-flex items-center gap-2 text-xs bg-white/5 border border-white/10 rounded-full px-3 py-1 text-silver/80">
-          Wizard • Live estimate • Email booking request
-        </div>
         <h1 class="mt-4 text-4xl md:text-5xl font-extrabold leading-tight text-silver">
           Configure the job, then request a slot.
         </h1>
-        <p class="mt-4 text-lg text-silver/75">
-          Only relevant questions are shown per service. Clients pick from your available time windows and the full request is emailed to you for approval.
-        </p>
+        <div class="mt-6 hero-visual"></div>
         <div class="mt-7 flex gap-3">
           <a href="#wizard" class="bg-brand text-white px-6 py-3 rounded-md font-semibold hover:brightness-110">Start</a>
-          <a href="#faq" class="border border-white/15 px-6 py-3 rounded-md font-semibold hover:bg-white/5 text-silver">FAQ</a>
         </div>
       </div>
 
@@ -389,29 +406,12 @@
     </div>
   </section>
 
-  <section id="faq" class="bg-ink py-12 md:py-16">
-    <div class="max-w-7xl mx-auto px-6">
-      <h2 class="text-3xl font-extrabold text-center text-silver">FAQ</h2>
-      <div class="max-w-3xl mx-auto mt-8 grid gap-3">
-        <details class="bg-white/3 border border-white/10 rounded-xl p-5">
-          <summary class="font-semibold cursor-pointer text-silver">How does booking work now?</summary>
-          <div class="mt-2 text-silver/75 text-sm">The client gets a live quote, chooses an available time window, and submits a booking request. You review the email and confirm the job manually.</div>
-        </details>
-        <details class="bg-white/3 border border-white/10 rounded-xl p-5">
-          <summary class="font-semibold cursor-pointer text-silver">How do blocked slots update?</summary>
-          <div class="mt-2 text-silver/75 text-sm">The page can read slot availability from a Google Apps Script endpoint. When you approve a request from your approval email, the script marks that slot as booked automatically and the page reflects it.</div>
-        </details>
-      </div>
-    </div>
-  </section>
-
   <footer class="bg-ink text-silver/70 py-10 border-t border-white/10">
     <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
       <div>© 2026 as-tech</div>
       <div class="flex gap-6 text-sm">
         <a href="#wizard" class="hover:text-white">Wizard</a>
         <a href="#reviews" class="hover:text-white">Reviews</a>
-        <a href="#faq" class="hover:text-white">FAQ</a>
       </div>
     </div>
   </footer>
@@ -443,8 +443,8 @@
           small: { fixed: 0, tilt: 50, full: 60 },
           mid: { fixed: 0, tilt: 50, full: 60 },
           large: { fixed: 0, tilt: 60, full: 90 },
-          xl: { fixed: 0, tilt: 80, full: 60 },
-          xxl: { fixed: 0, tilt: 80 }
+          xl: { fixed: 0, tilt: 70 },
+          xxl: { fixed: 0, tilt: 90 }
         },
         addons: { conceal: 35, soundbar: 79, inwall: 169, dismount: 20, fireplace: 25 }
       },

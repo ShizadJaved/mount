@@ -1079,34 +1079,33 @@ function wallLabel(v){
       return [EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID].every(value => value && !value.includes("PASTE_YOUR_EMAILJS"));
     }
 
-    async function fetchPublicIp() {
-      const urls = ["https://api.ipify.org?format=json", "https://api64.ipify.org?format=json"];
-      const fetchWithTimeout = async (url, ms = 1800) => {
-        const controller = new AbortController();
-        const timer = setTimeout(() => controller.abort(), ms);
-        try {
-          const res = await fetch(url, { cache: "no-store", signal: controller.signal });
-          if (!res.ok) return "";
-          const data = await res.json();
-          return (data && data.ip) ? data.ip : "";
-        } catch (err) {
-          return "";
-        } finally {
-          clearTimeout(timer);
-        }
-      };
-
-      for (const url of urls) {
-        const ip = await fetchWithTimeout(url);
-        if (ip) return ip;
-      }
-      return "Unavailable";
-    } catch (e) {}
-      }
-      return "Unavailable";
+    async 
+async function fetchPublicIp() {
+  const urls = ["https://api.ipify.org?format=json", "https://api64.ipify.org?format=json"];
+  const fetchWithTimeout = async (url, ms = 1800) => {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), ms);
+    try {
+      const res = await fetch(url, { cache: "no-store", signal: controller.signal });
+      if (!res.ok) return "";
+      const data = await res.json();
+      return (data && data.ip) ? data.ip : "";
+    } catch (err) {
+      return "";
+    } finally {
+      clearTimeout(timer);
     }
+  };
 
-    function buildEmailJsParams() {
+  for (const url of urls) {
+    const ip = await fetchWithTimeout(url);
+    if (ip) return ip;
+  }
+  return "Unavailable";
+}
+
+function buildEmailJsParams() {
+
       const details = getServiceSpecificDetails();
       const summary = buildSummaryText();
       const estimate = money(state.estimate.total || 0);

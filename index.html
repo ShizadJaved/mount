@@ -98,6 +98,14 @@
       padding: 24px;
       background: rgba(255,255,255,.03);
     }
+    #termsAgreeSend[disabled]{
+      opacity:.7;
+      cursor:not-allowed;
+    }
+    #termsAgreeSend, #termsCancel, #termsClose{
+      position:relative;
+      z-index:1002;
+    }
 
 
   </style>
@@ -1073,13 +1081,27 @@ function wallLabel(v){
 
     async function fetchPublicIp() {
       const urls = ["https://api.ipify.org?format=json", "https://api64.ipify.org?format=json"];
-      for (const url of urls) {
+      const fetchWithTimeout = async (url, ms = 1800) => {
+        const controller = new AbortController();
+        const timer = setTimeout(() => controller.abort(), ms);
         try {
-          const res = await fetch(url, { cache: "no-store" });
-          if (!res.ok) continue;
+          const res = await fetch(url, { cache: "no-store", signal: controller.signal });
+          if (!res.ok) return "";
           const data = await res.json();
-          if (data && data.ip) return data.ip;
-        } catch (e) {}
+          return (data && data.ip) ? data.ip : "";
+        } catch (err) {
+          return "";
+        } finally {
+          clearTimeout(timer);
+        }
+      };
+
+      for (const url of urls) {
+        const ip = await fetchWithTimeout(url);
+        if (ip) return ip;
+      }
+      return "Unavailable";
+    } catch (e) {}
       }
       return "Unavailable";
     }
@@ -1420,10 +1442,10 @@ function wallLabel(v){
           return;
         }
 
-        const submitBtn = $("bookingForm").querySelector('button[type="submit"]');
-        const originalText = submitBtn.textContent;
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Sending...";
+        const agreeBtn = $("termsAgreeSend");
+        const originalText = agreeBtn.textContent;
+        agreeBtn.disabled = true;
+        agreeBtn.textContent = "Sending...";
 
         try {
           state.termsAccepted = true;
@@ -1432,16 +1454,17 @@ function wallLabel(v){
           $("termsAcceptedField").value = "Yes";
           $("signedAtField").value = state.signedAt;
           $("signatureIpField").value = state.signatureIp;
-          closeTermsModal();
           await sendBookingRequest();
+          closeTermsModal();
           showFormSuccess("Booking request sent successfully. Redirecting to the main page...");
           setTimeout(() => { window.location.href = SUCCESS_REDIRECT_URL; }, 1600);
         } catch (error) {
           console.error(error);
-          showFormError(error?.text || error?.message || "We could not send your booking request. Please try again.");
+          $("termsError").textContent = error?.text || error?.message || "We could not send your booking request. Please try again.";
+          $("termsError").classList.remove("hidden");
         } finally {
-          submitBtn.disabled = false;
-          submitBtn.textContent = originalText;
+          agreeBtn.disabled = false;
+          agreeBtn.textContent = originalText;
         }
       });
 

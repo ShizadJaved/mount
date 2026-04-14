@@ -356,7 +356,7 @@
                 <input type="hidden" name="terms_accepted" id="termsAcceptedField" value="No" />
                 <input type="hidden" name="signed_at" id="signedAtField" value="" />
                 <input type="hidden" name="signature_ip" id="signatureIpField" value="" />
-                <input type="hidden" name="tos_link" id="tosLinkField" value="https://mountmytv.ca/terms.html" />
+                <input type="hidden" name="tos_link" id="tosLinkField" value="https://shizadjaved.github.io/terms.html" />
                 <input type="hidden" name="_subject" id="formSubject" />
                 <input type="hidden" name="_template" value="table" />
                 <input type="hidden" name="_captcha" value="false" />
@@ -1138,7 +1138,7 @@ function buildEmailJsParams() {
         submitted_at: new Date().toLocaleString(),
         signed_at: state.signedAt || "",
         signature_ip: state.signatureIp || "Unavailable",
-        tos_link: $("tosLinkField").value || "https://mountmytv.ca/terms.html",
+        tos_link: $("tosLinkField").value || "https://shizadjaved.github.io/terms.html",
         terms_accepted: state.termsAccepted ? "Yes" : "No"
       };
     }

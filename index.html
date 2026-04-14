@@ -1079,7 +1079,7 @@ function wallLabel(v){
       return [EMAILJS_PUBLIC_KEY, EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID].every(value => value && !value.includes("PASTE_YOUR_EMAILJS"));
     }
 
-    async 
+ 
 async function fetchPublicIp() {
   const urls = ["https://api.ipify.org?format=json", "https://api64.ipify.org?format=json"];
   const fetchWithTimeout = async (url, ms = 1800) => {
